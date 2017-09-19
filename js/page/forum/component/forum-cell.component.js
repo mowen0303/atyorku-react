@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity, Platform, Dimensions} from 'react-native';
 import CommonService from '../../../service/common.service';
 import ImageLoad from 'react-native-image-placeholder';
 import ForumDetailPage from "../forum-detail.page";
@@ -8,23 +8,31 @@ export default class ForumCell extends Component {
 
     //numberOfLines
     static propTypes = {
-        numberOfLines: PropTypes.number
+        numberOfLines: PropTypes.number,
+        isPressAble:PropTypes.bool,
+        activeOpacity:PropTypes.number
     }
 
     static defaultProps = {
-        numberOfLines: 1000
+        numberOfLines: 1000,
+        isPressAble:true,
+        activeOpacity:0.8
     }
 
-
+    pressForum(){
+        if(this.props.isPressAble == true){
+            this.props.navigation.navigate('ForumDetailPage', {data: this.props.data});
+        }
+    }
 
     render() {
         return (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => this.pressForum()} activeOpacity={this.props.activeOpacity}>
                 <View style={styles.cellBox}>
                     <View style={{flexDirection: 'row'}}>
                         <TouchableOpacity style={{marginRight: 10}}>
                             <ImageLoad
-                                style={{height: 40, width: 40}}
+                                style={{height: 40, width: 40, borderRadius:20, overflow:'hidden'}}
                                 source={{uri: CommonService.host + this.props.data.img}}
                                 placeholderSource={require('../../../../res/images/placeHolder.png')}
                                 isShowActivity={false}
@@ -33,7 +41,7 @@ export default class ForumCell extends Component {
                         </TouchableOpacity>
                         <View>
                             <View style={{flexDirection:'row'}}>
-                                <Text style={[styles.font, {fontSize: 15, fontWeight:'bold', color: '#444',maxWidth:200}]} numberOfLines={1}>
+                                <Text style={[styles.font, {fontSize: 15, color: '#333',maxWidth:200}]} numberOfLines={1}>
                                     {this.props.data.alias}
                                 </Text>
                                 {this.elementForGenderIcon()}
@@ -83,9 +91,10 @@ export default class ForumCell extends Component {
 
     elementForImg1() {
         if (this.props.data.img1 !== "") {
+            let w = Dimensions.get('window').width-20
             return (
-                <View>
-                    <ImageLoad style={{height: 90, width: 90, marginBottom:15}}
+                <View style={{flex:1}}>
+                    <ImageLoad style={{flex:1, height:150,width:w, marginBottom:15}}
                                placeholderSource={require('../../../../res/images/placeHolder.png')}
                                loadingStyle={{size: 'small', color: '#ccc'}}
                                source={{uri: CommonService.host + this.props.data.img1}}/>

@@ -87,7 +87,7 @@ export default class ForumListView extends Component {
             <View style={{flex: 1}}>
                 <ListView
                     dataSource={this.state.dataSource}
-                    renderRow={(data) => <ForumCell data={data} numberOfLines={3}/>}
+                    renderRow={(data) => <ForumCell  {...this.props} data={data} numberOfLines={3}/>}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.isLoading}

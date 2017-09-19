@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, ListView, Image} from 'react-native';
-import NavigationBar from '../../commonComponent/navigationBar';
+import {View, StyleSheet, Text, ListView,StatusBar} from 'react-native';
+import ForumCell from './component/forum-cell.component'
 import ForumService from '../../service/forum.service';
 
 
@@ -18,17 +18,24 @@ export default class ForumDetailPage extends Component {
         }
     }
 
-    static navigationOptions = ({ navigation }) => ({
-        title: `123`,
-    });
+
+    static navigationOptions = {
+        title:'帖子详情',
+        headerStyle:{backgroundColor:'#0e7477'},
+        headerTintColor:'#fff',
+        statusBar:'light-content'
+    }
 
 
     render() {
+
         return (
             <View style={styles.container}>
+                <StatusBar barStyle='light-content' />
                 <ListView
                     dataSource={this.state.listViewDataSource}
                     renderRow = {(data)=><Text data={data}>{data.content_comment}</Text>}
+                    renderHeader = {()=><ForumCell data={this.props.navigation.state.params.data} activeOpacity={1} isPressAble={false}/>}
                 />
             </View>
         )

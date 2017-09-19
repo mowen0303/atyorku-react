@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
-import {View, StyleSheet,Button} from 'react-native';
-import NavigationBar from '../../commonComponent/navigationBar';
+import {View, StyleSheet,StatusBar} from 'react-native';
 import ForumService from '../../service/forum.service';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import ForumListView from './component/forum-list-view';
-import ForumDetailPage from './forum-detail.page'
-import {StackNavigator} from "react-navigation";
 
 const renderTabBar = props => (
-    <DefaultTabBar {...props} style={{borderBottomWidth: 1, borderBottomColor: '#f4f4f4', height: 44}}/>);
+    <DefaultTabBar {...props} style={{borderBottomWidth: 1, borderBottomColor: '#f4f4f4', height: 35, borderTopWidth:0}}/>);
 
 export default class ForumListPage extends Component {
 
@@ -21,34 +18,29 @@ export default class ForumListPage extends Component {
     }
 
     static navigationOptions = {
-        header:null
-    };
+        title:'同学圈',
+        headerStyle:{backgroundColor:'#0e7477'},
+        headerTintColor:'#fff',
+        statusBar:'light-content'
+    }
 
     render() {
         return (
 
             <View style={styles.container}>
-                <Button
-                    onPress={() => this.props.navigation.navigate('Profile', {name: 'Lucy'})}
-                    title="Go to Lucy's profile"
-                />
-                <NavigationBar style={styles.navigationBar}
-                               title={'同学圈'}
-                               titleStyle={'light'}
-                               navigationBarHide={true}
-                />
 
+                <StatusBar barStyle='light-content' />
                 <ScrollableTabView renderTabBar={renderTabBar}
                                    tabBarBackgroundColor={'#fff'}
-                                   tabBarActiveTextColor={'#f14b61'}
-                                   tabBarInactiveTextColor={'#8a8a8a'}
-                                   tabBarTextStyle={{marginTop: 20, fontSize: 15}}
-                                   tabBarUnderlineStyle={{backgroundColor: '#f14b61', height: 2, borderRadius: 1}}>
-                    <ForumListView categoryId="0" tabLabel="全部">内容1</ForumListView>
-                    <ForumListView categoryId="1" tabLabel="杂谈">杂谈</ForumListView>
-                    <ForumListView categoryId="5" tabLabel="约">约</ForumListView>
-                    <ForumListView categoryId="4" tabLabel="讨论">讨论</ForumListView>
-                    <ForumListView categoryId="3" tabLabel="交易">交易</ForumListView>
+                                   tabBarActiveTextColor={'#0e7477'}
+                                   tabBarInactiveTextColor={'#28a4a8'}
+                                   tabBarTextStyle={{marginTop: 10, fontSize: 15}}
+                                   tabBarUnderlineStyle={{backgroundColor: '#0e7477', height: 2, borderRadius: 1}}>
+                    <ForumListView {...this.props} categoryId="0" tabLabel="全部">内容1</ForumListView>
+                    <ForumListView {...this.props} categoryId="1" tabLabel="杂谈">杂谈</ForumListView>
+                    <ForumListView {...this.props} categoryId="5" tabLabel="约">约</ForumListView>
+                    <ForumListView {...this.props} categoryId="4" tabLabel="讨论">讨论</ForumListView>
+                    <ForumListView {...this.props} categoryId="3" tabLabel="交易">交易</ForumListView>
                 </ScrollableTabView>
 
             </View>
@@ -78,8 +70,4 @@ const styles = StyleSheet.create({
         marginRight: 5,
         tintColor: '#fff'
     }
-});
-
-const ModalStack = StackNavigator({
-    Profile: {screen: ForumDetailPage},
 });

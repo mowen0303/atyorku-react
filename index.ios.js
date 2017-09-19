@@ -1,1 +1,1 @@
-import './js/page/setup'
+import './js/page/tabs'
