@@ -1,8 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {View, ListView, RefreshControl} from 'react-native';
-import ForumService from '../service/forum.service';
-import ForumCell from './forumCell'
-import LoadMoreBar from './loadMoreBar';
+import ForumService from '../../../service/forum.service';
+import ForumCell from './forum-cell.component'
+import LoadMoreBar from '../../../commonComponent/loadMoreBar';
+
 
 
 export default class ForumListView extends Component {
@@ -73,7 +74,6 @@ export default class ForumListView extends Component {
                         isLoadingMore: false
                     });
                 }
-
             })
             .catch(error => {
                 alert(error)
@@ -87,7 +87,7 @@ export default class ForumListView extends Component {
             <View style={{flex: 1}}>
                 <ListView
                     dataSource={this.state.dataSource}
-                    renderRow={(data) => <ForumCell data={data}/>}
+                    renderRow={(data) => <ForumCell data={data} numberOfLines={3}/>}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.isLoading}

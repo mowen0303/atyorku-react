@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
-import {View, Image, StyleSheet, TouchableOpacity, ListView, RefreshControl} from 'react-native';
-import NavigationBar from '../../component/navigationBar';
+import {View, StyleSheet,Button} from 'react-native';
+import NavigationBar from '../../commonComponent/navigationBar';
 import ForumService from '../../service/forum.service';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
-import ForumCell from '../../component/forumCell'
-import LoadMoreBar from '../../component/loadMoreBar';
-import ForumListView from '../../component/forumListView';
+import ForumListView from './component/forum-list-view';
+import ForumDetailPage from './forum-detail.page'
+import {StackNavigator} from "react-navigation";
 
-const renderTabBar = props => (<DefaultTabBar {...props} style={{borderBottomWidth: 0, height: 45}}/>);
+const renderTabBar = props => (
+    <DefaultTabBar {...props} style={{borderBottomWidth: 1, borderBottomColor: '#f4f4f4', height: 44}}/>);
 
 export default class ForumListPage extends Component {
 
@@ -19,32 +20,30 @@ export default class ForumListPage extends Component {
         }
     }
 
+    static navigationOptions = {
+        header:null
+    };
 
     render() {
         return (
+
             <View style={styles.container}>
-                <NavigationBar style={styles.navBox}
+                <Button
+                    onPress={() => this.props.navigation.navigate('Profile', {name: 'Lucy'})}
+                    title="Go to Lucy's profile"
+                />
+                <NavigationBar style={styles.navigationBar}
                                title={'同学圈'}
                                titleStyle={'light'}
                                navigationBarHide={true}
-                               statusBar={{barStyle: 'light-content'}}
-                               rightButton={
-                                   <View style={styles.navBtnView}>
-                                       <TouchableOpacity
-                                           onPress={() => this.load()}>
-                                           <Image
-                                               style={styles.navBtnImg}
-                                               source={require('./../../../res/icon/add.png')}/>
-                                       </TouchableOpacity>
-                                   </View>}
                 />
 
                 <ScrollableTabView renderTabBar={renderTabBar}
-                                   tabBarBackgroundColor={'#008386'}
-                                   tabBarActiveTextColor={'#fff'}
-                                   tabBarInactiveTextColor={'#a8d5d6'}
+                                   tabBarBackgroundColor={'#fff'}
+                                   tabBarActiveTextColor={'#f14b61'}
+                                   tabBarInactiveTextColor={'#8a8a8a'}
                                    tabBarTextStyle={{marginTop: 20, fontSize: 15}}
-                                   tabBarUnderlineStyle={{backgroundColor: '#fff', height: 2, borderRadius: 1}}>
+                                   tabBarUnderlineStyle={{backgroundColor: '#f14b61', height: 2, borderRadius: 1}}>
                     <ForumListView categoryId="0" tabLabel="全部">内容1</ForumListView>
                     <ForumListView categoryId="1" tabLabel="杂谈">杂谈</ForumListView>
                     <ForumListView categoryId="5" tabLabel="约">约</ForumListView>
@@ -53,14 +52,6 @@ export default class ForumListPage extends Component {
                 </ScrollableTabView>
 
             </View>
-        )
-    }
-
-    getCategories() {
-        ForumService.getCategories().then(
-            (json) => {
-
-            }
         )
     }
 
@@ -74,8 +65,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#f8f8f8'
     },
-    navBox: {
-        backgroundColor: '#008386',
+    navigationBar: {
+        backgroundColor: '#fff',
     },
     navBtnView: {
         flexDirection: 'row'
@@ -87,4 +78,8 @@ const styles = StyleSheet.create({
         marginRight: 5,
         tintColor: '#fff'
     }
+});
+
+const ModalStack = StackNavigator({
+    Profile: {screen: ForumDetailPage},
 });

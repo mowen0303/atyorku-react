@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, StatusBar} from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 import ForumPage from './forum/forum-list.page'
+import ForumDetailPage from './forum/forum-detail.page'
+import {StackNavigator,} from 'react-navigation';
 
-export default class AtYorkU extends Component {
+export default class TabsPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,9 +13,15 @@ export default class AtYorkU extends Component {
         }
     }
 
+    static navigationOptions = {
+        headerStyle:{height:200}
+    };
+
+
     render() {
         return (
             <View style={styles.container}>
+                <StatusBar/>
                 <TabNavigator tabBarStyle={styles.tab} tabBarShadowStyle={{bottom: 0, top: null}}>
                     <TabNavigator.Item
                         title="首页"
@@ -25,7 +33,7 @@ export default class AtYorkU extends Component {
                                                          source={require('../../res/icon/home.png')}/>}
                         badgeText="10"
                         onPress={() => this.setState({selectedTab: 'home'})}>
-                        <View style={styles.page}></View>
+                        {detail}
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         title="课评"
@@ -66,6 +74,12 @@ export default class AtYorkU extends Component {
     }
 }
 
+
+
+const detail = StackNavigator({
+    detail: {screen: ForumDetailPage},
+});
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -89,5 +103,3 @@ const styles = StyleSheet.create({
         color: '#f14b61'
     }
 });
-
-AppRegistry.registerComponent('AtYorkU', () => AtYorkU);
