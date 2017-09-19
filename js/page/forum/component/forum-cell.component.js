@@ -10,13 +10,15 @@ export default class ForumCell extends Component {
     static propTypes = {
         numberOfLines: PropTypes.number,
         isPressAble:PropTypes.bool,
-        activeOpacity:PropTypes.number
+        activeOpacity:PropTypes.number,
+        isImageFullSize:PropTypes.bool
     }
 
     static defaultProps = {
         numberOfLines: 1000,
         isPressAble:true,
-        activeOpacity:0.8
+        activeOpacity:0.8,
+        isImageFullSize:false,
     }
 
     pressForum(){
@@ -34,7 +36,7 @@ export default class ForumCell extends Component {
                             <ImageLoad
                                 style={{height: 40, width: 40, borderRadius:20, overflow:'hidden'}}
                                 source={{uri: CommonService.host + this.props.data.img}}
-                                placeholderSource={require('../../../../res/images/placeHolder.png')}
+                                placeholderSource={require('../../../../res/images/transparence.png')}
                                 isShowActivity={false}
                                 borderRadius = {20}
                             />
@@ -91,11 +93,17 @@ export default class ForumCell extends Component {
 
     elementForImg1() {
         if (this.props.data.img1 !== "") {
-            let w = Dimensions.get('window').width-20
+            let width = Dimensions.get('window').width-20;
+            let height = 0;
+            if(this.props.isImageFullSize == true){
+                height = width/(this.props.data.img1Width/this.props.data.img1Height)
+            }else{
+                height = width/(16/7);
+            }
             return (
                 <View style={{flex:1}}>
-                    <ImageLoad style={{flex:1, height:150,width:w, marginBottom:15}}
-                               placeholderSource={require('../../../../res/images/placeHolder.png')}
+                    <ImageLoad style={{flex:1, height:height,width:width, marginBottom:15}}
+                               placeholderSource={require('../../../../res/images/transparence.png')}
                                loadingStyle={{size: 'small', color: '#ccc'}}
                                source={{uri: CommonService.host + this.props.data.img1}}/>
                 </View>

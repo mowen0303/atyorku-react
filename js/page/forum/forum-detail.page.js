@@ -35,7 +35,7 @@ export default class ForumDetailPage extends Component {
                 <ListView
                     dataSource={this.state.listViewDataSource}
                     renderRow = {(data)=><Text data={data}>{data.content_comment}</Text>}
-                    renderHeader = {()=><ForumCell data={this.props.navigation.state.params.data} activeOpacity={1} isPressAble={false}/>}
+                    renderHeader = {()=><ForumCell data={this.props.navigation.state.params.data} activeOpacity={1} isImageFullSize={true} isPressAble={false}/>}
                 />
             </View>
         )

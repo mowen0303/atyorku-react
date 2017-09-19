@@ -20,7 +20,6 @@ export default class ForumListView extends Component {
         super(props);
         this.state = {
             result: '',
-            page: 1,
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             isLoading: false,
             isLoadingMore: false
@@ -58,9 +57,9 @@ export default class ForumListView extends Component {
             return false;
         }
         this.setState({
-            page: this.page + 1,
             isLoadingMore: true
         })
+        this.page++;
 
 
         ForumService.getForums(this.props.categoryId, this.page)
