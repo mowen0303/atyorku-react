@@ -5,7 +5,7 @@ import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view
 import ForumListView from './component/forum-list-view.component';
 
 const renderTabBar = props => (
-    <DefaultTabBar {...props} style={{borderBottomWidth: 1, borderBottomColor: '#f4f4f4', height: 35, borderTopWidth:0}}/>);
+    <DefaultTabBar {...props} style={{borderBottomWidth: 1, borderBottomColor: '#f4f4f4', height: 40, borderTopWidth:0}}/>);
 
 export default class ForumListPage extends Component {
 
@@ -30,6 +30,7 @@ export default class ForumListPage extends Component {
             <View style={styles.container}>
 
                 <StatusBar barStyle='light-content' />
+
                 <ScrollableTabView renderTabBar={renderTabBar}
                                    tabBarBackgroundColor={'#fff'}
                                    tabBarActiveTextColor={'#0e7477'}

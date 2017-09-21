@@ -22,7 +22,7 @@ export default class ForumCell extends Component {
     }
 
     pressForum(){
-        if(this.props.isPressAble == true){
+        if(this.props.isPressAble === true){
             this.props.navigation.navigate('ForumDetailPage', {data: this.props.data});
         }
     }
@@ -46,20 +46,19 @@ export default class ForumCell extends Component {
                                 <Text style={[styles.font, {fontSize: 15, color: '#333',maxWidth:200}]} numberOfLines={1}>
                                     {this.props.data.alias}
                                 </Text>
-                                {this.elementForGenderIcon()}
                                 {this.elementForAdminIcon()}
                             </View>
-                            <Text style={[styles.font, {color: '#999', fontSize: 13}]}>
+                            <Text style={[styles.font, {color: '#999', fontSize: 12}]}>
                                 {CommonService.pipeOfUserInfo(this.props.data.major, '专业')}
                                 - {CommonService.pipeOfUserInfo(this.props.data.enroll_year, '年级')}
                                 - {CommonService.pipeOfUserInfo(this.props.data.degree, '学历')}
                             </Text>
                         </View>
                     </View>
-                    <Text style={[styles.font, {fontSize: 18, marginTop: 15, marginBottom: 15, color: '#444'}]}
-                          accessible={true} numberOfLines={this.props.numberOfLines}>{this.props.data.content}</Text>
+                    <Text style={[styles.font, {fontSize: 17, marginTop: 15, marginBottom: 10, color: '#444'}]}
+                          selectable={true} numberOfLines={this.props.numberOfLines}>{this.props.data.content}</Text>
                     {this.elementForImg1()}
-                    <View style={{flexDirection:'row',height:30,borderTopWidth:1, borderTopColor:'#f8f8f8', paddingTop:10}}>
+                    <View style={{flexDirection:'row',height:38,borderTopWidth:1, borderTopColor:'#f8f8f8', paddingTop:8, marginTop:10}}>
                         <View style={styles.footerItem}><Image source={require('../../../../res/icon/comments.png')} style={styles.footerIcon}/><Text style={[styles.footerText,styles.font]}>{this.props.data.comment_num}</Text></View>
                         <View style={styles.footerItem}><Image source={require('../../../../res/icon/browse.png')} style={styles.footerIcon}/><Text style={[styles.footerText,styles.font]}>{this.props.data.count_view}</Text></View>
                         <View style={styles.footerItem}><Image source={require('../../../../res/icon/clock.png')} style={styles.footerIcon}/><Text style={[styles.footerText,styles.font]}>{this.props.data.time}</Text></View>
@@ -70,22 +69,8 @@ export default class ForumCell extends Component {
         )
     }
 
-    elementForGenderIcon() {
-        if (this.props.data.gender == '0') {
-            return <Image style={styles.userIcon}
-                          source={require("../../../../res/icon/girl.png")}/>
-        } else if (this.props.data.gender == '1') {
-            return <Image style={styles.userIcon}
-                          source={require("../../../../res/icon/boy.png")}/>
-        } else {
-            return <Image style={styles.userIcon}
-                          source={require("../../../../res/icon/neutral.png")}/>
-        }
-
-    }
-
     elementForAdminIcon() {
-        if (this.props.data.is_admin == '1') {
+        if (this.props.data.is_admin === '1') {
             return <Image style={[styles.userIcon, {marginLeft: 8}]}
                           source={require("../../../../res/icon/admin.png")}/>
         }
@@ -93,9 +78,9 @@ export default class ForumCell extends Component {
 
     elementForImg1() {
         if (this.props.data.img1 !== "") {
-            let width = Dimensions.get('window').width-20;
+            let width = Dimensions.get('window').width-32;
             let height = 0;
-            if(this.props.isImageFullSize == true){
+            if(this.props.isImageFullSize === true){
                 height = width/(this.props.data.img1Width/this.props.data.img1Height)
             }else{
                 height = width/(16/7);
@@ -115,10 +100,11 @@ export default class ForumCell extends Component {
 
 const styles = StyleSheet.create({
     font: {
-        fontFamily: (Platform.OS === 'ios') ? 'PingFangSC-Light' : 'normal'
+        fontFamily: (Platform.OS === 'ios') ? 'PingFang SC' : 'normal'
     },
     cellBox: {
-        padding: 10,
+        padding: 16,
+        paddingBottom:0,
         marginBottom: 10,
         backgroundColor: '#fff',
         // shadowColor: 'gray',

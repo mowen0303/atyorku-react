@@ -5,81 +5,24 @@ import ForumCell from './forum-cell.component'
 import LoadMoreBar from '../../../commonComponent/loadMoreBar';
 
 
-
 export default class ForumListView extends Component {
 
     page = 1;
-    metadata = [];
-
-    static propTypes = {
-        categoryId: PropTypes.string,
-        //title: PropTypes.string,
-    }
+    data = [];
 
     constructor(props) {
         super(props);
         this.state = {
             result: '',
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-            isLoading: false,
+            isRefreshing: false,
             isLoadingMore: false
         }
     }
 
-    componentDidMount() {
-        this.loadDataOfForumsFirstPage();
+    static propTypes = {
+        categoryId: PropTypes.string,
     }
-
-    loadDataOfForumsFirstPage() {
-        this.page = 1;
-        this.setState({
-            isLoading: true,
-        });
-        ForumService.getForums(this.props.categoryId, this.page)
-            .then((json) => {
-                this.metadata = json.result;
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(json.result),
-                    isLoading: false
-                });
-            })
-            .catch(error => {
-                alert(error)
-            })
-
-    }
-
-    loadDataOfForumsNextPage() {
-        if (this.state.isLoading) {
-            return false;
-        }
-        if (this.state.isLoadingMore) {
-            return false;
-        }
-        this.setState({
-            isLoadingMore: true
-        })
-        this.page++;
-
-
-        ForumService.getForums(this.props.categoryId, this.page)
-            .then((json) => {
-                if (json.code == 1) {
-                    for (let i = 0; i < json.result.length; i++) {
-                        this.metadata.push(json.result[i]);
-                    }
-                    this.setState({
-                        dataSource: this.state.dataSource.cloneWithRows(this.metadata),
-                        isLoadingMore: false
-                    });
-                }
-            })
-            .catch(error => {
-                alert(error)
-            })
-
-    }
-
 
     render() {
         return (
@@ -89,15 +32,65 @@ export default class ForumListView extends Component {
                     renderRow={(data) => <ForumCell  {...this.props} data={data} numberOfLines={3}/>}
                     refreshControl={
                         <RefreshControl
-                            refreshing={this.state.isLoading}
-                            onRefresh={() => {this.loadDataOfForumsFirstPage()}}
+                            refreshing={this.state.isRefreshing}
+                            onRefresh={() => {
+                                this.refreshPage()
+                            }}
                         />
                     }
-                    onEndReached={() => this.loadDataOfForumsNextPage()}
+                    onEndReached={() => this.loadNextPage()}
                     onEndReachedThreshold={30}
                     renderFooter={() => <LoadMoreBar isLoadingMore={this.state.isLoadingMore}/>}
                 />
             </View>
         )
+    }
+
+    componentDidMount() {
+        this.refreshPage();
+    }
+
+
+    async refreshPage() {
+        this.page = 1;
+        await this.setState({isRefreshing: true});
+
+        ForumService.getForums(this.props.categoryId, this.page)
+            .then(async (json) => {
+                this.data = json.result;
+                await this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(json.result),
+                    isRefreshing: false
+                });
+            })
+            .catch(error => {
+                alert(error)
+            })
+    }
+
+    async loadNextPage() {
+        if (this.state.isRefreshing || this.state.isLoadingMore) {
+            return false;
+        }
+
+        await this.setState({isLoadingMore: true})
+
+        ForumService.getForums(this.props.categoryId, this.page)
+            .then(async (json) => {
+                if (json.code === 1) {
+                    this.page++;
+                    for (let i = 0; i < json.result.length; i++) {
+                        this.data.push(json.result[i]);
+                    }
+                    await this.setState({
+                        dataSource: this.state.dataSource.cloneWithRows(this.data),
+                        isLoadingMore: false
+                    });
+                }
+            })
+            .catch(error => {
+                alert(error)
+            })
+
     }
 }

@@ -55,7 +55,12 @@ const TabsNavigator = TabNavigator({
         }
     },
 
-}, {tabBarComponent: TabBarBottom, tabBarPosition: 'bottom',lazy: true, tabBarOptions:{activeTintColor:'#f14b61',style:{backgroundColor:'#fff',borderTopWidth:0}}});
+}, {
+    tabBarComponent: TabBarBottom,
+    tabBarPosition: 'bottom',
+    lazy: true,
+    tabBarOptions: {activeTintColor: '#f14b61', style: {backgroundColor: '#fff', borderTopWidth: 0}}
+});
 
 //所有的页面都要在这里进行注册
 const SimpleApp = StackNavigator({

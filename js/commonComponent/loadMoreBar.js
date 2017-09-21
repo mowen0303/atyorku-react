@@ -1,27 +1,25 @@
 import React, {Component, PropTypes} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 
 export default class LoadMoreBar extends Component {
 
     static propTypes = {
-        title: PropTypes.string,
         isLoadingMore:PropTypes.bool
     }
 
     static defaultProps = {
-        title:'加载中...',
-        isLoadingMore:false
+        isLoadingMore:false,
     }
 
     render() {
-        if(this.props.isLoadingMore == true){
+        if(this.props.isLoadingMore === true){
             return (
                 <View style={styles.container}>
-                    <Text style={styles.text}>{this.props.title}</Text>
+                    <ActivityIndicator/>
                 </View>
             )
         }else{
-            return false;
+            return false
         }
     }
 
@@ -29,12 +27,13 @@ export default class LoadMoreBar extends Component {
 
 const styles = StyleSheet.create({
     container:{
-        height:50,
-        justifyContent:'center'
+        height:100,
+        justifyContent:'center',
+        flexDirection:'row',
     },
     text:{
-        textAlign:'center',
-        color:'#999'
-
+        alignItems:'center',
+        color:'#ccc',
+        marginTop:20
     }
 });

@@ -1,59 +1,78 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, ListView,StatusBar} from 'react-native';
+import {View, StyleSheet, ListView, StatusBar, Text} from 'react-native';
 import ForumCell from './component/forum-cell.component'
 import ForumService from '../../service/forum.service';
+import CommentCell from './component/comment-cell.component'
+import LoadMoreBar from '../../commonComponent/loadMoreBar';
 
 
 export default class ForumDetailPage extends Component {
 
-    page = 1;
-    metadata = [];
-
+    page = 1
+    data = []
 
     constructor(props) {
         super(props);
         this.state = {
             listViewDataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-            loadingMore: false
+            isLoadingMore: false,
+            onEndReachedThreshold: 10
         }
     }
 
-
     static navigationOptions = {
-        title:'帖子详情',
-        headerStyle:{backgroundColor:'#0e7477'},
-        headerTintColor:'#fff',
-        statusBar:'light-content'
+        title: '帖子详情',
+        headerStyle: {backgroundColor: '#0e7477'},
+        headerTintColor: '#fff',
+        statusBar: 'light-content'
     }
-
 
     render() {
 
         return (
             <View style={styles.container}>
-                <StatusBar barStyle='light-content' />
+                <StatusBar barStyle='light-content'/>
                 <ListView
                     dataSource={this.state.listViewDataSource}
-                    renderRow = {(data)=><Text data={data}>{data.content_comment}</Text>}
-                    renderHeader = {()=><ForumCell data={this.props.navigation.state.params.data} activeOpacity={1} isImageFullSize={true} isPressAble={false}/>}
+                    renderRow={(data) => <CommentCell data={data}/>}
+                    renderHeader={() => <ForumCell data={this.props.navigation.state.params.data} activeOpacity={1}
+                                                   isImageFullSize={true} isPressAble={false}/>}
+                    renderFooter={() => <LoadMoreBar isLoadingMore={this.state.isLoadingMore}/>}
+                    onEndReached={() => this.getComments()}
+                    onEndReachedThreshold={this.state.onEndReachedThreshold}
                 />
             </View>
         )
     }
 
     componentDidMount() {
-        this.getComments()
+        this.getComments();
     }
 
-    getComments() {
-        ForumService.getComments(2045, this.page)
-            .then((json) => {
-                if (json.code == 1) {
-                    this.metadata = json.secondResult;
-                    this.setState({
-                        listViewDataSource: this.state.listViewDataSource.cloneWithRows(this.metadata)
-                    });
+    async getComments() {
+
+        if (this.state.isLoadingMore === true) {
+            return false;
+        }
+
+        await this.setState({isLoadingMore: true});
+
+        ForumService.getComments(this.props.navigation.state.params.data.id, this.page)
+            .then(async (json) => {
+
+                if (json.code === 1) {
+                    this.page++;
+                    for (let i = 0; i < json.secondResult.length; i++) {
+                        this.data.push(json.secondResult[i]);
+                    }
+                    await this.setState({listViewDataSource: this.state.listViewDataSource.cloneWithRows(this.data)});
+                    if (this.page > json.thirdResult.totalPage) {
+                        await this.setState({onEndReachedThreshold: -10000})
+                    }
+                } else {
+                    await this.setState({onEndReachedThreshold: -10000})
                 }
+                await this.setState({isLoadingMore: false})
             })
             .catch((error) => alert(error));
     }
