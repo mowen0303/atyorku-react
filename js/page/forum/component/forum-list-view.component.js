@@ -57,11 +57,14 @@ export default class ForumListView extends Component {
 
         ForumService.getForums(this.props.categoryId, this.page)
             .then(async (json) => {
-                this.data = json.result;
-                await this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(json.result),
-                    isRefreshing: false
-                });
+                if(json.code===1){
+                    this.page++;
+                    this.data = json.result;
+                    await this.setState({
+                        dataSource: this.state.dataSource.cloneWithRows(json.result),
+                        isRefreshing: false
+                    });
+                }
             })
             .catch(error => {
                 alert(error)

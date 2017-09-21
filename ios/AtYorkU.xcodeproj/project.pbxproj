@@ -1127,7 +1127,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.AtYorkU2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.AtYorkU;
 				PRODUCT_NAME = AtYorkU;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1146,7 +1146,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.AtYorkU2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.AtYorkU;
 				PRODUCT_NAME = AtYorkU;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
