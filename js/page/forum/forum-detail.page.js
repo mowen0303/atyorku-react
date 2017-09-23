@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, ListView, StatusBar, Text} from 'react-native';
 import ForumCell from './component/forum-cell.component'
-import ForumService from '../../service/forum.service';
+import ForumService from './service/forum.service';
 import CommentCell from './component/comment-cell.component'
 import LoadMoreBar from '../../commonComponent/loadMoreBar';
 
@@ -47,6 +47,7 @@ export default class ForumDetailPage extends Component {
 
     componentDidMount() {
         this.getComments();
+        ForumService.addOnceView(this.props.navigation.state.params.data.id);
     }
 
     async getComments() {

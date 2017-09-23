@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, StyleSheet,StatusBar} from 'react-native';
-import ForumService from '../../service/forum.service';
+import ForumService from './service/forum.service';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import ForumListView from './component/forum-list-view.component';
 

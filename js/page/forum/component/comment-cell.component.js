@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Image, Platform, Clipboard} from 'react-native';
 import ImageLoad from 'react-native-image-placeholder';
 import CommonService from '../../../service/common.service';
+import globalStyles from '../../../style/style';
 
 export default class CommentCell extends Component {
 
@@ -21,23 +22,23 @@ export default class CommentCell extends Component {
                         </TouchableOpacity>
                         <View style={{flex:1}}>
                             <View style={{flexDirection: 'row'}}>
-                                <Text style={[styles.font, {fontSize: 15, color: '#333', maxWidth: 200}]} numberOfLines={1}>
+                                <Text style={[globalStyles.font, {fontSize: 15, color: '#333', maxWidth: 200}]} numberOfLines={1}>
                                     {this.props.data.alias}
                                 </Text>
                                 {this.elementForAdminIcon()}
                                 <View style={{flexDirection:'row',justifyContent:'flex-end',position:'absolute',right:0,width:120}}>
-                                    <Text style={[styles.remarkText, styles.font]}>{this.props.data.time}</Text>
+                                    <Text style={[styles.remarkText, globalStyles.font]}>{this.props.data.time}</Text>
                                     <TouchableOpacity><Image source={require('../../../../res/icon/more.png')} style={[styles.remarkIcon,{marginRight:0}]}/></TouchableOpacity>
                                 </View>
                             </View>
-                            <Text style={[styles.font, {color: '#999', fontSize: 12}]}>
+                            <Text style={[globalStyles.font, {color: '#999', fontSize: 12}]}>
                                 {CommonService.pipeOfUserInfo(this.props.data.major, '专业')}
                                 - {CommonService.pipeOfUserInfo(this.props.data.enroll_year, '年级')}
                                 - {CommonService.pipeOfUserInfo(this.props.data.degree, '学历')}
                             </Text>
                         </View>
                     </View>
-                    <Text style={[styles.font, styles.textStyle, {fontSize: 16, marginTop: 5, marginLeft:40, marginBottom: 5, color: '#444'}]}
+                    <Text style={[globalStyles.font, styles.textStyle, {fontSize: 16, marginTop: 5, marginLeft:40, marginBottom: 5, color: '#444'}]}
                           selectable={true} numberOfLines={this.props.numberOfLines}>{this.props.data.content_comment}</Text>
                 </View>
         )
@@ -53,9 +54,6 @@ export default class CommentCell extends Component {
 
 
 const styles = StyleSheet.create({
-    font: {
-        fontFamily: (Platform.OS === 'ios') ? 'PingFang SC' : 'normal'
-    },
     cellBox: {
         padding: 10,
         marginBottom: 1,
