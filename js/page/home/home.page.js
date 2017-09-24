@@ -8,7 +8,7 @@ export default class HomePage extends Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            headerRight: <Button title={"test"} onPress={() => navigation.state.params.login()} />
+            headerRight: <Button title={"登录"} color="#000" onPress={() => navigation.state.params.login()} />
         }
     }
 
@@ -17,7 +17,7 @@ export default class HomePage extends Component {
     }
 
     login = ()=>{
-        this.props.navigation.navigate('ForumDetailPage', {name: 'Lucy'})
+        this.props.navigation.navigate('LoginPage')
         // console.log(this.props.navigation);
         //alert(1)
         //console.log(this.props);
@@ -28,7 +28,7 @@ export default class HomePage extends Component {
 
         return (
             <View style={styles.container}>
-                <Button title={"test"} onPress={() => {this.props.navigation.navigate('LoginPage', {data: this.props.data});}}/>
+
             </View>
         );
     }

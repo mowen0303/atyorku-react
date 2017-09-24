@@ -4,9 +4,9 @@ import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 export default class LoginPage extends Component {
     constructor(props) {
         super(props);
-
     }
     static navigationOptions = {
+        //headerStyle:{backgroundColor:'#fff',shadowColor:'transparent'}
         header:null
     }
 
@@ -19,7 +19,7 @@ export default class LoginPage extends Component {
         return (
             <View style={styles.container}>
                 <TouchableOpacity onPress={this.goBack}>
-                    <Image source={require('../../../res/icon/back.png')} />
+                    <Image style={styles.btn} source={require('../../../res/icon/back.png')} />
                 </TouchableOpacity>
             </View>
         );
@@ -35,5 +35,8 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         backgroundColor:'#0e7477'
+    },
+    btn:{
+        tintColor:"#000"
     }
 })

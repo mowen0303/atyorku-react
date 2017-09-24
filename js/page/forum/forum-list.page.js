@@ -20,8 +20,7 @@ export default class ForumListPage extends Component {
     static navigationOptions = {
         title:'同学圈',
         headerStyle:{backgroundColor:'#0e7477'},
-        headerTintColor:'#fff',
-        statusBar:'light-content'
+        headerTintColor:'#fff'
     }
 
     render() {
@@ -29,7 +28,7 @@ export default class ForumListPage extends Component {
 
             <View style={styles.container}>
 
-                <StatusBar barStyle='light-content' />
+                <StatusBar backgroundColor="#0e7477" barStyle='light-content' />
 
                 <ScrollableTabView renderTabBar={renderTabBar}
                                    tabBarBackgroundColor={'#fff'}
