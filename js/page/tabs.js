@@ -3,11 +3,13 @@ import {AppRegistry, Image, StyleSheet} from 'react-native';
 import {StackNavigator, TabNavigator, TabBarBottom} from "react-navigation";
 import ForumPage from './forum/forum-list.page'
 import ForumDetailPage from './forum/forum-detail.page'
+import HomePage from "./home/home.page";
+import LoginPage from './login/login.page';
 
 
 const TabsNavigator = TabNavigator({
     Home: {
-        screen: ForumPage,
+        screen: HomePage,
         navigationOptions: {
             tabBarLabel: '首页',
             tabBarIcon: ({tintColor}) => (
@@ -66,6 +68,7 @@ const TabsNavigator = TabNavigator({
 const SimpleApp = StackNavigator({
     Tabs: {screen: TabsNavigator},
     ForumDetailPage: {screen: ForumDetailPage},
+    LoginPage: {screen: LoginPage}
 })
 
 const styles = StyleSheet.create({
@@ -74,6 +77,7 @@ const styles = StyleSheet.create({
         height: 22,
     },
 });
+
 
 
 AppRegistry.registerComponent('AtYorkU', () => SimpleApp);
