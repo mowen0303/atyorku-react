@@ -1,14 +1,14 @@
-import React from 'react';
-import {AppRegistry, Image, StyleSheet} from 'react-native';
-import {StackNavigator, TabNavigator, TabBarBottom,NavigationActions} from "react-navigation";
+import React, {Component} from 'react';
+import {AppRegistry, Image, StyleSheet, StatusBar, View} from 'react-native';
+import {StackNavigator, TabNavigator, TabBarBottom} from "react-navigation";
 import ForumPage from './forum/forum-list.page'
 import ForumDetailPage from './forum/forum-detail.page'
 import HomePage from "./home/home.page";
-import LoginPage from './login/login.page';
+import LoginPage from './user/login.page';
 import MePage from "./user/me.page";
 
 
-const TabsNavigator = TabNavigator({
+const tabs = TabNavigator({
     Home: {
         screen: HomePage,
         navigationOptions: {
@@ -58,7 +58,9 @@ const TabsNavigator = TabNavigator({
                     style={[styles.icon, {tintColor: tintColor}]}
                 />
             ),
-            tabBarOnPress:() => {alert(1111)}
+            tabBarOnPress: () => {
+                alert(1111)
+            }
         },
     },
 
@@ -73,11 +75,15 @@ const TabsNavigator = TabNavigator({
 });
 
 //所有的页面都要在这里进行注册
-const SimpleApp = StackNavigator({
-    Tabs: {screen: TabsNavigator},
+const TabsNav = StackNavigator({
+    Tabs: {screen: tabs},
     ForumDetailPage: {screen: ForumDetailPage},
     LoginPage: {screen: LoginPage}
-},{onNavigationStateChange:()=>{alert(1)}})
+}, {
+    onNavigationStateChange: () => {
+        alert(1)
+    }
+})
 
 const styles = StyleSheet.create({
     icon: {
@@ -86,8 +92,24 @@ const styles = StyleSheet.create({
     },
 });
 
-export default () => <SimpleApp />;
+//trigger custom functions each time for clicking tab button
+class App extends Component {
+    render() {
+        return (
+            <TabsNav onNavigationStateChange={(prev, current) => {
+                let index = current.routes[0].index;
+                console.log(index);
+                if (index === 0 || index === 3) {
+                    StatusBar.setBarStyle('dark-content', false);
+                } else {
+                    StatusBar.setBarStyle('light-content', false);
+                }
+            }}/>
+
+        )
+    }
+}
 
 
 // AppRegistry.registerComponent('AtYorkU', () => SimpleApp);
-AppRegistry.registerComponent('AtYorkU', () => SimpleApp);
+AppRegistry.registerComponent('AtYorkU', () => App);

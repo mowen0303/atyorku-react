@@ -23,8 +23,10 @@ export default class GenderIcon extends Component {
             return <Image style={[styles.userIcon,this.props.genderStyle]} source={require("../../res/icon/girl.png")}/>
         } else if (this.props.gender === '1') {
             return <Image style={[styles.userIcon,this.props.genderStyle]} source={require("../../res/icon/boy.png")}/>
-        } else {
+        } else if (this.props.gender === '2'){
             return <Image style={[styles.userIcon,this.props.genderStyle]} source={require("../../res/icon/neutral.png")}/>
+        }else{
+            return false;
         }
 
     }

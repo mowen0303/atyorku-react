@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Button, Alert} from 'react-native';
+import {View, StyleSheet, Button, StatusBar} from 'react-native';
 import {StackNavigator} from "react-navigation";
-import LoginPage from '../login/login.page'
+import LoginPage from '../user/login.page'
 
 export default class HomePage extends Component {
 
@@ -28,7 +28,7 @@ export default class HomePage extends Component {
 
         return (
             <View style={styles.container}>
-
+                <StatusBar backgroundColor="#0e7477"/>
             </View>
         );
     }
