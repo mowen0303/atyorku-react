@@ -23,6 +23,7 @@ export default class ForumCell extends Component {
     }
 
     pressForum(){
+        // this.props.navigation.navigate('LoginPage')
         if(this.props.isPressAble === true){
             this.props.navigation.navigate('ForumDetailPage', {data: this.props.data});
         }

@@ -30,7 +30,6 @@ export default class ForumDetailPage extends Component {
 
         return (
             <View style={styles.container}>
-                <StatusBar backgroundColor="#0e7477" barStyle='light-content' />
                 <ListView
                     dataSource={this.state.listViewDataSource}
                     renderRow={(data) => <CommentCell data={data}/>}

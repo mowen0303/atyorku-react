@@ -98,14 +98,12 @@ class App extends Component {
         return (
             <TabsNav onNavigationStateChange={(prev, current) => {
                 let index = current.routes[0].index;
-                console.log(index);
-                if (index === 0 || index === 3) {
+                if ((index === 0 || index === 3) && current.index===0) {
                     StatusBar.setBarStyle('dark-content', false);
-                } else {
+                } else if (current.index===0) {
                     StatusBar.setBarStyle('light-content', false);
                 }
             }}/>
-
         )
     }
 }

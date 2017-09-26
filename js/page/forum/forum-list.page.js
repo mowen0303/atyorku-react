@@ -27,9 +27,6 @@ export default class ForumListPage extends Component {
         return (
 
             <View style={styles.container}>
-
-                <StatusBar backgroundColor="#0e7477" barStyle='light-content' />
-
                 <ScrollableTabView renderTabBar={renderTabBar}
                                    tabBarBackgroundColor={'#fff'}
                                    tabBarActiveTextColor={'#0e7477'}

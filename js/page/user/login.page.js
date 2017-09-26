@@ -1,55 +1,105 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, ScrollView, Text, Image, TextInput, TouchableOpacity} from 'react-native';
+import {
+    View,
+    StyleSheet,
+    StatusBar,
+    ScrollView,
+    Image,
+    TextInput,
+    Alert,
+    TouchableOpacity,
+    AsyncStorage
+} from 'react-native';
 import globalStyles from '../../style/style';
+import {Button, Text} from 'native-base';
+import UserService from "./service/user.service";
+import CommonService from "../../service/common.service";
 
 export default class LoginPage extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
             username: "",
-            password: ""
+            password: "",
+            title: "登录",
         }
     }
 
     static navigationOptions = {
-        title: '注册',
-        headerStyle: {backgroundColor: "#fff"},
-        headerTintColor: "#484848"
+        header: null
     }
 
     componentDidMount() {
-        // alert(this.props)
+        console.log(this.props.navigation.state.params)
     }
 
     render() {
 
         return (
-            <ScrollView style={styles.container}>
-                <View style={styles.inputBox}>
-                    <Image style={styles.icon} source={require('../../../res/icon/user.png')}/>
-                    <TextInput
-                        style={[styles.input, globalStyles.fontLight]}
-                        placeholder={"用户名"}
-                        value={this.state.username}
-                        clearButtonMode={'while-editing'}
-                        onChangeText={(text) => this.setState({username: text})}/>
-                </View>
-                <View style={styles.inputBox}>
-                    <Image style={styles.icon} source={require('../../../res/icon/password.png')}/>
-                    <TextInput style={[styles.input, globalStyles.fontLight]}
-                               placeholder={"密码"} secureTextEntry={true}
-                               value={this.state.password}
-                               clearButtonMode={'while-editing'}
-                               onChangeText={(text) => this.setState({password: text})}/>
-                </View>
-                <TouchableOpacity color="#841584" style={styles.button}><Text>登录</Text></TouchableOpacity>
-            </ScrollView>
+            <View style={{flex: 1}}>
+                <ScrollView style={styles.container}>
+                    <TouchableOpacity onPress={this.goBack}><Image style={styles.back}
+                                                                   source={require('../../../res/icon/back2.png')}/></TouchableOpacity>
+                    <Text style={[styles.title, globalStyles.font]}>{this.state.title}</Text>
+                    <View style={styles.inputBox}>
+                        <Image style={styles.icon} source={require('../../../res/icon/user.png')}/>
+                        <TextInput
+                            style={[styles.input, globalStyles.fontLight]}
+                            selectionColor={"#484848"}
+                            placeholder={"用户名"}
+                            value={this.state.username}
+                            clearButtonMode={'while-editing'}
+                            onChangeText={(text) => this.setState({username: text})}/>
+                    </View>
+                    <View style={styles.inputBox}>
+                        <Image style={styles.icon} source={require('../../../res/icon/password.png')}/>
+                        <TextInput
+                            style={[styles.input, globalStyles.fontLight]}
+                            selectionColor={"#484848"}
+                            placeholder={"密码"} secureTextEntry={true}
+                            value={this.state.password}
+                            clearButtonMode={'while-editing'}
+                            onChangeText={(text) => this.setState({password: text})}/>
+                    </View>
+                    <Button style={styles.button} rounded info block onPress={this.login}><Text>登 录</Text></Button>
+                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+                        <Button onPress={this.register} style={[styles.button, {width: 100}]} rounded info block><Text>注
+                            册</Text></Button>
+                    </View>
+                </ScrollView>
+            </View>
         );
     }
 
-    // goBack = ()=>{
-    //     this.props.navigation.goBack();
-    // }
+    goBack = () => {
+        this.props.navigation.goBack();
+        StatusBar.setBarStyle('dark-content', false);
+    }
+
+    login = () => {
+        UserService.login(this.state.username, this.state.password)
+            .then((json) => {
+                if (json.code === 1) {
+                    UserService.setUserData(json.result);
+                    this.props.navigation.state.params.parentPage.getUserData();
+                    this.props.navigation.goBack();
+                }
+            })
+            .catch((error) => {
+
+            })
+    }
+
+
+    register = () => {
+        UserService.getUserData().then(
+            (res) => {
+                let a = JSON.parse(res);
+                console.log(typeof a)
+                console.log(a)
+            });
+    }
 
 }
 
@@ -57,31 +107,42 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        padding: 20
+        padding: 20,
+        paddingTop: 0
     },
-    inputBox:{
-        flexDirection:'row',
-        flex:1,
-        marginTop:50
+    back: {
+        width: 26,
+        height: 26,
+        marginTop: 40
     },
-    icon:{
-        width:24,
-        height:24,
-        tintColor:'#ccc',
-        marginTop:6
-    },
-    input: {
+    title: {
+        fontSize: 26,
+        marginBottom: 0,
+        marginTop: 30
+    }
+    ,
+    inputBox: {
+        flexDirection: 'row',
+        flex: 1,
+        marginTop: 30,
         borderBottomWidth: 1,
         borderBottomColor: '#eee',
+    },
+    icon: {
+        width: 24,
+        height: 24,
+        tintColor: '#484848',
+    },
+    input: {
         paddingBottom: 10,
-        color:"#484848",
-        marginLeft:16,
-        flex:1
+        color: "#484848",
+        marginLeft: 14,
+        flex: 1,
+        marginTop: 3
 
     },
-    button:{
-        backgroundColor:'#000',
-        borderWidth:1,
-        color:'#fff'
+    button: {
+        marginTop: 50,
+        backgroundColor: '#484848'
     }
 })

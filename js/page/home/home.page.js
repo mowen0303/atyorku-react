@@ -17,7 +17,7 @@ export default class HomePage extends Component {
     }
 
     login = ()=>{
-        this.props.navigation.navigate('LoginPage')
+        this.props.navigation.navigate('LoginPage',{parentPage:"123"})
         // console.log(this.props.navigation);
         //alert(1)
         //console.log(this.props);
@@ -28,7 +28,7 @@ export default class HomePage extends Component {
 
         return (
             <View style={styles.container}>
-                <StatusBar backgroundColor="#0e7477"/>
+
             </View>
         );
     }
