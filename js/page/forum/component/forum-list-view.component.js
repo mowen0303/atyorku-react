@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {View, ListView, RefreshControl} from 'react-native';
 import ForumService from '../service/forum.service';
 import ForumCell from './forum-cell.component'
-import LoadMoreBar from '../../../commonComponent/loadMoreBar';
+import LoadMoreBar from '../../../commonComponent/loadingMore';
 
 
 export default class ForumListView extends Component {

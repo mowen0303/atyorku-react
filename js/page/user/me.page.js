@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {View, StyleSheet, Text, ScrollView, TouchableOpacity, Image,AsyncStorage} from 'react-native';
 import UserInterface from './interface/user.Interface';
 import UserInfoView from './component/userInfoView';
+import UserService from "./service/user.service";
 
 export default class HomePage extends Component {
 
@@ -24,7 +25,7 @@ export default class HomePage extends Component {
 
     }
 
-    componentDidMount() {
+    componentWillMount() {
         //alert(this.user.id)
     }
 
@@ -34,8 +35,23 @@ export default class HomePage extends Component {
         return (
             <View style={styles.container}>
                 <UserInfoView userData={this.state.userData} parentPage={this} {...this.props}/>
+                <Text onPress={()=>{this.logout()}}>退出</Text>
             </View>
         );
+    }
+
+    logout() {
+        UserService.logout()
+            .then(json=>{
+                if(json.code===1){
+                    UserService.removeUserDataFromLocalStorage();
+                    this.setState({userData:this.userData});
+                }
+                console.log(json);
+            })
+            .catch(error=>{
+
+            })
     }
 
 

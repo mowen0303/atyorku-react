@@ -13,7 +13,7 @@ import {
 import globalStyles from '../../style/style';
 import {Button, Text} from 'native-base';
 import UserService from "./service/user.service";
-import CommonService from "../../service/common.service";
+import {LoadMiddle} from "../../commonComponent/loadingMore";
 
 export default class LoginPage extends Component {
 
@@ -23,6 +23,7 @@ export default class LoginPage extends Component {
             username: "",
             password: "",
             title: "登录",
+            isLoading:false,
         }
     }
 
@@ -62,12 +63,13 @@ export default class LoginPage extends Component {
                             clearButtonMode={'while-editing'}
                             onChangeText={(text) => this.setState({password: text})}/>
                     </View>
-                    <Button style={styles.button} rounded info block onPress={this.login}><Text>登 录</Text></Button>
+                    <Button disabled={this.state.isLoading} style={styles.button} rounded info block onPress={this.login}><Text>登 录</Text></Button>
                     <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
                         <Button onPress={this.register} style={[styles.button, {width: 100}]} rounded info block><Text>注
                             册</Text></Button>
                     </View>
                 </ScrollView>
+                <LoadMiddle isLoadingMore={this.state.isLoading}/>
             </View>
         );
     }
@@ -78,27 +80,42 @@ export default class LoginPage extends Component {
     }
 
     login = () => {
+        if(this.state.username === "" || this.state.password === "" ){
+            Alert.alert("登录错误","请填写用户名或密码");
+            return false;
+        }
+
+        this.setState({isLoading:true})
         UserService.login(this.state.username, this.state.password)
             .then((json) => {
                 if (json.code === 1) {
-                    UserService.setUserData(json.result);
+                    UserService.setUserDataToLocalStorage(json.result);
                     this.props.navigation.state.params.parentPage.getUserData();
                     this.props.navigation.goBack();
+                }else{
+                    Alert.alert("登录错误",json.message);
                 }
+                console.log(json);
+                this.setState({isLoading:false});
             })
             .catch((error) => {
-
+                this.setState({isLoading:false})
             })
     }
 
 
     register = () => {
-        UserService.getUserData().then(
-            (res) => {
-                let a = JSON.parse(res);
-                console.log(typeof a)
-                console.log(a)
-            });
+        // UserService.getUserDataFromLocalStorage().then(
+        //     (res) => {
+        //         let a = JSON.parse(res);
+        //         console.log(typeof a)
+        //         console.log(a)
+        //     });
+
+        UserService.getUserDataFromLocalStorage((data)=>{
+            console.log(typeof data)
+            console.log(data);
+        });
     }
 
 }

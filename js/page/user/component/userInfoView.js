@@ -2,7 +2,7 @@ import React, {Component,PropTypes} from 'react'
 import {View, StyleSheet, Text, ScrollView, TouchableOpacity, Image, AsyncStorage} from 'react-native';
 import LoginPage from '../login.page';
 import globalStyles from '../../../style/style';
-import GenderIcon from '../../../commonComponent/gender-icon.component';
+import GenderIcon from '../../../commonComponent/genderIcon';
 import UserService from '../service/user.service';
 import ImageLoad from 'react-native-image-placeholder';
 import CommonService from '../../../service/common.service';
@@ -19,8 +19,11 @@ export default class UserInfoView extends Component {
     }
 
     render() {
-
         return this.elementOfUser();
+    }
+
+    componentWillMount(){
+        this.getUserData();
     }
 
     elementOfUser(){
@@ -42,7 +45,6 @@ export default class UserInfoView extends Component {
                         <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/grade.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{this.props.userData.enroll_year}</Text></View>
                         <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/degree.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{this.props.userData.degree}</Text></View>
                     </View>
-                    <Text onPress={()=>{UserService.login('jerry','mowen0303').then((json)=>{console.log(json)})}}>Test</Text>
                 </ScrollView>
             </View>
         )
@@ -83,12 +85,11 @@ export default class UserInfoView extends Component {
         this.props.navigation.navigate('LoginPage',{parentPage:this})
     }
 
-    async getUserData(){
-
-        UserService.getUserData().then(
-            (res) => {
-                this.props.parentPage.setState({userData:JSON.parse(res)});
-            });
+    getUserData(){
+        console.log("getUserData")
+        UserService.getUserDataFromLocalStorage((userData)=>{
+            this.props.parentPage.setState({userData:userData});
+        })
     }
 }
 

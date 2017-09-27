@@ -3,7 +3,7 @@ import {View, StyleSheet, ListView, StatusBar, Text} from 'react-native';
 import ForumCell from './component/forum-cell.component'
 import ForumService from './service/forum.service';
 import CommentCell from './component/comment-cell.component'
-import LoadMoreBar from '../../commonComponent/loadMoreBar';
+import LoadMoreBar from '../../commonComponent/loadingMore';
 
 
 export default class ForumDetailPage extends Component {
