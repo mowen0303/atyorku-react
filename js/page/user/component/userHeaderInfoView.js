@@ -1,5 +1,5 @@
 import React, {Component,PropTypes} from 'react'
-import {View, StyleSheet, Text, ScrollView, TouchableOpacity, Image, AsyncStorage} from 'react-native';
+import {View, StyleSheet, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
 import LoginPage from '../login.page';
 import globalStyles from '../../../style/style';
 import GenderIcon from '../../../commonComponent/genderIcon';
@@ -7,7 +7,7 @@ import UserService from '../service/user.service';
 import ImageLoad from 'react-native-image-placeholder';
 import CommonService from '../../../service/common.service';
 
-export default class UserInfoView extends Component {
+export default class UserHeaderInfoView extends Component {
 
     constructor(props){
         super(props);
@@ -29,23 +29,21 @@ export default class UserInfoView extends Component {
     elementOfUser(){
         return (
             <View style={{flex:1}}>
-                <ScrollView style={{flex: 1}}>
-                    <View style={styles.profileBox}>
-                        <View style={{flex: 1, marginRight: 10}}>
-                            {this.elementOfAlias()}
-                            <Text numberOfLines={2} style={[styles.description, globalStyles.fontLight]}>{this.props.userData.description}</Text>
-                        </View>
-                        <View>
-                            {this.elementOfAvatar()}
-                            <GenderIcon genderStyle={{position: 'absolute', top: 59, right: 20}} gender={this.props.userData.gender}/>
-                        </View>
+                <View style={styles.profileBox}>
+                    <View style={{flex: 1, marginRight: 10}}>
+                        {this.elementOfAlias()}
+                        <Text numberOfLines={2} style={[styles.description, globalStyles.fontLight]}>{this.props.userData.description}</Text>
                     </View>
-                    <View style={styles.labelContainer}>
-                        <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/faculty.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{this.props.userData.major}</Text></View>
-                        <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/grade.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{this.props.userData.enroll_year}</Text></View>
-                        <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/degree.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{this.props.userData.degree}</Text></View>
+                    <View>
+                        {this.elementOfAvatar()}
+                        <GenderIcon genderStyle={{position: 'absolute', top: 59, right: 20}} gender={this.props.userData.gender}/>
                     </View>
-                </ScrollView>
+                </View>
+                <View style={styles.labelContainer}>
+                    <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/faculty.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{this.props.userData.major}</Text></View>
+                    <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/grade.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{this.props.userData.enroll_year}</Text></View>
+                    <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/degree.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{this.props.userData.degree}</Text></View>
+                </View>
             </View>
         )
     }

@@ -1,17 +1,18 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Text, ScrollView, TouchableOpacity, Image,AsyncStorage} from 'react-native';
+import {View, StyleSheet, Text, ScrollView, TouchableOpacity, Image, AsyncStorage} from 'react-native';
 import UserInterface from './interface/user.Interface';
-import UserInfoView from './component/userInfoView';
+import UserInfoView from './component/userHeaderInfoView';
 import UserService from "./service/user.service";
+import UserButtonListView from "./component/userButtonListView";
 
-export default class HomePage extends Component {
+export default class MePage extends Component {
 
     userData = new UserInterface();
 
     constructor(props) {
         super(props);
         this.state = {
-            userData:new UserInterface(),
+            userData: new UserInterface(),
         }
     }
 
@@ -33,23 +34,26 @@ export default class HomePage extends Component {
     render() {
 
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <UserInfoView userData={this.state.userData} parentPage={this} {...this.props}/>
-                <Text onPress={()=>{this.logout()}}>退出</Text>
-            </View>
+                <UserButtonListView userData={this.state.userData} parentPage={this} {...this.props}/>
+                <Text onPress={() => {
+                    this.logout()
+                }}>退出</Text>
+            </ScrollView>
         );
     }
 
     logout() {
         UserService.logout()
-            .then(json=>{
-                if(json.code===1){
+            .then(json => {
+                if (json.code === 1) {
                     UserService.removeUserDataFromLocalStorage();
-                    this.setState({userData:this.userData});
+                    this.setState({userData: this.userData});
                 }
                 console.log(json);
             })
-            .catch(error=>{
+            .catch(error => {
 
             })
     }
@@ -68,20 +72,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
-    loginButton:{
-        borderRadius:20,
-        width:140,
-        marginTop:24,
-        height:40,
-        overflow:'hidden',
-        backgroundColor:'#484848'
+    loginButton: {
+        borderRadius: 20,
+        width: 140,
+        marginTop: 24,
+        height: 40,
+        overflow: 'hidden',
+        backgroundColor: '#484848'
     },
-    loginText:{
-        lineHeight:34,
-        fontSize:18,
-        textAlign:'center',
-        fontWeight:'normal',
-        color:'#fff'
+    loginText: {
+        lineHeight: 34,
+        fontSize: 18,
+        textAlign: 'center',
+        fontWeight: 'normal',
+        color: '#fff'
     }
     ,
     alias: {
@@ -92,41 +96,41 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 14,
-        color:"#484848",
-        marginRight:10
+        color: "#484848",
+        marginRight: 10
     },
     avatar: {
         width: 60,
         height: 60,
         borderRadius: 30,
-        marginTop:10
+        marginTop: 10
     },
-    labelContainer:{
-        marginTop:30,
-        flexDirection:'row',
-        justifyContent:'space-between',
-        borderBottomWidth:1,
-        borderBottomColor:"#eee",
-        paddingBottom:10,
-        borderTopWidth:1,
-        borderTopColor:"#eee",
-        paddingTop:10,
-        paddingLeft:10,
-        paddingRight:10
+    labelContainer: {
+        marginTop: 30,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottomWidth: 1,
+        borderBottomColor: "#eee",
+        paddingBottom: 10,
+        borderTopWidth: 1,
+        borderTopColor: "#eee",
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingRight: 10
     }
     ,
-    labelBox:{
-        flexDirection:'row',
+    labelBox: {
+        flexDirection: 'row',
     },
-    labelIcon:{
-        width:20,
-        height:20,
-        tintColor:'#484848'
+    labelIcon: {
+        width: 20,
+        height: 20,
+        tintColor: '#484848'
     },
-    labelText:{
-        marginTop:2,
-        marginLeft:8,
-        color:'#484848'
+    labelText: {
+        marginTop: 2,
+        marginLeft: 8,
+        color: '#484848'
     }
 
 })
