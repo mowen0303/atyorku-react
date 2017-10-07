@@ -1,5 +1,5 @@
-import React, {Component,PropTypes} from 'react'
-import {View, StyleSheet, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
+import React, {Component,PropTypes} from 'react';
+import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import LoginPage from '../login.page';
 import globalStyles from '../../../style/style';
 import GenderIcon from '../../../commonComponent/genderIcon';
@@ -15,7 +15,7 @@ export default class UserHeaderInfoView extends Component {
 
     static propTypes = {
         userData: PropTypes.object,
-        parentPage:PropTypes.object,
+        pageObject:PropTypes.object,
     }
 
     render() {
@@ -41,7 +41,7 @@ export default class UserHeaderInfoView extends Component {
                 </View>
                 <View style={styles.labelContainer}>
                     <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/faculty.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{this.props.userData.major}</Text></View>
-                    <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/grade.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{this.props.userData.enroll_year}</Text></View>
+                    <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/grade.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{CommonService.pipeOfUserEnrolmentYear(this.props.userData.enroll_year)}</Text></View>
                     <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/degree.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{this.props.userData.degree}</Text></View>
                 </View>
             </View>
@@ -86,7 +86,7 @@ export default class UserHeaderInfoView extends Component {
     getUserData(){
         console.log("getUserData")
         UserService.getUserDataFromLocalStorage((userData)=>{
-            this.props.parentPage.setState({userData:userData});
+            this.props.pageObject.setState({userData:userData});
         })
     }
 }
@@ -135,10 +135,9 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         borderBottomWidth:1,
-        borderBottomColor:"#eee",
         paddingBottom:10,
         borderTopWidth:1,
-        borderTopColor:"#eee",
+        borderColor:"#ebebeb",
         paddingTop:10,
         paddingLeft:10,
         paddingRight:10

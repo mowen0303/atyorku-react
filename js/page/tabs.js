@@ -6,6 +6,10 @@ import ForumDetailPage from './forum/forum-detail.page'
 import HomePage from "./home/home.page";
 import LoginPage from './user/login.page';
 import MePage from "./user/me.page";
+import SettingPage from './user/setting.page';
+import MapPage from './map/map.page';
+import EventPage from './event/event.page';
+import BookPage from './book/book.page';
 
 
 const tabs = TabNavigator({
@@ -78,7 +82,11 @@ const tabs = TabNavigator({
 const TabsNav = StackNavigator({
     Tabs: {screen: tabs},
     ForumDetailPage: {screen: ForumDetailPage},
-    LoginPage: {screen: LoginPage}
+    LoginPage: {screen: LoginPage},
+    SettingPage: {screen: SettingPage},
+    MapPage:{screen:MapPage},
+    BookPage:{screen:BookPage},
+    EventPage:{screen:EventPage},
 }, {
     onNavigationStateChange: () => {
         alert(1)
@@ -98,9 +106,9 @@ class App extends Component {
         return (
             <TabsNav onNavigationStateChange={(prev, current) => {
                 let index = current.routes[0].index;
-                if ((index === 0 || index === 3) && current.index===0) {
+                if ((index === 0 || index === 3) && current.index === 0) {
                     StatusBar.setBarStyle('dark-content', false);
-                } else if (current.index===0) {
+                } else if (current.index === 0) {
                     StatusBar.setBarStyle('light-content', false);
                 }
             }}/>

@@ -23,7 +23,7 @@ export default class LoginPage extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.navigation.state.params)
+        console.log(this.props.navigation.state.params);
     }
 
     render() {
@@ -101,13 +101,6 @@ export default class LoginPage extends Component {
 
 
     register = () => {
-        // UserService.getUserDataFromLocalStorage().then(
-        //     (res) => {
-        //         let a = JSON.parse(res);
-        //         console.log(typeof a)
-        //         console.log(a)
-        //     });
-
         UserService.getUserDataFromLocalStorage((data) => {
             console.log(typeof data)
             console.log(data);

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {View, StyleSheet, Text, ScrollView, TouchableOpacity, Image, AsyncStorage} from 'react-native';
 import UserInterface from './interface/user.Interface';
 import UserInfoView from './component/userHeaderInfoView';
+import globalStyle from '../../style/style';
 import UserService from "./service/user.service";
 import UserButtonListView from "./component/userButtonListView";
 
@@ -21,7 +22,8 @@ export default class MePage extends Component {
         header: null,
     }
 
-    componentDidMount() {
+    componentDidMount(){
+        console.log(UserService.getUserDataFromLocalStorage());
         //this.props.navigation.setParams({login: this.login})
 
     }
@@ -35,28 +37,43 @@ export default class MePage extends Component {
 
         return (
             <ScrollView style={styles.container}>
-                <UserInfoView userData={this.state.userData} parentPage={this} {...this.props}/>
-                <UserButtonListView userData={this.state.userData} parentPage={this} {...this.props}/>
-                <Text onPress={() => {
-                    this.logout()
-                }}>退出</Text>
+                <UserInfoView userData={this.state.userData} pageObject={this} {...this.props}/>
+                <View style={styles.listContainer}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox} onPress={this.navigationToSettingPage}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>消息</Text>
+                        <Image style={styles.icon} source={require('../../../res/icon/message.png')}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>我的发布</Text>
+                        <Image style={styles.icon} source={require('../../../res/icon/myforum.png')}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>收藏</Text>
+                        <Image style={styles.icon} source={require('../../../res/icon/collection.png')}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>点券</Text>
+                        <Image style={styles.icon} source={require('../../../res/icon/credit.png')}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox} onPress={this.navigationToSettingPage}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>个人设置</Text>
+                        <Image style={styles.icon} source={require('../../../res/icon/setting.png')}/>
+                    </TouchableOpacity>
+                </View>
             </ScrollView>
         );
     }
 
-    logout() {
-        UserService.logout()
-            .then(json => {
-                if (json.code === 1) {
-                    UserService.removeUserDataFromLocalStorage();
-                    this.setState({userData: this.userData});
-                }
-                console.log(json);
-            })
-            .catch(error => {
-
-            })
+    checkLogin(){
+        UserService.getUserDataFromLocalStorage()
     }
+
+    navigationToSettingPage = ()=>{
+        this.props.navigation.navigate('SettingPage',{parentPage:this, userData: this.state.userData});
+    }
+
+
+
 
 
 }
@@ -67,58 +84,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 22,
     },
-    profileBox: {
-        marginTop: 38,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+    listContainer:{
+        marginTop:40
     },
-    loginButton: {
-        borderRadius: 20,
-        width: 140,
-        marginTop: 24,
-        height: 40,
-        overflow: 'hidden',
-        backgroundColor: '#484848'
-    },
-    loginText: {
-        lineHeight: 34,
-        fontSize: 18,
-        textAlign: 'center',
-        fontWeight: 'normal',
-        color: '#fff'
-    }
-    ,
-    alias: {
-        color: "#484848",
-        fontSize: 28,
-        fontWeight: 'bold',
-        marginTop: 6
-    },
-    description: {
-        fontSize: 14,
-        color: "#484848",
-        marginRight: 10
-    },
-    avatar: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        marginTop: 10
-    },
-    labelContainer: {
-        marginTop: 30,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        borderBottomColor: "#eee",
-        paddingBottom: 10,
-        borderTopWidth: 1,
-        borderTopColor: "#eee",
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10
-    }
-    ,
     labelBox: {
         flexDirection: 'row',
     },
@@ -130,7 +98,21 @@ const styles = StyleSheet.create({
     labelText: {
         marginTop: 2,
         marginLeft: 8,
-        color: '#484848'
+        color: '#484848',
+        fontSize:16,
+    },
+    listBox:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center',
+        height:66,
+        borderBottomWidth:1,
+        borderColor:'#ebebeb'
+    },
+    icon:{
+        width:22,
+        height:22,
+        tintColor:"#484848"
     }
 
 })
