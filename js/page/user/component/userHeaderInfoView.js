@@ -83,11 +83,13 @@ export default class UserHeaderInfoView extends Component {
         this.props.navigation.navigate('LoginPage',{parentPage:this})
     }
 
-    getUserData(){
-        console.log("getUserData")
-        UserService.getUserDataFromLocalStorage((userData)=>{
-            this.props.pageObject.setState({userData:userData});
-        })
+    async getUserData(){
+        await UserService.getUserDataFromLocalStorage()
+            .then(result=>{
+                if(result!==null){
+                    this.props.pageObject.setState({userData:JSON.parse(result)});
+                }
+            })
     }
 }
 

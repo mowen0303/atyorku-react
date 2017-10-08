@@ -101,10 +101,7 @@ export default class LoginPage extends Component {
 
 
     register = () => {
-        UserService.getUserDataFromLocalStorage((data) => {
-            console.log(typeof data)
-            console.log(data);
-        });
+
     }
 
 }

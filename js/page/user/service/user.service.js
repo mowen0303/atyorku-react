@@ -50,13 +50,8 @@ export default class UserService {
      * get user data
      * @returns {*|Promise}
      */
-    static getUserDataFromLocalStorage(callback) {
-        AsyncStorage.getItem('userData', (error,result) => {
-            if (result !== null) {
-                callback(JSON.parse(result));
-            }
-
-        })
+    static getUserDataFromLocalStorage() {
+        return AsyncStorage.getItem('userData');
     }
 
     /**

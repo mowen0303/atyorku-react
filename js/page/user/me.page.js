@@ -1,10 +1,9 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Text, ScrollView, TouchableOpacity, Image, AsyncStorage} from 'react-native';
+import {View, StyleSheet, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
 import UserInterface from './interface/user.Interface';
 import UserInfoView from './component/userHeaderInfoView';
 import globalStyle from '../../style/style';
-import UserService from "./service/user.service";
-import UserButtonListView from "./component/userButtonListView";
+
 
 export default class MePage extends Component {
 
@@ -23,13 +22,8 @@ export default class MePage extends Component {
     }
 
     componentDidMount(){
-        console.log(UserService.getUserDataFromLocalStorage());
-        //this.props.navigation.setParams({login: this.login})
 
-    }
 
-    componentWillMount() {
-        //alert(this.user.id)
     }
 
 
@@ -64,11 +58,8 @@ export default class MePage extends Component {
         );
     }
 
-    checkLogin(){
-        UserService.getUserDataFromLocalStorage()
-    }
-
     navigationToSettingPage = ()=>{
+        if(this.state.userData.id === ""){return false;}
         this.props.navigation.navigate('SettingPage',{parentPage:this, userData: this.state.userData});
     }
 

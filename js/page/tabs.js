@@ -10,6 +10,7 @@ import SettingPage from './user/setting.page';
 import MapPage from './map/map.page';
 import EventPage from './event/event.page';
 import BookPage from './book/book.page';
+import ProfileModifyPage from './user/profileModify.page';
 
 
 const tabs = TabNavigator({
@@ -87,6 +88,8 @@ const TabsNav = StackNavigator({
     MapPage:{screen:MapPage},
     BookPage:{screen:BookPage},
     EventPage:{screen:EventPage},
+    ProfileModifyPage:{screen:ProfileModifyPage},
+
 }, {
     onNavigationStateChange: () => {
         alert(1)

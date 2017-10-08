@@ -29,7 +29,22 @@ export default class CommonService {
             let date = new Date(value)
             return date.getFullYear()+"级";
         }
+    }
 
+    /**
+     * Gender translator
+     * @param value
+     * @returns {*}
+     */
+    static pipeOfUserGender(value){
+        switch(value){
+            case "0":
+                return "女";
+            case "1":
+                return "男";
+            default:
+                return "不明";
+        }
     }
 
 }
