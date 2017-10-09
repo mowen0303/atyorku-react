@@ -10,8 +10,6 @@ import CommonService from '../../service/common.service';
 
 export default class ProfileModifyPage extends Component {
 
-
-
     constructor(props) {
         super(props);
         this.state = {
@@ -29,7 +27,6 @@ export default class ProfileModifyPage extends Component {
     componentWillMount(){
 
     }
-
 
     render() {
         if(this.props.navigation.state.params.title === "头像"){
@@ -60,7 +57,6 @@ export default class ProfileModifyPage extends Component {
 
             })
     }
-
 }
 
 const styles = StyleSheet.create({

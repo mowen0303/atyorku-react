@@ -3,7 +3,7 @@ import {View, StyleSheet, StatusBar, ScrollView, Image, TextInput, Alert, Toucha
 import globalStyles from '../../style/style';
 import {Button, Text} from 'native-base';
 import UserService from "./service/user.service";
-import {LoadMiddle} from "../../commonComponent/loadingMore";
+import {LoadMiddle} from "../../commonComponent/loadingView";
 
 
 export default class LoginPage extends Component {

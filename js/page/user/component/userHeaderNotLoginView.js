@@ -7,39 +7,39 @@ import UserService from '../service/user.service';
 import ImageLoad from 'react-native-image-placeholder';
 import CommonService from '../../../service/common.service';
 
-export default class UserHeaderInfoView extends Component {
+export default class UserHeaderNotLoginView extends Component {
 
     constructor(props){
         super(props);
     }
 
-    static propTypes = {
-        userData: PropTypes.object
-    }
 
     render() {
-        console.log(this.props.userData);
         return (
             <View style={{flex:1}}>
                 <View style={styles.profileBox}>
                     <View style={{flex: 1, marginRight: 10}}>
-                        <Text style={[styles.alias, globalStyles.font]}>{this.props.userData.alias}</Text>
-                        <Text numberOfLines={2} style={[styles.description, globalStyles.fontLight]}>{this.props.userData.description}</Text>
+                        <TouchableOpacity style={styles.loginButton} onPress={this.login}>
+                            <Text style={[styles.loginText]}>登录</Text>
+                        </TouchableOpacity>
+                        <Text numberOfLines={2} style={[styles.description, globalStyles.fontLight]}/>
                     </View>
                     <View>
-                        <Image style={styles.avatar} source={{uri: CommonService.host + this.props.userData.img}}/>
-                        <GenderIcon genderStyle={{position: 'absolute', top: 59, right: 20}} gender={this.props.userData.gender}/>
+                        <Image style={styles.avatar} source={require('../../../../res/images/head-default.png')}/>
                     </View>
                 </View>
                 <View style={styles.labelContainer}>
-                    <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/faculty.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{this.props.userData.major}</Text></View>
-                    <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/grade.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{CommonService.pipeOfUserEnrolmentYear(this.props.userData.enroll_year)}</Text></View>
-                    <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/degree.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}>{this.props.userData.degree}</Text></View>
+                    <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/faculty.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}/></View>
+                    <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/grade.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}/></View>
+                    <View style={styles.labelBox}><Image style={styles.labelIcon} source={require('../../../../res/icon/degree.png')}/><Text style={[styles.labelText,globalStyles.fontLight]}/></View>
                 </View>
             </View>
         )
     }
 
+    login = ()=>{
+        this.props.navigation.navigate('LoginPage',{parentPage:this})
+    }
 }
 
 const styles = StyleSheet.create({

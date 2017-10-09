@@ -4,8 +4,9 @@ import globalStyle from '../../style/style';
 import UserService from './service/user.service';
 import {Button, Text} from 'native-base';
 import UserInterface from './interface/user.Interface';
-import ImageLoad from 'react-native-image-placeholder';
 import CommonService from '../../service/common.service';
+import ImagePicker from 'react-native-image-picker';
+import {LoadMiddle} from "../../commonComponent/loadingView";
 
 
 export default class SettingPage extends Component {
@@ -15,7 +16,9 @@ export default class SettingPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userData: this.props.navigation.state.params.userData
+            userData: this.props.navigation.state.params.userData,
+            isLoading:false,
+            isLoadingText:"",
         }
     }
 
@@ -25,79 +28,83 @@ export default class SettingPage extends Component {
         headerTintColor:"#484848"
     }
 
+    componentDidMount(){
+        console.log(fetch("http://www.atyorku.ca"));
+    }
+
+    componentWillUnmount(){
+        this.props.navigation.state.params.parentPage.getUserData();
+    }
 
     render() {
         return (
-            <ScrollView style={styles.container}>
-                <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                    <Text style={[globalStyle.fontLight, styles.labelText]}>头像</Text>
-                    <View style={styles.labelRight}>
-                        <ImageLoad
-                            style={styles.avatar}
-                            source={{uri: CommonService.host + this.state.userData.img}}
-                            placeholderSource={require('../../../res/images/transparence.png')}
-                            isShowActivity={false}
-                            borderRadius = {25}/>
-                        <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
+            <View style={{flex:1}}>
+                <ScrollView style={styles.container}>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox} onPress={()=>{this.pickUpPhoto()}}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>头像</Text>
+                        <View style={styles.labelRight}>
+                            <Image  style={styles.avatar} source={{uri: CommonService.host + this.state.userData.img}}/>
+                            <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
+                        </View>
+                    </TouchableOpacity>
+                    <View activeOpacity={0.7} style={styles.listBox}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>用户名</Text>
+                        <View style={styles.labelRight}>
+                            <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.name}</Text>
+                        </View>
                     </View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                    <Text style={[globalStyle.fontLight, styles.labelText]}>用户名</Text>
-                    <View style={styles.labelRight}>
-                        <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.name}</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.7} style={styles.listBox} onPress={()=>{this.navigationToProfileModifyPage('昵称')}}>
-                    <Text style={[globalStyle.fontLight, styles.labelText]}>昵称</Text>
-                    <View style={styles.labelRight}>
-                        <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.alias}</Text>
-                        <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                    <Text style={[globalStyle.fontLight, styles.labelText]}>性别</Text>
-                    <View style={styles.labelRight}>
-                        <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{CommonService.pipeOfUserGender(this.state.userData.gender)}</Text>
-                        <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                    <Text style={[globalStyle.fontLight, styles.labelText]}>签名</Text>
-                    <View style={styles.labelRight}>
-                        <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.description}</Text>
-                        <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                    <Text style={[globalStyle.fontLight, styles.labelText]}>专业</Text>
-                    <View style={styles.labelRight}>
-                        <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.major}</Text>
-                        <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                    <Text style={[globalStyle.fontLight, styles.labelText]}>年级</Text>
-                    <View style={styles.labelRight}>
-                        <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.enrollYearTranslate}</Text>
-                        <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                    <Text style={[globalStyle.fontLight, styles.labelText]}>学历</Text>
-                    <View style={styles.labelRight}>
-                        <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.degree}</Text>
-                        <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                    <Text style={[globalStyle.fontLight, styles.labelText]}>修改密码</Text>
-                    <View style={styles.labelRight}>
-                        <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
-                    </View>
-                </TouchableOpacity>
-
-                <Button onPress={this.logout} style={styles.logoutButton} block><Text>退出</Text></Button>
-            </ScrollView>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox} onPress={()=>{this.navigationToProfileModifyPage('昵称')}}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>昵称</Text>
+                        <View style={styles.labelRight}>
+                            <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.alias}</Text>
+                            <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>性别</Text>
+                        <View style={styles.labelRight}>
+                            <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{CommonService.pipeOfUserGender(this.state.userData.gender)}</Text>
+                            <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>签名</Text>
+                        <View style={styles.labelRight}>
+                            <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.description}</Text>
+                            <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>专业</Text>
+                        <View style={styles.labelRight}>
+                            <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.major}</Text>
+                            <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>年级</Text>
+                        <View style={styles.labelRight}>
+                            <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.enrollYearTranslate}</Text>
+                            <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>学历</Text>
+                        <View style={styles.labelRight}>
+                            <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.degree}</Text>
+                            <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>修改密码</Text>
+                        <View style={styles.labelRight}>
+                            <Image style={styles.rightArrow} source={require('../../../res/icon/rightarrow.png')}/>
+                        </View>
+                    </TouchableOpacity>
+                    <Button onPress={this.logout} style={styles.logoutButton} block><Text>退出</Text></Button>
+                </ScrollView>
+                <LoadMiddle isLoadingMore={this.state.isLoading} text={this.state.isLoadingText}/>
+            </View>
         )
     }
 
@@ -118,6 +125,48 @@ export default class SettingPage extends Component {
             .catch(error => {
 
             })
+    }
+
+    pickUpPhoto(){
+        let options = {
+            title: '上传头像',
+            allowsEditing:true,
+            maxWidth:300,
+            maxHeight:300,
+            quality:0.8,
+            takePhotoButtonTitle:"拍照",
+            chooseFromLibraryButtonTitle:"打开相册",
+            storageOptions: {
+                skipBackup: true,
+                path: 'images'
+            }
+        };
+        ImagePicker.showImagePicker(options, async (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            }
+            else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            }
+            else {
+                //success
+                await this.setState({isLoading:true});
+                UserService.updateAvatar(response.uri,
+                    (progress)=>{
+                        console.log(progress);
+                        this.setState({isLoadingText:"上传进度"+progress});
+                    },
+                    async (json)=>{
+                        UserService.setUserDataToLocalStorage(json.result);
+                        await this.setState({userData:json.result});
+                        this.setState({isLoading:false});
+                    },
+                    ()=>{
+                        //this.setState({isLoading:false});
+                    });
+                let userData = this.state.userData;
+            }
+        });
     }
 
 }
@@ -160,7 +209,8 @@ const styles = StyleSheet.create({
     },
     avatar:{
         width:50,
-        height:50
+        height:50,
+        borderRadius:25
     },
     labelRight: {
         flexDirection:'row',

@@ -40,7 +40,7 @@ export default class NavigationBar extends Component {
     }
 
     titleStyle(){
-        if(this.props.titleStyle == 'light'){
+        if(this.props.titleStyle === 'light'){
             return [styles.titleDark,styles.titleLight];
         }else{
             return styles.titleDark;
@@ -48,7 +48,7 @@ export default class NavigationBar extends Component {
     }
 
     content(){
-        if(this.props.navigationBarHide != true){
+        if(this.props.navigationBarHide !== true){
             let titleView = this.props.titleView ? this.props.titleView :
                 <Text style={this.titleStyle()}>{this.props.title}</Text>
             return (

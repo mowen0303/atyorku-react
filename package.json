@@ -8,9 +8,9 @@
 	},
 	"dependencies": {
 		"native-base": "^2.3.2",
-		"prop-types": "^15.6.0",
 		"react": "16.0.0-alpha.12",
 		"react-native": "0.48.3",
+		"react-native-image-picker": "^0.26.7",
 		"react-native-image-placeholder": "^1.0.12",
 		"react-native-scrollable-tab-view": "^0.6.7",
 		"react-native-tab-navigator": "^0.3.4",

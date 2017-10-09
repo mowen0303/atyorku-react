@@ -1,5 +1,5 @@
 import React from 'react'
-import {AsyncStorage, Alert} from 'react-native';
+import {AsyncStorage, Alert, DeviceEventEmitter} from 'react-native';
 
 import CommonService from '../../../service/common.service';
 
@@ -27,7 +27,7 @@ export default class UserService {
      * logout
      * @returns {Promise.<TResult>|*}
      */
-    static logout(){
+    static logout() {
         let url = `${CommonService.host}/admin/login/loginController.php?action=logoutWithJson`;
         return fetch(url).then(response => response.json());
     }
@@ -51,17 +51,21 @@ export default class UserService {
      * @returns {*|Promise}
      */
     static getUserDataFromLocalStorage() {
-        return AsyncStorage.getItem('userData');
+        return AsyncStorage.getItem('userData').then(result=>JSON.parse(result));
     }
 
     /**
      * delete user data
      */
-    static removeUserDataFromLocalStorage(){
+    static removeUserDataFromLocalStorage() {
         AsyncStorage.removeItem('userData');
     }
 
 
+    static updateAvatar(imgData,progressCallback, resolveCallback, rejectCallback) {
+        let url = `${CommonService.host}/admin/user/userController.php?action=userUpdateHeadImgWithJson`;
+        CommonService.uploadFile(url,'file',imgData,progressCallback, resolveCallback, rejectCallback);
+    }
 
 
 }
