@@ -35,10 +35,7 @@ const tabs = TabNavigator({
                     source={require('../../res/icon/course.png')}
                     style={[styles.icon, {tintColor: tintColor}]}
                 />
-            ),
-            tabBarOnPress: (tab, jumpToIndex) => {
-                navigation.navigate('LoginPage');
-            },
+            )
         },
     },
     Forum: {
@@ -62,10 +59,7 @@ const tabs = TabNavigator({
                     source={require('../../res/icon/me.png')}
                     style={[styles.icon, {tintColor: tintColor}]}
                 />
-            ),
-            tabBarOnPress: () => {
-                alert(1111)
-            }
+            )
         },
     },
 

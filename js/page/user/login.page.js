@@ -35,10 +35,10 @@ export default class LoginPage extends Component {
                                                                    source={require('../../../res/icon/back2.png')}/></TouchableOpacity>
                     <Text style={[styles.title, globalStyles.font]}>{this.state.title}</Text>
                     <KeyboardAvoidingView behavior={"padding"}>
-                        <View style={styles.inputBox}>
+                        <View style={globalStyles.inputBox}>
                             <Image style={styles.icon} source={require('../../../res/icon/user.png')}/>
                             <TextInput
-                                style={[styles.input, globalStyles.fontLight]}
+                                style={[globalStyles.input, globalStyles.fontLight]}
                                 selectionColor={"#484848"}
                                 placeholder={"用户名"}
                                 value={this.state.username}
@@ -46,10 +46,10 @@ export default class LoginPage extends Component {
                                 underlineColorAndroid={"rgba(255, 255, 255, 0)"}
                                 onChangeText={(text) => this.setState({username: text})}/>
                         </View>
-                        <View style={styles.inputBox}>
+                        <View style={globalStyles.inputBox}>
                             <Image style={styles.icon} source={require('../../../res/icon/password.png')}/>
                             <TextInput
-                                style={[styles.input, globalStyles.fontLight]}
+                                style={[globalStyles.input, globalStyles.fontLight]}
                                 selectionColor={"#484848"}
                                 placeholder={"密码"} secureTextEntry={true}
                                 value={this.state.password}
@@ -65,7 +65,7 @@ export default class LoginPage extends Component {
                             册</Text></Button>
                     </View>
                 </ScrollView>
-                <LoadMiddle isLoadingMore={this.state.isLoading}/>
+                <LoadMiddle isLoading={this.state.isLoading}/>
             </View>
         );
     }
@@ -124,27 +124,10 @@ const styles = StyleSheet.create({
         marginTop: 30
     }
     ,
-    inputBox: {
-        flexDirection: 'row',
-        flex: 1,
-        marginTop: 40,
-        borderBottomWidth: 1,
-        borderBottomColor: '#eee',
-    },
     icon: {
         width: 24,
         height: 24,
         tintColor: '#484848',
-    },
-    input: {
-        padding: 0,
-        paddingBottom: 10,
-        color: "#484848",
-        marginLeft: 14,
-        flex: 1,
-        marginTop: 3,
-        height: 32,
-        lineHeight: 32,
     },
     button: {
         marginTop: 50,

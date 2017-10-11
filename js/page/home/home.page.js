@@ -9,12 +9,13 @@ export default class HomePage extends Component {
 
     static navigationOptions = ({navigation}) => {
         return {
-            headerRight: <Button title={"登录"} color="#000" onPress={() => navigation.state.params.navigateToLoginPage()}/>
+            headerRight: <Button title={"登录"} color="#000" onPress={() => navigation.state.login()}/>
         }
     }
 
     componentDidMount() {
-        this.props.navigation.setParams({login: this.login})
+        //this.props.navigation.setParams({login: this.login})
+        this.props.navigation.state.login =this.login;
     }
 
     login = () => {

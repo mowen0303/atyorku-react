@@ -34,8 +34,8 @@ export default class UserService {
 
 
     /**
-     * save user data
-     * @param data : object<json.result>
+     * save user data to local storage
+     * @param data : object
      */
     static setUserDataToLocalStorage(data) {
         AsyncStorage.setItem('userData', JSON.stringify(data), (error) => {
@@ -47,25 +47,47 @@ export default class UserService {
     }
 
     /**
-     * get user data
-     * @returns {*|Promise}
+     * get user data from local storage
+     * @returns {Promise}
      */
     static getUserDataFromLocalStorage() {
         return AsyncStorage.getItem('userData').then(result=>JSON.parse(result));
     }
 
     /**
-     * delete user data
+     * delete user data frm local storage
      */
     static removeUserDataFromLocalStorage() {
         AsyncStorage.removeItem('userData');
     }
 
-
+    /**
+     * Update avatar
+     * @param imgData
+     * @param progressCallback
+     * @param resolveCallback
+     * @param rejectCallback
+     */
     static updateAvatar(imgData,progressCallback, resolveCallback, rejectCallback) {
         let url = `${CommonService.host}/admin/user/userController.php?action=userUpdateHeadImgWithJson`;
         CommonService.uploadFile(url,'file',imgData,progressCallback, resolveCallback, rejectCallback);
     }
+
+    /**
+     *
+     * @param alias
+     * @returns {Promise.<TResult>|*|Promise.<*>}
+     */
+    static updateAlias(alias) {
+        let url = `${CommonService.host}/admin/user/userController.php?action=updateNicknameWithJson`;
+        const options = {
+            method: 'POST',
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: `alias=${alias}`
+        }
+        return fetch(url, options).then(response => response.json());
+    }
+
 
 
 }

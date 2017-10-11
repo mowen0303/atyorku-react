@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {View, StyleSheet, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
 import UserInterface from './interface/user.Interface';
 import UserInfoView from './component/userHeaderInfoView';
-import UserHeaderNotLoginView from './component/userHeaderNotLoginView';
 import globalStyle from '../../style/style';
 import UserService from "./service/user.service";
 
@@ -101,6 +100,7 @@ export default class MePage extends Component {
             .then(async result=>{
                 if(result!==null){
                     await this.setState({userData:result});
+                    console.log(this.state.userData);
                 }else{
                     await this.setState({userData:this.userData});
                 }

@@ -35,7 +35,7 @@ export default class ForumDetailPage extends Component {
                     renderRow={(data) => <CommentCell data={data}/>}
                     renderHeader={() => <ForumCell data={this.props.navigation.state.params.data} activeOpacity={1}
                                                    isImageFullSize={true} isPressAble={false}/>}
-                    renderFooter={() => <LoadMoreBar isLoadingMore={this.state.isLoadingMore}/>}
+                    renderFooter={() => <LoadMoreBar isLoading={this.state.isLoading}/>}
                     onEndReached={() => this.getComments()}
                     onEndReachedThreshold={this.state.onEndReachedThreshold}
                 />
@@ -50,7 +50,7 @@ export default class ForumDetailPage extends Component {
 
     async getComments() {
 
-        if (this.state.isLoadingMore === true) {
+        if (this.state.isLoading === true) {
             return false;
         }
 

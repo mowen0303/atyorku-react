@@ -103,7 +103,7 @@ export default class SettingPage extends Component {
                     </TouchableOpacity>
                     <Button onPress={this.logout} style={styles.logoutButton} block><Text>退出</Text></Button>
                 </ScrollView>
-                <LoadMiddle isLoadingMore={this.state.isLoading} text={this.state.isLoadingText}/>
+                <LoadMiddle isLoading={this.state.isLoading} text={this.state.isLoadingText}/>
             </View>
         )
     }
@@ -208,9 +208,10 @@ const styles = StyleSheet.create({
         marginBottom:40
     },
     avatar:{
-        width:50,
-        height:50,
-        borderRadius:25
+        width:60,
+        height:60,
+        borderRadius:30,
+        marginBottom:10
     },
     labelRight: {
         flexDirection:'row',

@@ -40,7 +40,7 @@ export default class ForumListView extends Component {
                     }
                     onEndReached={() => this.loadNextPage()}
                     onEndReachedThreshold={30}
-                    renderFooter={() => <LoadMoreBar isLoadingMore={this.state.isLoadingMore}/>}
+                    renderFooter={() => <LoadMoreBar isLoading={this.state.isLoading}/>}
                 />
             </View>
         )
@@ -72,7 +72,7 @@ export default class ForumListView extends Component {
     }
 
     async loadNextPage() {
-        if (this.state.isRefreshing || this.state.isLoadingMore) {
+        if (this.state.isRefreshing || this.state.isLoading) {
             return false;
         }
 

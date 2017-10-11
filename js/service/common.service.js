@@ -47,6 +47,15 @@ export default class CommonService {
         }
     }
 
+    /**
+     * upload file
+     * @param url
+     * @param filePostName - file form name
+     * @param imgData - img url
+     * @param progressCallback
+     * @param resolveCallback
+     * @param rejectCallback
+     */
     static uploadFile(url, filePostName, imgData, progressCallback, resolveCallback, rejectCallback) {
 
         let formData = new FormData();

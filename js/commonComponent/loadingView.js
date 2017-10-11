@@ -4,11 +4,11 @@ import {View, Text, StyleSheet, ActivityIndicator, Dimensions} from 'react-nativ
 export default class LoadMore extends Component {
 
     static propTypes = {
-        isLoadingMore: PropTypes.bool
+        isLoading: PropTypes.bool
     }
 
     static defaultProps = {
-        isLoadingMore: false,
+        isLoading: false,
     }
     render() {
         if (this.props.isLoadingMore === true) {
@@ -26,17 +26,17 @@ export default class LoadMore extends Component {
 export class LoadMiddle extends Component {
 
     static propTypes = {
-        isLoadingMore: PropTypes.bool,
+        isLoading: PropTypes.bool,
         text:PropTypes.string,
     }
 
     static defaultProps = {
-        isLoadingMore: false,
+        isLoading: false,
         text:"加载中...",
     }
 
     render() {
-        if (this.props.isLoadingMore === true) {
+        if (this.props.isLoading === true) {
             return (
                 <View style={{position:'absolute',
                     left:Dimensions.get('window').width/2-70,
