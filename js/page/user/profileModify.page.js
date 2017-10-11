@@ -58,19 +58,19 @@ export default class ProfileModifyPage extends Component {
 
     handleUpdateResult(result){
         result.then(json=>{
-                    if(json.code===1){
-                        this.setState({isLoading:false});
-                        UserService.setUserDataToLocalStorage(json.result);
-                        this.props.navigation.state.params.parentPage.setState({userData:json.result});
-                        this.props.navigation.goBack();
-                    }else{
-                        Alert.alert(json.message);
-                    }
-                })
-                .catch(error=>{
-                    this.setState({isLoading:false});
-                    Alert.alert("网路环境异常");
-                })
+            if(json.code===1){
+                this.setState({isLoading:false});
+                UserService.setUserDataToLocalStorage(json.result);
+                this.props.navigation.state.params.parentPage.setState({userData:json.result});
+                this.props.navigation.goBack();
+            }else{
+                Alert.alert(json.message);
+            }
+        })
+        .catch(error=>{
+            this.setState({isLoading:false});
+            Alert.alert("网路环境异常");
+        })
     }
 
 

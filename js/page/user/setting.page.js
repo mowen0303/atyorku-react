@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, ScrollView, StyleSheet, TouchableOpacity, Image, CameraRoll} from 'react-native';
+import {View, ScrollView, StyleSheet, TouchableOpacity, Image, Alert, CameraRoll} from 'react-native';
 import globalStyle from '../../style/style';
 import UserService from './service/user.service';
 import {Button, Text} from 'native-base';
@@ -150,6 +150,7 @@ export default class SettingPage extends Component {
             }
             else {
                 //success
+
                 await this.setState({isLoading:true});
                 UserService.updateAvatar(response.uri,
                     (progress)=>{
@@ -157,12 +158,16 @@ export default class SettingPage extends Component {
                         this.setState({isLoadingText:"上传进度"+progress});
                     },
                     async (json)=>{
-                        UserService.setUserDataToLocalStorage(json.result);
-                        await this.setState({userData:json.result});
-                        this.setState({isLoading:false});
+                        if(json.code === 1){
+                            UserService.setUserDataToLocalStorage(json.result);
+                            await this.setState({userData:json.result});
+                            this.setState({isLoading:false});
+                        }else{
+                            Alert.alert(json.message);
+                        }
                     },
                     ()=>{
-                        //this.setState({isLoading:false});
+                        this.setState({isLoading:false});
                     });
                 let userData = this.state.userData;
             }
