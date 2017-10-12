@@ -1,8 +1,9 @@
 import React, {Component, PropTypes} from 'react'
-import {View, ScrollView, StyleSheet, Alert, Platform, TouchableOpacity,Text, Image, TextInput, Picker, DatePickerAndroid} from 'react-native';
+import {View, ScrollView, StyleSheet,KeyboardAvoidingView, Alert, Platform, TouchableOpacity,Text, Image, TextInput, Picker, DatePickerAndroid, DatePickerIOS} from 'react-native';
 import globalStyle from '../../style/style';
 import UserService from './service/user.service';
 import {LoadMiddle} from "../../commonComponent/loadingView";
+import CommonService from "../../service/common.service";
 
 
 
@@ -17,6 +18,7 @@ export default class ProfileModifyPage extends Component {
             enrollYear: this.props.navigation.state.params.userData.enroll_year,
             enrollYearTranslate: this.props.navigation.state.params.userData.enrollYearTranslate,
             degree: this.props.navigation.state.params.userData.degree,
+            gender: this.props.navigation.state.params.userData.gender,
             oldPwd: "",
             newPwd: "",
             newPwd2: "",
@@ -46,7 +48,7 @@ export default class ProfileModifyPage extends Component {
                                 underlineColorAndroid={"rgba(255, 255, 255, 0)"}
                                 onChangeText={(text) => this.setState({alias: text})}/>
                         </View>
-                        <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={this.updateAlias}><Text style={styles.buttonText}>提 交</Text></TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={this.updateAlias}><Text style={styles.buttonText}>提交</Text></TouchableOpacity>
                     </ScrollView>
                 </View>
             )
@@ -54,22 +56,22 @@ export default class ProfileModifyPage extends Component {
             return (
                 <View style={{flex:1}}>
                     <ScrollView style={styles.container} keyboardShouldPersistTaps={"always"}>
-                        <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateGender(1)}}>
+                        <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateGender('1')}}>
                             <Text style={[globalStyle.fontLight, styles.labelText]}>男</Text>
                             <View style={globalStyle.listLabelRight}>
-                                <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
+                                {this.elementSelectedIcon('1',this.state.gender)}
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateGender(0)}}>
+                        <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateGender('0')}}>
                             <Text style={[globalStyle.fontLight, styles.labelText]}>女</Text>
                             <View style={globalStyle.listLabelRight}>
-                                <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
+                                {this.elementSelectedIcon('0',this.state.gender)}
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateGender(2)}}>
+                        <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateGender('2')}}>
                             <Text style={[globalStyle.fontLight, styles.labelText]}>不明</Text>
                             <View style={globalStyle.listLabelRight}>
-                                <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
+                                {this.elementSelectedIcon('2',this.state.gender)}
                             </View>
                         </TouchableOpacity>
                         <LoadMiddle isLoading={this.state.isLoading}/>
@@ -91,7 +93,7 @@ export default class ProfileModifyPage extends Component {
                                 underlineColorAndroid={"rgba(255, 255, 255, 0)"}
                                 onChangeText={(text) => this.setState({description: text})}/>
                         </View>
-                        <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={()=>{this.updateDescription()}}><Text style={styles.buttonText}>提 交</Text></TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={()=>{this.updateDescription()}}><Text style={styles.buttonText}>提交</Text></TouchableOpacity>
                     </ScrollView>
                 </View>
             )
@@ -110,19 +112,21 @@ export default class ProfileModifyPage extends Component {
                                 underlineColorAndroid={"rgba(255, 255, 255, 0)"}
                                 onChangeText={(text) => this.setState({major: text})}/>
                         </View>
-                        <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={()=>{this.updateMajor()}}><Text style={styles.buttonText}>提 交</Text></TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={()=>{this.updateMajor()}}><Text style={styles.buttonText}>提交</Text></TouchableOpacity>
                     </ScrollView>
                 </View>
             )
         } else if(this.props.navigation.state.params.title === "年级") {
             return (
+
                 <View style={{flex:1}}>
                     <ScrollView style={styles.container} keyboardShouldPersistTaps={"always"}>
-                        <TouchableOpacity activeOpacity={0.9} style={globalStyle.inputBox} onPress={()=>{this.openDataPicker()}}>
-                            <Text style={[globalStyle.input, globalStyles.fontLight,{height:50}]}>{this.state.enrollYearTranslate}</Text>
+                        <TouchableOpacity activeOpacity={0.9} style={[globalStyle.inputBox]} onPress={()=>{this.openDataPicker()}}>
+                            <Text style={[globalStyle.input, globalStyles.fontLight,{paddingBottom:0}]}>{CommonService.pipeOfUserEnrolmentYear(this.state.enrollYear)}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={()=>{this.updateMajor()}}><Text style={styles.buttonText}>提 交</Text></TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={()=>{this.updateEnrollYear()}}><Text style={styles.buttonText}>提交</Text></TouchableOpacity>
                     </ScrollView>
+                    {this.elementDataPickerIOS()}
                 </View>
             )
         } else if(this.props.navigation.state.params.title === "学历") {
@@ -132,19 +136,19 @@ export default class ProfileModifyPage extends Component {
                         <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateDegree('本科')}}>
                             <Text style={[globalStyle.fontLight, styles.labelText]}>本科</Text>
                             <View style={globalStyle.listLabelRight}>
-                                <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
+                                {this.elementSelectedIcon('本科',this.state.degree)}
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateDegree('研究生')}}>
                             <Text style={[globalStyle.fontLight, styles.labelText]}>研究生</Text>
                             <View style={globalStyle.listLabelRight}>
-                                <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
+                                {this.elementSelectedIcon('研究生',this.state.degree)}
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateDegree('博士')}}>
                             <Text style={[globalStyle.fontLight, styles.labelText]}>博士</Text>
                             <View style={globalStyle.listLabelRight}>
-                                <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
+                                {this.elementSelectedIcon('博士',this.state.degree)}
                             </View>
                         </TouchableOpacity>
                         <LoadMiddle isLoading={this.state.isLoading}/>
@@ -154,7 +158,7 @@ export default class ProfileModifyPage extends Component {
         }  else if(this.props.navigation.state.params.title === "修改密码") {
             return (
                 <View style={{flex:1}}>
-                    <ScrollView style={styles.container} keyboardShouldPersistTaps={"always"}>
+                    <KeyboardAvoidingView style={styles.container} keyboardShouldPersistTaps={"always"}>
                         <View style={globalStyle.inputBox}>
                             <TextInput
                                 ref="textInputRefer"
@@ -188,23 +192,27 @@ export default class ProfileModifyPage extends Component {
                                 secureTextEntry={true}
                                 onChangeText={(text) => this.setState({newPwd2: text})}/>
                         </View>
-                        <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={()=>{this.updatePassword()}}><Text style={styles.buttonText}>提 交</Text></TouchableOpacity>
-                    </ScrollView>
+                        <TouchableOpacity activeOpacity={0.9} style={styles.button} onPress={()=>{this.updatePassword()}}><Text style={styles.buttonText}>提交</Text></TouchableOpacity>
+                    </KeyboardAvoidingView>
                 </View>
             )
         }
 
     }
 
+    elementSelectedIcon(currentVal,targetVal){
+        if(currentVal === targetVal){
+            return <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/selected.png')}/>;
+        }
+    }
     updateAlias = ()=>{
         this.setState({isLoading:true});
         this.refs.textInputRefer.blur();
         let resultPromise = UserService.updateAlias(this.state.alias);
         this.handleUpdateResult(resultPromise);
     }
-
     updateGender(gender){
-        this.setState({isLoading:true});
+        this.setState({isLoading:true,gender:gender});
         let resultPromise = UserService.updateGender(gender);
         this.handleUpdateResult(resultPromise);
 
@@ -227,10 +235,26 @@ export default class ProfileModifyPage extends Component {
         this.handleUpdateResult(resultPromise);
 
     }
-    async openDataPicker(){
+    elementDataPickerIOS(){
         if (Platform.OS === 'ios'){
-
-        }else{
+            return (
+                <View>
+                    <DatePickerIOS style={{backgroundColor:'#fff'}}
+                                   date={new Date(this.state.enrollYear*1000)}
+                                   mode="date"
+                                   onDateChange={this.onDateChange}
+                                   minimumDate = {new Date("1960/1/1")}
+                                   maximumDate = {new Date()}
+                    />
+                </View>
+            )
+        }
+    }
+    onDateChange=(date)=>{
+        this.setState({enrollYear:date.getTime()/1000});
+    }
+    async openDataPicker(){
+        if (Platform.OS !== 'ios'){
             try {
                 const {action, year, month, day} = await DatePickerAndroid.open({
                     // Use `new Date()` for current date.
@@ -241,8 +265,7 @@ export default class ProfileModifyPage extends Component {
                     // Selected year, month (0-11), day
                     let time = `${year}/${month}/${day}`;
                     let dateObj = new Date(time);
-                    let timeStamp = dateObj.getTime()/1000;
-                    this.updateEnrollYear(timeStamp);
+                    this.setState({enrollYear:dateObj.getTime()/1000});
                 }
             } catch ({code, message}) {
                 console.warn('Cannot open date picker', message);
@@ -250,11 +273,10 @@ export default class ProfileModifyPage extends Component {
         }
 
     }
-    updateEnrollYear(enrollYear){
+    updateEnrollYear(){
         this.setState({isLoading:true});
-        let resultPromise = UserService.updateEnrollYear(enrollYear);
+        let resultPromise = UserService.updateEnrollYear(this.state.enrollYear);
         this.handleUpdateResult(resultPromise);
-
     }
     updateDegree(degree){
         this.setState({isLoading:true});
@@ -276,31 +298,33 @@ export default class ProfileModifyPage extends Component {
         let resultPromise = UserService.updatePassword(this.state.oldPwd,this.state.newPwd);
         resultPromise.then(json=>{
             if(json.code===1){
-                    this.setState({isLoading:false});
-                    Alert.alert(json.message);
-                    this.props.navigation.goBack();
-                }else{
-                    Alert.alert(json.message);
-                }
-            })
-            .catch(error=>{
-                console.log(error);
-                this.setState({isLoading:false});
-                Alert.alert("网路环境异常");
-            })
+                Alert.alert(json.message);
+                this.props.navigation.goBack();
+            }else{
+                Alert.alert(json.message);
+            }
+            this.setState({isLoading:false});
+        })
+        .catch(error=>{
+            console.log(error);
+            this.setState({isLoading:false});
+            Alert.alert("网路环境异常");
+        })
     }
+
+
 
 
     handleUpdateResult(result){
         result.then(json=>{
             if(json.code===1){
-                this.setState({isLoading:false});
                 UserService.setUserDataToLocalStorage(json.result);
                 this.props.navigation.state.params.parentPage.setState({userData:json.result});
                 this.props.navigation.goBack();
             }else{
                 Alert.alert(json.message);
             }
+            this.setState({isLoading:false});
         })
         .catch(error=>{
             console.log(error);
@@ -322,9 +346,9 @@ const styles = StyleSheet.create({
         backgroundColor:"#484848",
         marginTop:20,
         paddingHorizontal:30,
-        paddingVertical:10,
-        borderRadius:18,
-        marginHorizontal:100
+        paddingVertical:12,
+        borderRadius:6,
+        marginHorizontal:70
     },
     buttonText:{
         color:"#fff",

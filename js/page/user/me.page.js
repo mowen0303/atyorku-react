@@ -67,7 +67,7 @@ export default class MePage extends Component {
                     <View style={styles.profileBox}>
                         <View style={{flex: 1, marginRight: 10}}>
                             <TouchableOpacity style={styles.loginButton} onPress={this.navigateToLoginPage}>
-                                <Text style={[styles.loginText]}>登录</Text>
+                                <Text style={[styles.loginText]}>登录 / 注册</Text>
                             </TouchableOpacity>
                             <Text numberOfLines={2} style={[styles.description, globalStyles.fontLight]}/>
                         </View>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
         backgroundColor:'#484848'
     },
     loginText:{
-        lineHeight:34,
+        lineHeight:40,
         fontSize:18,
         textAlign:'center',
         fontWeight:'normal',

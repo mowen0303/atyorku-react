@@ -13,7 +13,8 @@ export default class LoginPage extends Component {
         this.state = {
             username: "",
             password: "",
-            title: "登录",
+            password2: "",
+            showLoginPage:true,
             isLoading: false,
         }
     }
@@ -28,46 +29,101 @@ export default class LoginPage extends Component {
 
     render() {
 
-        return (
-            <View style={{flex: 1}}>
-                <ScrollView style={styles.container}>
-                    <TouchableOpacity onPress={this.goBack}><Image style={styles.back}
-                                                                   source={require('../../../res/icon/back2.png')}/></TouchableOpacity>
-                    <Text style={[styles.title, globalStyles.font]}>{this.state.title}</Text>
-                    <KeyboardAvoidingView behavior={"padding"}>
-                        <View style={globalStyles.inputBox}>
-                            <Image style={styles.icon} source={require('../../../res/icon/user.png')}/>
-                            <TextInput
-                                style={[globalStyles.input, globalStyles.fontLight]}
-                                selectionColor={"#484848"}
-                                placeholder={"用户名"}
-                                value={this.state.username}
-                                clearButtonMode={'while-editing'}
-                                underlineColorAndroid={"rgba(255, 255, 255, 0)"}
-                                onChangeText={(text) => this.setState({username: text})}/>
+        if(this.state.showLoginPage===true){
+            return (
+                <View style={{flex: 1}}>
+                    <ScrollView style={styles.container}>
+                        <TouchableOpacity onPress={this.goBack}><Image style={styles.back}
+                                                                       source={require('../../../res/icon/back2.png')}/></TouchableOpacity>
+                        <Text style={[styles.title, globalStyles.font]}>登录</Text>
+                        <KeyboardAvoidingView behavior={"padding"}>
+                            <View style={globalStyles.inputBox}>
+                                <Image style={styles.icon} source={require('../../../res/icon/user.png')}/>
+                                <TextInput
+                                    style={[globalStyles.input, globalStyles.fontLight]}
+                                    selectionColor={"#484848"}
+                                    placeholder={"用户名"}
+                                    value={this.state.username}
+                                    clearButtonMode={'while-editing'}
+                                    underlineColorAndroid={"rgba(255, 255, 255, 0)"}
+                                    onChangeText={(text) => this.setState({username: text})}/>
+                            </View>
+                            <View style={globalStyles.inputBox}>
+                                <Image style={styles.icon} source={require('../../../res/icon/password.png')}/>
+                                <TextInput
+                                    style={[globalStyles.input, globalStyles.fontLight]}
+                                    selectionColor={"#484848"}
+                                    placeholder={"密码"} secureTextEntry={true}
+                                    value={this.state.password}
+                                    clearButtonMode={'while-editing'}
+                                    underlineColorAndroid={"rgba(255, 255, 255, 0)"}
+                                    onChangeText={(text) => this.setState({password: text})}/>
+                            </View>
+                            <Button disabled={this.state.isLoading} style={styles.button} rounded info block
+                                    onPress={this.login}><Text>登 录</Text></Button>
+                        </KeyboardAvoidingView>
+                        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+                            <Button onPress={this.navigateToRegisterPage} style={[styles.button, {width: 100}]} rounded info block><Text>注册</Text></Button>
                         </View>
-                        <View style={globalStyles.inputBox}>
-                            <Image style={styles.icon} source={require('../../../res/icon/password.png')}/>
-                            <TextInput
-                                style={[globalStyles.input, globalStyles.fontLight]}
-                                selectionColor={"#484848"}
-                                placeholder={"密码"} secureTextEntry={true}
-                                value={this.state.password}
-                                clearButtonMode={'while-editing'}
-                                underlineColorAndroid={"rgba(255, 255, 255, 0)"}
-                                onChangeText={(text) => this.setState({password: text})}/>
+                    </ScrollView>
+                    <LoadMiddle isLoading={this.state.isLoading}/>
+                </View>
+            );
+
+        }else{
+            return (
+                <View style={{flex: 1}}>
+                    <ScrollView style={styles.container}>
+                        <TouchableOpacity onPress={this.goBack}><Image style={styles.back}
+                                                                       source={require('../../../res/icon/back2.png')}/></TouchableOpacity>
+                        <Text style={[styles.title, globalStyles.font]}>注册</Text>
+                        <KeyboardAvoidingView behavior={"padding"}>
+                            <View style={globalStyles.inputBox}>
+                                <Image style={styles.icon} source={require('../../../res/icon/user.png')}/>
+                                <TextInput
+                                    style={[globalStyles.input, globalStyles.fontLight]}
+                                    selectionColor={"#484848"}
+                                    placeholder={"用户名"}
+                                    value={this.state.username}
+                                    clearButtonMode={'while-editing'}
+                                    underlineColorAndroid={"rgba(255, 255, 255, 0)"}
+                                    onChangeText={(text) => this.setState({username: text})}/>
+                            </View>
+                            <View style={globalStyles.inputBox}>
+                                <Image style={styles.icon} source={require('../../../res/icon/password.png')}/>
+                                <TextInput
+                                    style={[globalStyles.input, globalStyles.fontLight]}
+                                    selectionColor={"#484848"}
+                                    placeholder={"密码"} secureTextEntry={true}
+                                    value={this.state.password}
+                                    clearButtonMode={'while-editing'}
+                                    underlineColorAndroid={"rgba(255, 255, 255, 0)"}
+                                    onChangeText={(text) => this.setState({password: text})}/>
+                            </View>
+                            <View style={globalStyles.inputBox}>
+                                <Image style={styles.icon} source={require('../../../res/icon/password.png')}/>
+                                <TextInput
+                                    style={[globalStyles.input, globalStyles.fontLight]}
+                                    selectionColor={"#484848"}
+                                    placeholder={"密码"} secureTextEntry={true}
+                                    value={this.state.password2}
+                                    clearButtonMode={'while-editing'}
+                                    underlineColorAndroid={"rgba(255, 255, 255, 0)"}
+                                    onChangeText={(text) => this.setState({password2: text})}/>
+                            </View>
+                            <Button disabled={this.state.isLoading} style={styles.button} rounded info block
+                                    onPress={this.register}><Text>注册</Text></Button>
+                        </KeyboardAvoidingView>
+                        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+                            <Button onPress={this.navigateToLoginPage} style={[styles.button, {width: 100}]} rounded info block><Text>登录</Text></Button>
                         </View>
-                        <Button disabled={this.state.isLoading} style={styles.button} rounded info block
-                                onPress={this.login}><Text>登 录</Text></Button>
-                    </KeyboardAvoidingView>
-                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-                        <Button onPress={this.register} style={[styles.button, {width: 100}]} rounded info block><Text>注
-                            册</Text></Button>
-                    </View>
-                </ScrollView>
-                <LoadMiddle isLoading={this.state.isLoading}/>
-            </View>
-        );
+                    </ScrollView>
+                    <LoadMiddle isLoading={this.state.isLoading}/>
+                </View>
+            );
+        }
+
+
     }
 
     goBack = () => {
@@ -99,9 +155,40 @@ export default class LoginPage extends Component {
             })
     }
 
+    navigateToRegisterPage = () => {
+        this.setState({showLoginPage:false})
+    }
+
+    navigateToLoginPage = () => {
+        this.setState({showLoginPage:true})
+    }
 
     register = () => {
-
+        if(this.state.username === "" || this.state.password === "" || this.state.password2 === ""){
+            Alert.alert("请输入用户名和密码");
+            return false;
+        }
+        if(this.state.password !== this.state.password2){
+            Alert.alert("两次密码不一样");
+            return false;
+        }
+        this.setState({isLoading:true});
+        let resultPromise = UserService.register(this.state.username, this.state.password);
+        resultPromise.then(json=>{
+            if(json.code===1){
+                UserService.setUserDataToLocalStorage(json.result);
+                this.props.navigation.state.params.parentPage.setState({userData:json.result});
+                this.props.navigation.goBack();
+            }else{
+                Alert.alert(json.message);
+            }
+            this.setState({isLoading:false});
+        })
+        .catch(error=>{
+            console.log(error);
+            this.setState({isLoading:false});
+            Alert.alert("网路环境异常");
+        })
     }
 
 }

@@ -84,7 +84,7 @@ export default class SettingPage extends Component {
                     <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.navigationToProfileModifyPage('年级')}}>
                         <Text style={[globalStyle.fontLight, styles.labelText]}>年级</Text>
                         <View style={globalStyles.listLabelRight}>
-                            <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.enrollYearTranslate}</Text>
+                            <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{CommonService.pipeOfUserEnrolmentYear(this.state.userData.enroll_year)}</Text>
                             <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
                         </View>
                     </TouchableOpacity>

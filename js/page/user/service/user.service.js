@@ -158,5 +158,15 @@ export default class UserService {
         return fetch(url, options).then(response => response.json());
     }
 
+    static register(username, password){
+        let url = `${CommonService.host}/admin/user/userController.php?action=userRegisterWithJson`;
+        const options = {
+            method: 'POST',
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body:`username=${username}&password=${password}`
+        }
+        return fetch(url, options).then(response => response.json());
+    }
+
 
 }
