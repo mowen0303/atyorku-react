@@ -9,7 +9,7 @@ export default class CommonService {
      * @returns {*}
      */
     static pipeOfUserInfo(value, suffix) {
-        if (value == null || value == "" || value == " ") {
+        if (value === null || value === "" || value === " ") {
             return '未知' + suffix;
         } else {
             return value;
@@ -22,11 +22,11 @@ export default class CommonService {
      * @returns {*}
      */
     static pipeOfUserEnrolmentYear(value) {
-        if (value == 0) {
+        if (value === 0) {
             return "";
         } else {
             value *= 1000;
-            let date = new Date(value)
+            let date = new Date(value);
             return date.getFullYear() + "级";
         }
     }
@@ -59,7 +59,7 @@ export default class CommonService {
     static uploadFile(url, filePostName, imgData, progressCallback, resolveCallback, rejectCallback) {
 
         let formData = new FormData();
-        let file = {uri: imgData, type: 'multipart/form-data', name: 'image.png'};
+        let file = {uri: imgData, type: 'image/jpeg', name: 'image.jpg'};
         formData.append(filePostName, file);
 
         let oReq = new XMLHttpRequest();

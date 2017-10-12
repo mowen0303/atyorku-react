@@ -88,6 +88,75 @@ export default class UserService {
         return fetch(url, options).then(response => response.json());
     }
 
+    static updateGender(gender) {
+        let url = `${CommonService.host}/admin/user/userController.php?action=updateGenderWithJson`;
+        const options = {
+            method: 'POST',
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: `gender=${gender}`
+        }
+        return fetch(url, options).then(response => response.json());
+    }
+
+    static updateMajor(major){
+        let url = `${CommonService.host}/admin/user/userController.php?action=updateMajorWithJson`;
+        const options = {
+            method: 'POST',
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: `major=${major}`
+        }
+        return fetch(url, options).then(response => response.json());
+    }
+
+    static updateWechat(wechat){
+        let url = `${CommonService.host}/admin/user/userController.php?action=updateWechatWithJson`;
+        const options = {
+            method: 'POST',
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: `wechat=${wechat}`
+        }
+        return fetch(url, options).then(response => response.json());
+    }
+
+    static updateDescription(description){
+        let url = `${CommonService.host}/admin/user/userController.php?action=updateDescriptionWithJson`;
+        const options = {
+            method: 'POST',
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: `description=${description}`
+        }
+        return fetch(url, options).then(response => response.json());
+    }
+
+    static updateEnrollYear(enrollYear){
+        let url = `${CommonService.host}/admin/user/userController.php?action=updateEnrollYearWithJson`;
+        const options = {
+            method: 'POST',
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: `enrollYear=${enrollYear}`
+        }
+        return fetch(url, options).then(response => response.json());
+    }
+
+    static updateDegree(degree){
+        let url = `${CommonService.host}/admin/user/userController.php?action=updateDegreeWithJson`;
+        const options = {
+            method: 'POST',
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: `degree=${degree}`
+        }
+        return fetch(url, options).then(response => response.json());
+    }
+
+    static updatePassword(oldPassword, newPassword){
+        let url = `${CommonService.host}/admin/user/userController.php?action=updatePasswordWithJson`;
+        const options = {
+            method: 'POST',
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body:`oldPassword=${oldPassword}&newPassword=${newPassword}`
+        }
+        return fetch(url, options).then(response => response.json());
+    }
 
 
 }

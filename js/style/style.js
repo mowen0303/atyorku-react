@@ -24,4 +24,24 @@ export default globalStyles = StyleSheet.create({
         height: 32,
         lineHeight: 32,
     },
-})
+    listBox:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center',
+        minHeight:66,
+        borderBottomWidth:1,
+        borderColor:'#ebebeb',
+    },
+    listLabelRight: {
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems: 'center',
+
+    },
+    listLabelRightIcon: {
+        width:18,
+        height:18,
+        marginLeft:10,
+        tintColor:"#ccc"
+    }
+});
