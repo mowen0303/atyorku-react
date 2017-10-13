@@ -3,7 +3,7 @@ import {View, StyleSheet, ListView, StatusBar, Text} from 'react-native';
 import ForumCell from './component/forum-cell.component'
 import ForumService from './service/forum.service';
 import CommentCell from './component/comment-cell.component'
-import LoadMoreBar from '../../commonComponent/loadingView';
+import {LoadMore} from '../../commonComponent/loadingView';
 
 
 export default class ForumDetailPage extends Component {
@@ -35,7 +35,7 @@ export default class ForumDetailPage extends Component {
                     renderRow={(data) => <CommentCell data={data}/>}
                     renderHeader={() => <ForumCell data={this.props.navigation.state.params.data} activeOpacity={1}
                                                    isImageFullSize={true} isPressAble={false}/>}
-                    renderFooter={() => <LoadMoreBar isLoading={this.state.isLoading}/>}
+                    renderFooter={() => <LoadMore isLoading={this.state.isLoading}/>}
                     onEndReached={() => this.getComments()}
                     onEndReachedThreshold={this.state.onEndReachedThreshold}
                 />

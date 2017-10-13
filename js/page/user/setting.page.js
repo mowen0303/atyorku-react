@@ -81,8 +81,8 @@ export default class SettingPage extends Component {
                             <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.navigationToProfileModifyPage('年级')}}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>年级</Text>
+                    <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.navigationToProfileModifyPage('入学时间')}}>
+                        <Text style={[globalStyle.fontLight, styles.labelText]}>入学时间</Text>
                         <View style={globalStyles.listLabelRight}>
                             <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{CommonService.pipeOfUserEnrolmentYear(this.state.userData.enroll_year)}</Text>
                             <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
@@ -149,7 +149,7 @@ export default class SettingPage extends Component {
                 console.log('ImagePicker Error: ', response.error);
             }
             else {
-                //success
+                //success response
                 await this.setState({isLoading:true});
                 UserService.updateAvatar(response.uri,
                     (progress)=>{

@@ -116,7 +116,7 @@ export default class ProfileModifyPage extends Component {
                     </ScrollView>
                 </View>
             )
-        } else if(this.props.navigation.state.params.title === "年级") {
+        } else if(this.props.navigation.state.params.title === "入学时间") {
             return (
 
                 <View style={{flex:1}}>

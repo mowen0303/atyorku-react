@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {View, StyleSheet,StatusBar} from 'react-native';
+import {View, StyleSheet,Image, TouchableOpacity, Alert} from 'react-native';
 import ForumService from './service/forum.service';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import ForumListView from './component/forum-list-view.component';
+import UserService from "../user/service/user.service";
 
 const renderTabBar = props => (
     <DefaultTabBar {...props} style={{borderBottomWidth: 1, borderBottomColor: '#f4f4f4', height: 40, borderTopWidth:0}}/>);
@@ -16,11 +17,17 @@ export default class ForumListPage extends Component {
             loadingMore: false
         }
     }
+    static navigationOptions  = ({navigation}) => {
+        return {
+            title:'同学圈',
+            headerStyle:{backgroundColor:'#0e7477'},
+            headerTintColor:'#fff',
+            headerRight: <TouchableOpacity onPress={()=>{navigation.state.navigateToAddPage()}}><Image style={styles.addBtn} source={require('../../../res/icon/add.png')}/></TouchableOpacity>
+        }
+    }
 
-    static navigationOptions = {
-        title:'同学圈',
-        headerStyle:{backgroundColor:'#0e7477'},
-        headerTintColor:'#fff'
+    componentWillMount(){
+        this.props.navigation.state.navigateToAddPage = this.navigateToAddPage;
     }
 
     render() {
@@ -44,9 +51,22 @@ export default class ForumListPage extends Component {
         )
     }
 
-    load() {
-        ForumService.getForums().then(json => alert(json.message)).catch((error) => alert(error));
+    navigateToAddPage = ()=>{
+        UserService.getUserDataFromLocalStorage()
+            .then(result=>{
+                if(result!==null){
+                    this.props.navigation.navigate('ForumAddPage');
+                }else{
+                    Alert.alert("提示","请先登录");
+                }
+            })
+            .catch(error=>{
+                Alert.alert("提示","请先登录");
+            })
+
     }
+
+
 }
 
 const styles = StyleSheet.create({
@@ -66,5 +86,11 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5,
         tintColor: '#fff'
+    },
+    addBtn:{
+        tintColor:"#fff",
+        width:18,
+        height:18,
+        marginRight:10
     }
 });

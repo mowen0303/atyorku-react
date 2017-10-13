@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {View, ListView, RefreshControl} from 'react-native';
 import ForumService from '../service/forum.service';
 import ForumCell from './forum-cell.component'
-import LoadMoreBar from '../../../commonComponent/loadingView';
+import {LoadMore} from '../../../commonComponent/loadingView';
 
 
 export default class ForumListView extends Component {
@@ -40,7 +40,7 @@ export default class ForumListView extends Component {
                     }
                     onEndReached={() => this.loadNextPage()}
                     onEndReachedThreshold={30}
-                    renderFooter={() => <LoadMoreBar isLoading={this.state.isLoading}/>}
+                    renderFooter={() => <LoadMore isLoading={this.state.isLoading}/>}
                 />
             </View>
         )

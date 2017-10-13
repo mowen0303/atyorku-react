@@ -3,6 +3,7 @@ import {AppRegistry, Image, StyleSheet, StatusBar, View} from 'react-native';
 import {StackNavigator, TabNavigator, TabBarBottom} from "react-navigation";
 import ForumPage from './forum/forum-list.page'
 import ForumDetailPage from './forum/forum-detail.page'
+import ForumAddPage from './forum/forum-add.page';
 import HomePage from "./home/home.page";
 import LoginPage from './user/login.page';
 import MePage from "./user/me.page";
@@ -11,6 +12,7 @@ import MapPage from './map/map.page';
 import EventPage from './event/event.page';
 import BookPage from './book/book.page';
 import ProfileModifyPage from './user/profileModify.page';
+
 
 
 const tabs = TabNavigator({
@@ -77,13 +79,13 @@ const tabs = TabNavigator({
 const TabsNav = StackNavigator({
     Tabs: {screen: tabs},
     ForumDetailPage: {screen: ForumDetailPage},
+    ForumAddPage:{screen:ForumAddPage},
     LoginPage: {screen: LoginPage},
     SettingPage: {screen: SettingPage},
     MapPage:{screen:MapPage},
     BookPage:{screen:BookPage},
     EventPage:{screen:EventPage},
     ProfileModifyPage:{screen:ProfileModifyPage},
-
 }, {
     onNavigationStateChange: () => {
         alert(1)

@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {View, Text, StyleSheet, ActivityIndicator, Dimensions} from 'react-native';
 
-export default class LoadMore extends Component {
+export class LoadMore extends Component {
 
     static propTypes = {
         isLoading: PropTypes.bool
