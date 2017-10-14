@@ -12,8 +12,8 @@ import MapPage from './map/map.page';
 import EventPage from './event/event.page';
 import ProfileModifyPage from './user/profileModify.page';
 import BookPage from './book/book.page';
-import BookAddPage from './book/book-add.page.page';
-import BookDetailPage from './book/book-detail.page.page';
+import BookAddPage from './book/book-add.page';
+import BookDetailPage from './book/book-detail.page';
 
 
 

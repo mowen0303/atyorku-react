@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {View, StyleSheet, Button} from 'react-native';
 
 
-export default class BookPage extends Component {
+export default class BookAddPage extends Component {
 
 
     constructor(props) {
