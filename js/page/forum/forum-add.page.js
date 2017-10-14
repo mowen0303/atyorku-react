@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ScrollView, TextInput, ListView, StatusBar, Text} from 'react-native';
+import {View, StyleSheet, ScrollView, TextInput, Picker, Animated, ListView, StatusBar, Text} from 'react-native';
 import ForumCell from './component/forum-cell.component'
 import ForumService from './service/forum.service';
 import CommentCell from './component/comment-cell.component'
@@ -12,6 +12,8 @@ export default class ForumAddPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            category:null,
+            bounceValue: new Animated.Value(0),
         }
     }
 
@@ -21,12 +23,37 @@ export default class ForumAddPage extends Component {
         headerTintColor: '#fff'
     }
 
+    componentDidMount() {
+
+        this.state.bounceValue.setValue(1.5);     // Start large
+        Animated.decay(position, {   // coast to a stop
+            velocity: {x: gestureState.vx, y: gestureState.vy}, // velocity from gesture release
+            deceleration: 0.997,
+        }).start();                                // Start the animation
+    }
+
     render() {
 
         return (
-            <ScrollView style={styles.container}>
-                <TextInput multiline={true} style={styles.textInput}/>
-            </ScrollView>
+            <Animated.Image                         // Base: Image, Text, View
+                source={{uri: 'http://i.imgur.com/XMKOH81.jpg'}}
+                style={{
+                    flex: 1,
+                    transform: [                        // `transform` is an ordered array
+                        {scale: this.state.bounceValue},  // Map `bounceValue` to `scale`
+                    ]
+                }}
+            />
+            // <ScrollView style={styles.container}>
+            //
+            //     <TextInput multiline={true} style={styles.textInput}/>
+            //     <Picker style={{backgroundColor:'#ccc'}}
+            //         selectedValue={this.state.language}
+            //         onValueChange={(category) => this.setState({language: category})}>
+            //         <Picker.Item label="Java" value="java" />
+            //         <Picker.Item label="JavaScript" value="js" />
+            //     </Picker>
+            // </ScrollView>
         )
     }
 

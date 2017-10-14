@@ -76,7 +76,6 @@ export default class CommonService {
 
         oReq.onreadystatechange = (e) => {
             if (oReq.readyState !== 4) {
-                rejectCallback?rejectCallback():null;
                 return;
             }
 
@@ -86,7 +85,6 @@ export default class CommonService {
                 }catch (e){
                     rejectCallback?rejectCallback():null;
                 }
-                resolveCallback(JSON.parse(oReq.responseText));
             } else {
                 rejectCallback?rejectCallback():null;
             }

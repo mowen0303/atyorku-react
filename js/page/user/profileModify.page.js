@@ -338,8 +338,7 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         backgroundColor:"#fff",
-        paddingLeft:22,
-        paddingRight:22,
+        paddingHorizontal:24,
 
     },
     button:{

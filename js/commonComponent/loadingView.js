@@ -8,12 +8,15 @@ export class LoadMore extends Component {
     }
 
     static defaultProps = {
-        isLoading: false,
+        isLoading: true,
     }
     render() {
-        if (this.props.isLoadingMore === true) {
+        if (this.props.isLoading === true) {
             return (
-                <View style={styles.container}>
+                <View style={{
+                    height: 100,
+                    justifyContent: 'center',
+                    flexDirection: 'row',}}>
                     <ActivityIndicator/>
                 </View>
             )
@@ -57,18 +60,3 @@ export class LoadMiddle extends Component {
         }
     }
 }
-
-
-
-const styles = StyleSheet.create({
-    container: {
-        height: 100,
-        justifyContent: 'center',
-        flexDirection: 'row',
-    },
-    text: {
-        alignItems: 'center',
-        color: '#ccc',
-        marginTop: 20
-    }
-});

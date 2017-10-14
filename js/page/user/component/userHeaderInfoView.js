@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 14,
         color:"#484848",
-        marginRight:10
+        marginRight:10,
+        marginTop:6
     },
     avatar: {
         width: 60,
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         borderBottomWidth:1,
         paddingBottom:10,
-        borderTopWidth:1,
+
         borderColor:"#ebebeb",
         paddingTop:10,
         paddingLeft:10,

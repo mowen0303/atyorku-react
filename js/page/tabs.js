@@ -10,8 +10,11 @@ import MePage from "./user/me.page";
 import SettingPage from './user/setting.page';
 import MapPage from './map/map.page';
 import EventPage from './event/event.page';
-import BookPage from './book/book.page';
 import ProfileModifyPage from './user/profileModify.page';
+import BookPage from './book/book.page';
+import BookAddPage from './book/book-add.page.page';
+import BookDetailPage from './book/book-detail.page.page';
+
 
 
 
@@ -84,6 +87,8 @@ const TabsNav = StackNavigator({
     SettingPage: {screen: SettingPage},
     MapPage:{screen:MapPage},
     BookPage:{screen:BookPage},
+    BookAddPage:{screen:BookAddPage},
+    BookDetailPage:{screen:BookDetailPage},
     EventPage:{screen:EventPage},
     ProfileModifyPage:{screen:ProfileModifyPage},
 }, {

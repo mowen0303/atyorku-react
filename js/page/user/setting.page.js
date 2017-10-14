@@ -41,62 +41,62 @@ export default class SettingPage extends Component {
             <View style={{flex:1}}>
                 <ScrollView style={styles.container}>
                     <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.pickUpPhoto()}}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>头像</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>头像</Text>
                         <View style={globalStyles.listLabelRight}>
                             <Image  style={styles.avatar} source={{uri: CommonService.host + this.state.userData.img}}/>
                             <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
                         </View>
                     </TouchableOpacity>
                     <View activeOpacity={0.7} style={globalStyle.listBox}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>用户名</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>用户名</Text>
                         <View style={globalStyles.listLabelRight}>
                             <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.name}</Text>
                         </View>
                     </View>
                     <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.navigationToProfileModifyPage('昵称')}}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>昵称</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>昵称</Text>
                         <View style={globalStyles.listLabelRight}>
                             <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.alias}</Text>
                             <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.navigationToProfileModifyPage('性别')}}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>性别</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>性别</Text>
                         <View style={globalStyles.listLabelRight}>
                             <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{CommonService.pipeOfUserGender(this.state.userData.gender)}</Text>
                             <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.navigationToProfileModifyPage('签名')}}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>签名</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>签名</Text>
                         <View style={globalStyles.listLabelRight}>
                             <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.description}</Text>
                             <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.navigationToProfileModifyPage('专业')}}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>专业</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>专业</Text>
                         <View style={globalStyles.listLabelRight}>
                             <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.major}</Text>
                             <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.navigationToProfileModifyPage('入学时间')}}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>入学时间</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>入学时间</Text>
                         <View style={globalStyles.listLabelRight}>
                             <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{CommonService.pipeOfUserEnrolmentYear(this.state.userData.enroll_year)}</Text>
                             <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.navigationToProfileModifyPage('学历')}}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>学历</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>学历</Text>
                         <View style={globalStyles.listLabelRight}>
                             <Text style={[globalStyle.fontLight, styles.labelTextRight]}>{this.state.userData.degree}</Text>
                             <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.navigationToProfileModifyPage('修改密码')}}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>修改密码</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>修改密码</Text>
                         <View style={globalStyles.listLabelRight}>
                             <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
                         </View>
@@ -131,8 +131,8 @@ export default class SettingPage extends Component {
         let options = {
             title: '上传头像',
             allowsEditing:true,
-            maxWidth:300,
-            maxHeight:300,
+            maxWidth:400,
+            maxHeight:400,
             quality:0.8,
             takePhotoButtonTitle:"拍照",
             chooseFromLibraryButtonTitle:"打开相册",
@@ -152,9 +152,9 @@ export default class SettingPage extends Component {
                 //success response
                 await this.setState({isLoading:true});
                 UserService.updateAvatar(response.uri,
-                    (progress)=>{
+                    async (progress)=>{
                         console.log(progress);
-                        this.setState({isLoadingText:"上传进度"+progress});
+                        await this.setState({isLoadingText:"上传进度"+progress});
                     },
                     async (json)=>{
                         console.log(json);
@@ -181,8 +181,7 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         backgroundColor:"#fff",
-        paddingLeft:22,
-        paddingRight:22,
+        paddingHorizontal:24,
         paddingTop:20
     },
     labelText:{

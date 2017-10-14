@@ -40,7 +40,7 @@ export default class ForumListView extends Component {
                     }
                     onEndReached={() => this.loadNextPage()}
                     onEndReachedThreshold={30}
-                    renderFooter={() => <LoadMore isLoading={this.state.isLoading}/>}
+                    renderFooter={() => <LoadMore isLoading={this.state.isLoadingMore}/>}
                 />
             </View>
         )

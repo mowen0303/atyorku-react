@@ -15,7 +15,7 @@ export default class ForumDetailPage extends Component {
         super(props);
         this.state = {
             listViewDataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-            isLoadingMore: false,
+            isLoading: false,
             onEndReachedThreshold: 10
         }
     }
@@ -39,6 +39,7 @@ export default class ForumDetailPage extends Component {
                     onEndReached={() => this.getComments()}
                     onEndReachedThreshold={this.state.onEndReachedThreshold}
                 />
+
             </View>
         )
     }
@@ -50,11 +51,9 @@ export default class ForumDetailPage extends Component {
 
     async getComments() {
 
-        if (this.state.isLoading === true) {
-            return false;
-        }
+        if (this.state.isLoading === true) {return false;}
 
-        await this.setState({isLoadingMore: true});
+        await this.setState({isLoading: true});
 
         ForumService.getComments(this.props.navigation.state.params.data.id, this.page)
             .then(async (json) => {
@@ -71,7 +70,7 @@ export default class ForumDetailPage extends Component {
                 } else {
                     await this.setState({onEndReachedThreshold: -10000})
                 }
-                await this.setState({isLoadingMore: false})
+                await this.setState({isLoading: false})
             })
             .catch((error) => alert(error));
     }

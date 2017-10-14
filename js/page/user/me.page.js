@@ -34,23 +34,23 @@ export default class MePage extends Component {
                 {this.elementUserHeader()}
                 <View style={styles.listContainer}>
                     <TouchableOpacity activeOpacity={0.7} style={styles.listBox} onPress={this.navigateToSettingPage}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>消息</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>消息</Text>
                         <Image style={styles.icon} source={require('../../../res/icon/message.png')}/>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>我的发布</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>我的发布</Text>
                         <Image style={styles.icon} source={require('../../../res/icon/myforum.png')}/>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>收藏</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>收藏</Text>
                         <Image style={styles.icon} source={require('../../../res/icon/collection.png')}/>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>点券</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>点券</Text>
                         <Image style={styles.icon} source={require('../../../res/icon/credit.png')}/>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.7} style={styles.listBox} onPress={this.navigateToSettingPage}>
-                        <Text style={[globalStyle.fontLight, styles.labelText]}>个人设置</Text>
+                        <Text style={[globalStyle.font, styles.labelText]}>个人设置</Text>
                         <Image style={styles.icon} source={require('../../../res/icon/setting.png')}/>
                     </TouchableOpacity>
                 </View>
@@ -115,10 +115,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        padding: 22,
+        padding: 24,
     },
     listContainer:{
-        marginTop:40
+        marginTop:60
     },
     labelBox: {
         flexDirection: 'row',
@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
     },
     labelText: {
         marginTop: 2,
-        marginLeft: 8,
         color: '#484848',
         fontSize:16,
     },
