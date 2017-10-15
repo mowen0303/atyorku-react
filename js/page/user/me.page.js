@@ -156,12 +156,13 @@ const styles = StyleSheet.create({
         marginTop:24,
         height:40,
         overflow:'hidden',
-        backgroundColor:'#484848'
+        backgroundColor:'#484848',
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:"center",
     },
     loginText:{
-        lineHeight:40,
-        fontSize:18,
-        textAlign:'center',
+        fontSize:16,
         fontWeight:'normal',
         color:'#fff'
     }

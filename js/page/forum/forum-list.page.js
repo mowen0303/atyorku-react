@@ -22,6 +22,7 @@ export default class ForumListPage extends Component {
             title:'同学圈',
             headerStyle:{backgroundColor:'#0e7477'},
             headerTintColor:'#fff',
+            headerBackTitle:null,
             headerRight: <TouchableOpacity onPress={()=>{navigation.state.navigateToAddPage()}}><Image style={styles.addBtn} source={require('../../../res/icon/add.png')}/></TouchableOpacity>
         }
     }
@@ -54,14 +55,14 @@ export default class ForumListPage extends Component {
     navigateToAddPage = ()=>{
         UserService.getUserDataFromLocalStorage()
             .then(result=>{
-                if(result!==null){
+                if(result !== null){
                     this.props.navigation.navigate('ForumAddPage');
                 }else{
                     Alert.alert("提示","请先登录");
                 }
             })
             .catch(error=>{
-                Alert.alert("提示","请先登录");
+                Alert.alert("提示",error);
             })
 
     }

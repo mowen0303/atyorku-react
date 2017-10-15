@@ -9,7 +9,7 @@ export default class HomePage extends Component {
 
     static navigationOptions = ({navigation}) => {
         return {
-            headerRight: <Button title={"登录"} color="#000" onPress={() => navigation.state.login()}/>
+            headerRight: <Button style={{marginRight:10}} title={"登录"} color="#000" onPress={() => navigation.state.login()}/>
         }
     }
 

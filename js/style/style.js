@@ -43,5 +43,18 @@ export default globalStyles = StyleSheet.create({
         height:18,
         marginLeft:10,
         tintColor:"#ccc"
+    },
+    listLabelRightText:{
+        fontSize:15,
+        color:"#484848",
+        maxWidth:220,
+        textAlign:'right'
+    },
+    listLabelLeftText:{
+        fontSize:17,
+        color:"#484848",
+    },
+    headerLiteralButton:{
+        marginRight:10
     }
 });

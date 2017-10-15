@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ScrollView, TextInput, Picker, Animated, ListView, StatusBar, Text} from 'react-native';
+import {View, StyleSheet, ScrollView, TextInput, Picker,TouchableOpacity, LayoutAnimation, ListView, StatusBar, Text} from 'react-native';
 import ForumCell from './component/forum-cell.component'
 import ForumService from './service/forum.service';
 import CommentCell from './component/comment-cell.component'
@@ -13,7 +13,7 @@ export default class ForumAddPage extends Component {
         super(props);
         this.state = {
             category:null,
-            bounceValue: new Animated.Value(0),
+            bottom: -250,
         }
     }
 
@@ -23,38 +23,34 @@ export default class ForumAddPage extends Component {
         headerTintColor: '#fff'
     }
 
-    componentDidMount() {
-
-        this.state.bounceValue.setValue(1.5);     // Start large
-        Animated.decay(position, {   // coast to a stop
-            velocity: {x: gestureState.vx, y: gestureState.vy}, // velocity from gesture release
-            deceleration: 0.997,
-        }).start();                                // Start the animation
-    }
 
     render() {
 
         return (
-            <Animated.Image                         // Base: Image, Text, View
-                source={{uri: 'http://i.imgur.com/XMKOH81.jpg'}}
-                style={{
-                    flex: 1,
-                    transform: [                        // `transform` is an ordered array
-                        {scale: this.state.bounceValue},  // Map `bounceValue` to `scale`
-                    ]
-                }}
-            />
-            // <ScrollView style={styles.container}>
-            //
-            //     <TextInput multiline={true} style={styles.textInput}/>
-            //     <Picker style={{backgroundColor:'#ccc'}}
-            //         selectedValue={this.state.language}
-            //         onValueChange={(category) => this.setState({language: category})}>
-            //         <Picker.Item label="Java" value="java" />
-            //         <Picker.Item label="JavaScript" value="js" />
-            //     </Picker>
-            // </ScrollView>
+        <View style={{flex:1}}>
+            <ScrollView style={styles.container}>
+                <TextInput multiline={true} style={styles.textInput}/>
+                <Text onPress={()=>{this.openPicker()}}>123</Text>
+            </ScrollView>
+            <View style={{backgroundColor:'#eee',position:'absolute', left:0,right:0, bottom:this.state.bottom}}>
+                <View style={styles.doneBox}><TouchableOpacity onPress={()=>{this.closePicker()}} style={styles.doneBtn}><Text style={styles.doneText}>完成</Text></TouchableOpacity></View>
+                <Picker selectedValue={this.state.language} onValueChange={(category) => this.setState({language: category})}>
+                    <Picker.Item label="Java" value="java" />
+                    <Picker.Item label="JavaScript" value="js" />
+                </Picker>
+            </View>
+        </View>
         )
+    }
+
+    openPicker(){
+        LayoutAnimation.easeInEaseOut();
+        this.setState({bottom:0})
+    }
+
+    closePicker(){
+        LayoutAnimation.easeInEaseOut();
+        this.setState({bottom:-250})
     }
 
 }
@@ -71,5 +67,22 @@ const styles = StyleSheet.create({
         fontSize:16,
         padding:10
 
+    },
+    doneBox:{
+        height:40,
+        justifyContent:'flex-end',
+        flexDirection:'row',
+        backgroundColor:'#fff',
+        borderTopWidth:1,
+        borderTopColor:'#e4e4e4'
+    },
+    doneBtn:{
+        width:80,
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:"center",
+    },
+    doneText:{
+        color:'#0e7477'
     }
 });
