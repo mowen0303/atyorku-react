@@ -70,7 +70,7 @@ export default class UserService {
      */
     static updateAvatar(imgData,progressCallback, resolveCallback, rejectCallback) {
         let url = `${CommonService.host}/admin/user/userController.php?action=userUpdateHeadImgWithJson`;
-        CommonService.uploadFile(url,'file',imgData,progressCallback, resolveCallback, rejectCallback);
+        console.log(CommonService.uploadFile(url,'file',imgData,false,progressCallback, resolveCallback, rejectCallback));
     }
 
     /**

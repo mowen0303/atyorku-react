@@ -72,9 +72,12 @@ const tabs = TabNavigator({
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     lazy: true,
+    swipeEnabled:false,
+    animationEnabled:false,
     tabBarOptions: {
         activeTintColor: '#f14b61',
-        style: {backgroundColor: '#fff', borderTopWidth: 0}
+        style: {backgroundColor: '#fff', borderTopWidth: 0},
+
     }
 });
 
@@ -112,8 +115,13 @@ class App extends Component {
                 let index = current.routes[0].index;
                 if ((index === 0 || index === 3) && current.index === 0) {
                     StatusBar.setBarStyle('dark-content', false);
-                } else if (current.index === 0) {
+                    StatusBar.setBackgroundColor('#fff');
+                }else if (index === 1 && current.index === 0) {
                     StatusBar.setBarStyle('light-content', false);
+                    StatusBar.setBackgroundColor('#0e7477');
+                }else if (index === 2 && current.index === 0) {
+                    StatusBar.setBarStyle('light-content', false);
+                    StatusBar.setBackgroundColor('#0e7477');
                 }
             }}/>
         )

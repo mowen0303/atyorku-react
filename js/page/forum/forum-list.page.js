@@ -1,24 +1,26 @@
 import React, {Component} from 'react';
-import {View, StyleSheet,Image, TouchableOpacity, Alert} from 'react-native';
+import {View, StyleSheet,Image, TouchableOpacity,Text, Alert} from 'react-native';
 import ForumService from './service/forum.service';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import ForumListView from './component/forum-list-view.component';
 import UserService from "../user/service/user.service";
+import {LoadMiddle} from '../../commonComponent/loadingView';
 
-const renderTabBar = props => (
-    <DefaultTabBar {...props} style={{borderBottomWidth: 1, borderBottomColor: '#f4f4f4', height: 40, borderTopWidth:0}}/>);
+const renderTabBar = props => (<DefaultTabBar {...props} style={{borderBottomWidth: 1, borderBottomColor: '#f4f4f4', height: 40, borderTopWidth:0}}/>);
 
 export default class ForumListPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            categoriesData: [],
-            loadingMore: false
+            categoriesData: null,
+            loadingMore: false,
+            isLoadingCategories:false,
         }
     }
     static navigationOptions  = ({navigation}) => {
         return {
+            statusBarStyle: 'dark-content',
             title:'同学圈',
             headerStyle:{backgroundColor:'#0e7477'},
             headerTintColor:'#fff',
@@ -27,36 +29,60 @@ export default class ForumListPage extends Component {
         }
     }
 
-    componentWillMount(){
+    async componentDidMount(){
         this.props.navigation.state.navigateToAddPage = this.navigateToAddPage;
+        this.getCategories();
+
     }
 
     render() {
         return (
-
             <View style={styles.container}>
-                <ScrollableTabView renderTabBar={renderTabBar}
-                                   tabBarBackgroundColor={'#fff'}
-                                   tabBarActiveTextColor={'#0e7477'}
-                                   tabBarInactiveTextColor={'#aaa'}
-                                   tabBarTextStyle={{marginTop: 10, fontSize: 15}}
-                                   tabBarUnderlineStyle={{backgroundColor: '#0e7477', height: 2, borderRadius: 1}}>
-                    <ForumListView {...this.props} categoryId="0" tabLabel="全部"/>
-                    <ForumListView {...this.props} categoryId="1" tabLabel="杂谈"/>
-                    <ForumListView {...this.props} categoryId="5" tabLabel="约"/>
-                    <ForumListView {...this.props} categoryId="4" tabLabel="讨论"/>
-                    <ForumListView {...this.props} categoryId="3" tabLabel="交易"/>
-                </ScrollableTabView>
-
+                {this.elementScrollableTableView()}
+                <LoadMiddle isLoading={this.state.isLoadingCategories}/>
             </View>
         )
     }
+
+    async getCategories(){
+        await this.setState({isLoadingCategories:true});
+        ForumService.getCategories()
+            .then(async json=>{
+                await this.setState({isLoadingCategories:false});
+                if(json.code===1){
+                    await this.setState({categoriesData:json.result});
+                }else{
+                    Alert.alert('提示',json.message);
+                }
+
+            })
+            .catch(error=>{
+                this.setState({isLoadingCategories:false});
+                Alert.alert('网络环境异常');
+            })
+    }
+
+    elementScrollableTableView(){
+        if(this.state.categoriesData !== null){
+            return (
+            <ScrollableTabView renderTabBar={renderTabBar}
+                              tabBarBackgroundColor={'#fff'}
+                              tabBarActiveTextColor={'#0e7477'}
+                              tabBarInactiveTextColor={'#aaa'}
+                              tabBarTextStyle={{marginTop: 10, fontSize: 15}}
+                              tabBarUnderlineStyle={{backgroundColor: '#0e7477', height: 2, borderRadius: 1}}>
+                {this.state.categoriesData.map(category=><ForumListView key={category.id} {...this.props} categoryId={category.id} tabLabel={category.title}/>)}
+            </ScrollableTabView>
+            )
+        }
+    }
+
 
     navigateToAddPage = ()=>{
         UserService.getUserDataFromLocalStorage()
             .then(result=>{
                 if(result !== null){
-                    this.props.navigation.navigate('ForumAddPage');
+                    this.props.navigation.navigate('ForumAddPage',{categoriesData:this.state.categoriesData});
                 }else{
                     Alert.alert("提示","请先登录");
                 }

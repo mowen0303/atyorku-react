@@ -1,3 +1,4 @@
+import {AsyncStorage} from 'react-native';
 import CommonService from '../../../service/common.service'
 
 export default class ForumService {
@@ -11,6 +12,31 @@ export default class ForumService {
         return fetch(url).then(response => response.json());
     }
 
+    static saveCategoriesToLocalStorage(data) {
+        AsyncStorage.setItem('forumCategories', JSON.stringify(data), (error) => {
+            if (error) {
+                Alert.alert('储存提示', '本地储存功能失败，请联系管理员微信号:jiyu55')
+            }
+        })
+    }
+
+    static getCategoriesFromLocalStorage() {
+        return AsyncStorage.getItem('forumCategories').then(result => JSON.parse(result));
+    }
+
+    static addForum(forum_class_id, content, price, category, img1, progressCallback, resolveCallback, rejectCallback) {
+        let url = `${CommonService.host}/admin/forum/forumController.php?action=addForumWithJson`;
+        let optionalData = {
+            flag: 'add',
+            forum_class_id: forum_class_id,
+            content: content,
+            price: price,
+            category: category
+        };
+        console.log(".....");
+        console.log(img1);
+        CommonService.uploadFile(url, 'img1', img1, optionalData, progressCallback, resolveCallback, rejectCallback);
+    }
 
     /**
      * Get forums
@@ -41,11 +67,10 @@ export default class ForumService {
      * @param forumId
      * @returns {*}
      */
-    static addOnceView(forumId){
-        let url=`${CommonService.host}/admin/forum/forumController.php?action=countViewOfForumByIdWithJson&id=${forumId}`;
+    static addOnceView(forumId) {
+        let url = `${CommonService.host}/admin/forum/forumController.php?action=countViewOfForumByIdWithJson&id=${forumId}`;
         return fetch(url);
     }
-
 
 
 }

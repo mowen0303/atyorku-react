@@ -56,11 +56,68 @@ export default class CommonService {
      * @param resolveCallback
      * @param rejectCallback
      */
-    static uploadFile(url, filePostName, imgData, progressCallback, resolveCallback, rejectCallback) {
+
+    // static uploadFile(url, filePostName, imgData, progressCallback, resolveCallback, rejectCallback) {
+    //
+    //     let formData = new FormData();
+    //     let file = {uri: imgData, type: 'image/jpeg', name: 'image.jpg'};
+    //     formData.append(filePostName, file);
+    //
+    //     let oReq = new XMLHttpRequest();
+    //
+    //     if(progressCallback){
+    //         oReq.upload.onprogress = (e) => {
+    //             if (e.lengthComputable) {
+    //                 progressCallback(Math.floor(e.loaded / e.total *100)+"%");
+    //             } else {
+    //                 console.log("无进度");
+    //             }
+    //         }
+    //     }
+    //
+    //     oReq.onreadystatechange = (e) => {
+    //         if (oReq.readyState !== 4) {
+    //             return;
+    //         }
+    //
+    //         if (oReq.status === 200) {
+    //             try{
+    //                 resolveCallback(JSON.parse(oReq.responseText));
+    //             }catch (e){
+    //                 rejectCallback?rejectCallback():null;
+    //             }
+    //         } else {
+    //             rejectCallback?rejectCallback():null;
+    //         }
+    //     };
+    //
+    //     oReq.open("POST", url, true);
+    //     oReq.send(formData);
+    // }
+    /**
+     * upload file with optional data
+     * @param url:string
+     * @param filePostName:string  - file form name
+     * @param imgData:string - img url
+     * @param optionalData:any
+     * @param progressCallback
+     * @param resolveCallback
+     * @param rejectCallback
+     */
+    static uploadFile(url, filePostName, imgData, optionalData, progressCallback, resolveCallback, rejectCallback) {
 
         let formData = new FormData();
-        let file = {uri: imgData, type: 'image/jpeg', name: 'image.jpg'};
-        formData.append(filePostName, file);
+        if((filePostName!==false && filePostName!==null) && (imgData!==false && imgData!==null)){
+            let file = {uri: imgData, type: 'image/jpeg', name: 'image.jpg'};
+            formData.append(filePostName, file);
+            console.log(123);
+        }
+
+        if(optionalData!==false){
+            for(let prop in optionalData){
+                formData.append(prop, optionalData[prop]);
+            }
+        }
 
         let oReq = new XMLHttpRequest();
 
@@ -81,6 +138,7 @@ export default class CommonService {
 
             if (oReq.status === 200) {
                 try{
+                    console.log(oReq.responseText);
                     resolveCallback(JSON.parse(oReq.responseText));
                 }catch (e){
                     rejectCallback?rejectCallback():null;

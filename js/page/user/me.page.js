@@ -30,31 +30,33 @@ export default class MePage extends Component {
     render() {
 
         return (
-            <ScrollView style={styles.container}>
-                {this.elementUserHeader()}
-                <View style={styles.listContainer}>
-                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox} onPress={this.navigateToSettingPage}>
-                        <Text style={[globalStyle.font, styles.labelText]}>消息</Text>
-                        <Image style={styles.icon} source={require('../../../res/icon/message.png')}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                        <Text style={[globalStyle.font, styles.labelText]}>我的发布</Text>
-                        <Image style={styles.icon} source={require('../../../res/icon/myforum.png')}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                        <Text style={[globalStyle.font, styles.labelText]}>收藏</Text>
-                        <Image style={styles.icon} source={require('../../../res/icon/collection.png')}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
-                        <Text style={[globalStyle.font, styles.labelText]}>点券</Text>
-                        <Image style={styles.icon} source={require('../../../res/icon/credit.png')}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.7} style={styles.listBox} onPress={this.navigateToSettingPage}>
-                        <Text style={[globalStyle.font, styles.labelText]}>个人设置</Text>
-                        <Image style={styles.icon} source={require('../../../res/icon/setting.png')}/>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
+            <View style={{flex:1}}>
+                <ScrollView style={styles.container}>
+                    {this.elementUserHeader()}
+                    <View style={styles.listContainer}>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.listBox} onPress={this.navigateToSettingPage}>
+                            <Text style={[globalStyle.font, styles.labelText]}>消息</Text>
+                            <Image style={styles.icon} source={require('../../../res/icon/message.png')}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
+                            <Text style={[globalStyle.font, styles.labelText]}>我的发布</Text>
+                            <Image style={styles.icon} source={require('../../../res/icon/myforum.png')}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
+                            <Text style={[globalStyle.font, styles.labelText]}>收藏</Text>
+                            <Image style={styles.icon} source={require('../../../res/icon/collection.png')}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.listBox}>
+                            <Text style={[globalStyle.font, styles.labelText]}>点券</Text>
+                            <Image style={styles.icon} source={require('../../../res/icon/credit.png')}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.listBox} onPress={this.navigateToSettingPage}>
+                            <Text style={[globalStyle.font, styles.labelText]}>个人设置</Text>
+                            <Image style={styles.icon} source={require('../../../res/icon/setting.png')}/>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+            </View>
         );
     }
 

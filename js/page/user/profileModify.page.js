@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import {View, ScrollView, StyleSheet,KeyboardAvoidingView, Alert, Platform, LayoutAnimation, TouchableOpacity,Text, Image, TextInput, Picker, DatePickerAndroid, DatePickerIOS} from 'react-native';
-import globalStyle from '../../style/style';
+import globalStyles from '../../style/style';
 import UserService from './service/user.service';
 import {LoadMiddle} from "../../commonComponent/loadingView";
 import CommonService from "../../service/common.service";
@@ -31,7 +31,7 @@ export default class ProfileModifyPage extends Component {
             headerStyle:{backgroundColor:"#fff"},
             title:navigation.state.params.title,
             headerTintColor:"#484848",
-            headerRight:navigation.state.params.showHeaderButton?<TouchableOpacity style={globalStyle.headerLiteralButton}  onPress={()=>{navigation.state.save()}}><Text>保存</Text></TouchableOpacity>:null
+            headerRight:navigation.state.params.showHeaderButton?<TouchableOpacity style={globalStyles.headerLiteralButton} onPress={()=>{navigation.state.save()}}><Text>保存</Text></TouchableOpacity>:null
     });
 
     componentWillMount(){
@@ -62,10 +62,10 @@ export default class ProfileModifyPage extends Component {
             return (
                 <View style={{flex:1}}>
                     <ScrollView style={styles.container} keyboardShouldPersistTaps={"always"}>
-                        <View style={globalStyle.inputBox}>
+                        <View style={globalStyles.inputBox}>
                             <TextInput
                                 ref="textInputRefer"
-                                style={[globalStyle.input, globalStyles.fontLight]}
+                                style={[globalStyles.input, globalStyles.fontLight]}
                                 selectionColor={"#484848"}
                                 placeholder={"昵称"}
                                 value={this.state.alias}
@@ -80,21 +80,21 @@ export default class ProfileModifyPage extends Component {
             return (
                 <View style={{flex:1}}>
                     <ScrollView style={styles.container} keyboardShouldPersistTaps={"always"}>
-                        <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateGender('1')}}>
-                            <Text style={[globalStyle.fontLight, styles.labelText]}>男</Text>
-                            <View style={globalStyle.listLabelRight}>
+                        <TouchableOpacity activeOpacity={0.7} style={globalStyles.listBox} onPress={()=>{this.updateGender('1')}}>
+                            <Text style={[globalStyles.fontLight, styles.labelText]}>男</Text>
+                            <View style={globalStyles.listLabelRight}>
                                 {this.elementSelectedIcon('1',this.state.gender)}
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateGender('0')}}>
-                            <Text style={[globalStyle.fontLight, styles.labelText]}>女</Text>
-                            <View style={globalStyle.listLabelRight}>
+                        <TouchableOpacity activeOpacity={0.7} style={globalStyles.listBox} onPress={()=>{this.updateGender('0')}}>
+                            <Text style={[globalStyles.fontLight, styles.labelText]}>女</Text>
+                            <View style={globalStyles.listLabelRight}>
                                 {this.elementSelectedIcon('0',this.state.gender)}
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateGender('2')}}>
-                            <Text style={[globalStyle.fontLight, styles.labelText]}>不明</Text>
-                            <View style={globalStyle.listLabelRight}>
+                        <TouchableOpacity activeOpacity={0.7} style={globalStyles.listBox} onPress={()=>{this.updateGender('2')}}>
+                            <Text style={[globalStyles.fontLight, styles.labelText]}>不明</Text>
+                            <View style={globalStyles.listLabelRight}>
                                 {this.elementSelectedIcon('2',this.state.gender)}
                             </View>
                         </TouchableOpacity>
@@ -106,10 +106,10 @@ export default class ProfileModifyPage extends Component {
             return (
                 <View style={{flex:1}}>
                     <ScrollView style={styles.container} keyboardShouldPersistTaps={"always"}>
-                        <View style={globalStyle.inputBox}>
+                        <View style={globalStyles.inputBox}>
                             <TextInput
                                 ref="textInputRefer"
-                                style={[globalStyle.input, globalStyles.fontLight]}
+                                style={[globalStyles.input, globalStyles.fontLight]}
                                 selectionColor={"#484848"}
                                 placeholder={"签名"}
                                 value={this.state.description}
@@ -124,10 +124,10 @@ export default class ProfileModifyPage extends Component {
             return (
                 <View style={{flex:1}}>
                     <ScrollView style={styles.container} keyboardShouldPersistTaps={"always"}>
-                        <View style={globalStyle.inputBox}>
+                        <View style={globalStyles.inputBox}>
                             <TextInput
                                 ref="textInputRefer"
-                                style={[globalStyle.input, globalStyles.fontLight]}
+                                style={[globalStyles.input, globalStyles.fontLight]}
                                 selectionColor={"#484848"}
                                 placeholder={"专业"}
                                 value={this.state.major}
@@ -143,8 +143,8 @@ export default class ProfileModifyPage extends Component {
 
                 <View style={{flex:1}}>
                     <ScrollView style={styles.container} keyboardShouldPersistTaps={"always"}>
-                        <TouchableOpacity activeOpacity={0.9} style={[globalStyle.inputBox]} onPress={()=>{this.openDataPicker()}}>
-                            <Text style={[globalStyle.input, globalStyles.fontLight,{paddingBottom:0}]}>{CommonService.pipeOfUserEnrolmentYear(this.state.enrollYear)}</Text>
+                        <TouchableOpacity activeOpacity={0.9} style={[globalStyles.inputBox]} onPress={()=>{this.openDataPicker()}}>
+                            <Text style={[globalStyles.input, globalStyles.fontLight,{paddingBottom:0}]}>{CommonService.pipeOfUserEnrolmentYear(this.state.enrollYear)}</Text>
                         </TouchableOpacity>
                     </ScrollView>
                     {this.elementDataPickerIOS()}
@@ -154,21 +154,21 @@ export default class ProfileModifyPage extends Component {
             return (
                 <View style={{flex:1}}>
                     <ScrollView style={styles.container} keyboardShouldPersistTaps={"always"}>
-                        <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateDegree('本科')}}>
-                            <Text style={[globalStyle.fontLight, styles.labelText]}>本科</Text>
-                            <View style={globalStyle.listLabelRight}>
+                        <TouchableOpacity activeOpacity={0.7} style={globalStyles.listBox} onPress={()=>{this.updateDegree('本科')}}>
+                            <Text style={[globalStyles.fontLight, styles.labelText]}>本科</Text>
+                            <View style={globalStyles.listLabelRight}>
                                 {this.elementSelectedIcon('本科',this.state.degree)}
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateDegree('研究生')}}>
-                            <Text style={[globalStyle.fontLight, styles.labelText]}>研究生</Text>
-                            <View style={globalStyle.listLabelRight}>
+                        <TouchableOpacity activeOpacity={0.7} style={globalStyles.listBox} onPress={()=>{this.updateDegree('研究生')}}>
+                            <Text style={[globalStyles.fontLight, styles.labelText]}>研究生</Text>
+                            <View style={globalStyles.listLabelRight}>
                                 {this.elementSelectedIcon('研究生',this.state.degree)}
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.7} style={globalStyle.listBox} onPress={()=>{this.updateDegree('博士')}}>
-                            <Text style={[globalStyle.fontLight, styles.labelText]}>博士</Text>
-                            <View style={globalStyle.listLabelRight}>
+                        <TouchableOpacity activeOpacity={0.7} style={globalStyles.listBox} onPress={()=>{this.updateDegree('博士')}}>
+                            <Text style={[globalStyles.fontLight, styles.labelText]}>博士</Text>
+                            <View style={globalStyles.listLabelRight}>
                                 {this.elementSelectedIcon('博士',this.state.degree)}
                             </View>
                         </TouchableOpacity>
@@ -180,10 +180,10 @@ export default class ProfileModifyPage extends Component {
             return (
                 <View style={{flex:1}}>
                     <KeyboardAvoidingView style={styles.container} keyboardShouldPersistTaps={"always"}>
-                        <View style={globalStyle.inputBox}>
+                        <View style={globalStyles.inputBox}>
                             <TextInput
                                 ref="textInputRefer"
-                                style={[globalStyle.input, globalStyles.fontLight]}
+                                style={[globalStyles.input, globalStyles.fontLight]}
                                 selectionColor={"#484848"}
                                 placeholder={"请输入现用密码"}
                                 clearButtonMode={'while-editing'}
@@ -191,10 +191,10 @@ export default class ProfileModifyPage extends Component {
                                 secureTextEntry={true}
                                 onChangeText={(text) => this.setState({oldPwd: text})}/>
                         </View>
-                        <View style={globalStyle.inputBox}>
+                        <View style={globalStyles.inputBox}>
                             <TextInput
                                 ref="textInputRefer"
-                                style={[globalStyle.input, globalStyles.fontLight]}
+                                style={[globalStyles.input, globalStyles.fontLight]}
                                 selectionColor={"#484848"}
                                 placeholder={"新密码"}
                                 clearButtonMode={'while-editing'}
@@ -202,10 +202,10 @@ export default class ProfileModifyPage extends Component {
                                 secureTextEntry={true}
                                 onChangeText={(text) => this.setState({newPwd: text})}/>
                         </View>
-                        <View style={globalStyle.inputBox}>
+                        <View style={globalStyles.inputBox}>
                             <TextInput
                                 ref="textInputRefer"
-                                style={[globalStyle.input, globalStyles.fontLight]}
+                                style={[globalStyles.input, globalStyles.fontLight]}
                                 selectionColor={"#484848"}
                                 placeholder={"确认新密码"}
                                 clearButtonMode={'while-editing'}
@@ -222,7 +222,7 @@ export default class ProfileModifyPage extends Component {
 
     elementSelectedIcon(currentVal,targetVal){
         if(currentVal === targetVal){
-            return <Image style={globalStyle.listLabelRightIcon} source={require('../../../res/icon/selected.png')}/>;
+            return <Image style={globalStyles.listLabelRightIcon} source={require('../../../res/icon/selected.png')}/>;
         }
     }
     updateAlias = ()=>{
