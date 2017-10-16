@@ -15,11 +15,12 @@ export default class ForumAddPage extends Component {
         this.state = {
             bottom: -250,
             categoriesData:this.props.navigation.state.params.categoriesData,
-            selectedCategory:null,
             image1Source:null,
             content:null,
             progress:"发布中 0%",
             isLoading:false,
+            selectedCategoryIndex:0,
+            selectedCategoryId:0,
         }
     }
 
@@ -43,8 +44,8 @@ export default class ForumAddPage extends Component {
                     ref="textInputRefer"
                     style={styles.textInput}
                     selectionColor={"#484848"}
+                    multiline={true}
                     placeholder={"说点什么吧..."}
-                    clearButtonMode={'while-editing'}
                     underlineColorAndroid={"rgba(255, 255, 255, 0)"}
                     onChangeText={(text) => this.setState({content: text})}/>
                 {this.elementPicker()}
@@ -69,7 +70,7 @@ export default class ForumAddPage extends Component {
         }
         if(this.state.isLoading === true){return false;}
         await this.setState({isLoading:true});
-        ForumService.addForum(this.state.selectedCategory.id, this.state.content, "10", "sell", this.state.image1Source,
+        ForumService.addForum(this.state.selectedCategoryId, this.state.content, "10", "sell", this.state.image1Source,
             async (progress)=> {
                 await this.setState({progress:"发布中 "+progress});
             },
@@ -98,14 +99,22 @@ export default class ForumAddPage extends Component {
         this.setState({bottom:-250})
     }
 
+    elementPickerTextIOS(){
+        if(this.state.selectedCategoryId===0){
+            return <Text>请选择</Text>
+        }else{
+            return <Text>{this.state.categoriesData[this.state.selectedCategoryIndex].title}</Text>
+        }
+    }
+
     elementPicker(){
         if (Platform.OS === 'ios'){
             return (
                 <TouchableOpacity activeOpacity={0.7} style={styles.listBox} onPress={()=>{this.openPicker()}}>
-                    <Text>分类</Text>
+                    <Text style={{color:'#666'}}>选择分类</Text>
                     <View style={styles.listRight}>
-                        <Text>123123</Text>
-                        <Image style={styles.listRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
+                        {this.elementPickerTextIOS()}
+                        <Image style={styles.listRightIcon} source={require('../../../res/icon/downtriangle.png')}/>
                     </View>
                 </TouchableOpacity>
             )
@@ -114,12 +123,12 @@ export default class ForumAddPage extends Component {
                 <View style={styles.pickerAndroidBox}>
                     <View style={styles.pickerAndroidTextBox}><Text>选择分类</Text></View>
                     <View style={{flex:1}}>
-                        <Picker style={styles.pickerAndroid} selectedValue={this.state.selectedCategory} onValueChange={(selectedCategory) => this.setState({selectedCategory: selectedCategory})}>
+                        <Picker selectedValue={this.state.selectedCategoryId} onValueChange={this.onValueChangeOfPicker}>
                             {this.state.categoriesData.map(category=>{
                                 if(category.id!=="0"){
-                                    return <Picker.Item key={category.id} label={category.title} value={category} />;
+                                    return <Picker.Item key={category.id}  label={category.title}  value={category.id} />;
                                 }else{
-                                    return <Picker.Item key={0} label={"请选择..."} value={null} />;
+                                    return <Picker.Item key={category.id}  label={"请选择"} value={0} />;
                                 }
                             })}
                         </Picker>
@@ -134,13 +143,22 @@ export default class ForumAddPage extends Component {
             return (
                 <View style={{backgroundColor:'#eee',position:'absolute', left:0,right:0, bottom:this.state.bottom}}>
                     <View style={styles.doneBox}><TouchableOpacity onPress={()=>{this.closePicker()}} style={styles.doneBtn}><Text style={styles.doneText}>完成</Text></TouchableOpacity></View>
-                    <Picker selectedValue={this.state.language} onValueChange={(category) => this.setState({language: category})}>
-                        <Picker.Item label="Java" value="java" />
-                        <Picker.Item label="JavaScript" value="js" />
+                    <Picker selectedValue={this.state.selectedCategoryId} onValueChange={this.onValueChangeOfPicker}>
+                        {this.state.categoriesData.map(category=>{
+                            if(category.id!=="0"){
+                                return <Picker.Item key={category.id}  label={category.title}  value={category.id} />;
+                            }else{
+                                return <Picker.Item key={category.id}  label={"请选择"} value={0} />;
+                            }
+                        })}
                     </Picker>
                 </View>
             )
         }
+    }
+
+    onValueChangeOfPicker = (itemValue,itemIndex)=>{
+         this.setState({selectedCategoryId: itemValue, selectedCategoryIndex:itemIndex});
     }
 
     pickUpPhoto(){
@@ -172,7 +190,7 @@ export default class ForumAddPage extends Component {
 
     elementImgage1(url){
         if(url===null){
-            return <Image style={styles.selectedImg} source={require("../../../res/icon/add.png")}/>;
+            return <Image style={styles.selectedImg} source={require("../../../res/icon/addpicture.png")}/>;
         }else{
             return <Image style={styles.selectedImg} source={{uri:url}}/>;
         }
@@ -213,7 +231,8 @@ const styles = StyleSheet.create({
     listBox:{
         flexDirection:'row',
         justifyContent:'space-between',
-        padding:10,
+        paddingVertical:20,
+        paddingHorizontal:20,
         backgroundColor:'#fff',
         marginTop:16,
         alignItems:'center',
@@ -224,7 +243,8 @@ const styles = StyleSheet.create({
     },
     listRightIcon:{
         width:10,
-        height:10
+        height:10,
+        marginHorizontal:10
     },
     pickerAndroidBox:{
         flexDirection:'row',
@@ -235,7 +255,7 @@ const styles = StyleSheet.create({
     pickerAndroidTextBox:{
         marginRight:20,
         backgroundColor:"#fff",
-        marginLeft:20
+        marginLeft:20,
     },
     pictureButton:{
         width:80,

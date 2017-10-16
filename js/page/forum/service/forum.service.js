@@ -33,8 +33,6 @@ export default class ForumService {
             price: price,
             category: category
         };
-        console.log(".....");
-        console.log(img1);
         CommonService.uploadFile(url, 'img1', img1, optionalData, progressCallback, resolveCallback, rejectCallback);
     }
 

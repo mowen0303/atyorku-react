@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, Image, StyleSheet, StatusBar, View} from 'react-native';
+import {AppRegistry, Image, StyleSheet, StatusBar, Platform} from 'react-native';
 import {StackNavigator, TabNavigator, TabBarBottom} from "react-navigation";
 import ForumPage from './forum/forum-list.page'
 import ForumDetailPage from './forum/forum-detail.page'
@@ -115,13 +115,20 @@ class App extends Component {
                 let index = current.routes[0].index;
                 if ((index === 0 || index === 3) && current.index === 0) {
                     StatusBar.setBarStyle('dark-content', false);
-                    StatusBar.setBackgroundColor('#fff');
+                    if(Platform.OS === 'android'){
+                        StatusBar.setBackgroundColor('#fff');
+                    }
+
                 }else if (index === 1 && current.index === 0) {
                     StatusBar.setBarStyle('light-content', false);
-                    StatusBar.setBackgroundColor('#0e7477');
+                    if(Platform.OS === 'android'){
+                        StatusBar.setBackgroundColor('#0e7477');
+                    }
                 }else if (index === 2 && current.index === 0) {
                     StatusBar.setBarStyle('light-content', false);
-                    StatusBar.setBackgroundColor('#0e7477');
+                    if(Platform.OS === 'android'){
+                        StatusBar.setBackgroundColor('#0e7477');
+                    }
                 }
             }}/>
         )
