@@ -70,5 +70,15 @@ export default class ForumService {
         return fetch(url);
     }
 
+    static addComment(content, forumId, ownerUserId, receiveUserId) {
+        let url = `${CommonService.host}/admin/forum/forumController.php?action=addCommentWithJson`;
+        let options = {
+            method:"POST",
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: `content_comment=${content}&forum_id=${forumId}&ownerUserId=${ownerUserId}&receiveUserId=${receiveUserId}`
+        }
+        return fetch(url,options).then().then(response => response.json());
+    }
+
 
 }

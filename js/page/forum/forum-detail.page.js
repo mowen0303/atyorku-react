@@ -1,15 +1,17 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ListView, TextInput,TouchableOpacity, Text, Keyboard} from 'react-native';
+import {View, StyleSheet, ListView, Alert} from 'react-native';
 import ForumCell from './component/forum-cell.component'
 import ForumService from './service/forum.service';
 import CommentCell from './component/comment-cell.component'
-import {LoadMore} from '../../commonComponent/loadingView';
-
+import {LoadMore, LoadMiddle} from '../../commonComponent/loadingView';
+import CommentView from "../../commonComponent/commentView";
+import UserService from "../user/service/user.service";
 
 export default class ForumDetailPage extends Component {
 
     page = 1
     data = []
+    userData = null;
 
     constructor(props) {
         super(props);
@@ -17,9 +19,7 @@ export default class ForumDetailPage extends Component {
             listViewDataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             isLoading: false,
             onEndReachedThreshold: 10,
-            commentContent:null,
-            keyboardHeight: 0,
-            commentBoxHeight:0
+            isPublishing:false,
         }
     }
 
@@ -44,32 +44,16 @@ export default class ForumDetailPage extends Component {
                         onEndReachedThreshold={this.state.onEndReachedThreshold}
                     />
                 </View>
-                <View style={[styles.commentBox,{height:this.state.commentBoxHeight,marginBottom:this.state.keyboardHeight}]}>
-                    <TextInput
-                        ref="textInputRefer"
-                        style={styles.commentInput}
-                        selectionColor={"#484848"}
-                        multiline={true}
-                        underlineColorAndroid={"rgba(255, 255, 255, 0)"}
-                        onContentSizeChange={(event) => {this.setState({commentBoxHeight:Math.min(80,event.nativeEvent.contentSize.height+20)})}}
-                        />
-                    <TouchableOpacity style={styles.commentButton}><Text style={styles.commentButtonText}>发送</Text></TouchableOpacity>
-                </View>
+                <CommentView submit={this.submit} ref='commentView'/>
+                <LoadMiddle isLoading={this.state.isPublishing} text={"发布中..."}/>
             </View>
         )
     }
 
-    // onChange=(event)=> {
-    //
-    //     console.log(event.nativeEvent.contentSize.height);
-    //     // this.setState({
-    //     //     text: event.nativeEvent.text,
-    //     //     height: event.nativeEvent.contentSize.height,
-    //     // });
-    // }
-
-    onContentSizeChange = (event)=>{
-        console.log(event);
+    componentWillMount(){
+        UserService.getUserDataFromLocalStorage().then(userData => {
+            this.userData = userData;
+        });
     }
 
     componentDidMount() {
@@ -77,13 +61,34 @@ export default class ForumDetailPage extends Component {
         ForumService.addOnceView(this.props.navigation.state.params.data.id);
     }
 
+    submit = ()=>{
+        console.log(this.refs.commentView.state.commentContent);
+        //  console.log(this.props.navigation.state.params.data);
+        // console.log(this.userData);
+        ForumService.addComment(this.refs.commentView.state.commentContent,this.props.navigation.state.params.data.id,this.props.navigation.state.params.data.user_id,this.userData.id)
+            .then(json=>{
+                console.log(json);
+                if(json.code===1){
+                    this.data.push(json.result);
+                    this.setState({listViewDataSource: this.state.listViewDataSource.cloneWithRows(this.data)})
+                    this.refs.commentView.setState({commentContent:""});
+                }else{
+                    Alert.alert("提示",json.message);
+                }
+
+            })
+            .catch(error=>{
+                console.log(error);
+                Alert.alert("提示","网络环境异常");
+            });
+    }
+
+
+
 
     async getComments() {
-
         if (this.state.isLoading === true) {return false;}
-
         await this.setState({isLoading: true});
-
         ForumService.getComments(this.props.navigation.state.params.data.id, this.page)
             .then(async (json) => {
                 if (json.code === 1) {
@@ -91,6 +96,7 @@ export default class ForumDetailPage extends Component {
                     for (let i = 0; i < json.secondResult.length; i++) {
                         this.data.push(json.secondResult[i]);
                     }
+                    console.log(json.secondResult[0]);
                     await this.setState({listViewDataSource: this.state.listViewDataSource.cloneWithRows(this.data)});
                     if (this.page > json.thirdResult.totalPage) {
                         await this.setState({onEndReachedThreshold: -10000})
@@ -103,28 +109,6 @@ export default class ForumDetailPage extends Component {
             .catch((error) => alert(error));
     }
 
-    componentWillMount () {
-        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow.bind(this));
-        this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this));
-    }
-
-    componentWillUnmount() {
-        this.keyboardDidShowListener.remove();
-        this.keyboardWillHideListener.remove();
-    }
-
-    keyboardDidShow = (e) => {
-        this.setState({
-            keyboardHeight: e.endCoordinates.height
-        })
-
-    }
-
-    keyboardWillHide= ()=> {
-        this.setState({
-            keyboardHeight: 0
-        })
-    }
 
 }
 
@@ -145,41 +129,5 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5,
         tintColor: '#fff'
-    },
-    commentBox:{
-        height:40,
-        backgroundColor:"#f4f4f4",
-        borderTopWidth:1,
-        borderTopColor:"#e8e8e8",
-        flexDirection:"row"
-    },
-    commentInput:{
-        fontSize:14,
-        backgroundColor:"#fff",
-        color:"#484848",
-        borderRadius:4,
-        padding:10,
-        flex:1,
-        marginRight:10,
-        position:"absolute",
-        left:10,
-        top:5,
-        bottom:5,
-        right:60
-    },
-    commentButton:{
-        backgroundColor:"#e5e5e5",
-        width:50,
-        height:28,
-        borderRadius:4,
-        alignItems:"center",
-        flexDirection:"row",
-        justifyContent:"center",
-        position:"absolute",
-        top:5,
-        right:10
-    },
-    commentButtonText:{
-        color:"#666"
     }
 });
