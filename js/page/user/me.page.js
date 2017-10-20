@@ -22,10 +22,6 @@ export default class MePage extends Component {
         header: null,
     }
 
-    componentWillMount(){
-        this.getUserData();
-        console.log(this.state.userData);
-    }
 
     render() {
 
@@ -96,17 +92,15 @@ export default class MePage extends Component {
         this.props.navigation.navigate('SettingPage',{parentPage:this, userData: this.state.userData});
     }
 
-    //一定要async & await
+    //此处一定要async & await
     async getUserData(){
         await UserService.getUserDataFromLocalStorage()
             .then(async result=>{
                 if(result!==null){
                     await this.setState({userData:result});
-                    console.log(this.state.userData);
                 }else{
                     await this.setState({userData:this.userData});
                 }
-
             })
     }
 

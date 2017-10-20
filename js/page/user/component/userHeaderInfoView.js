@@ -18,7 +18,6 @@ export default class UserHeaderInfoView extends Component {
     }
 
     render() {
-        console.log(this.props.userData);
         return (
             <View style={{flex:1}}>
                 <View style={styles.profileBox}>
