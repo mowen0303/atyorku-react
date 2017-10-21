@@ -6,11 +6,12 @@ import CommentCell from './component/comment-cell.component'
 import {LoadMore, LoadMiddle} from '../../commonComponent/loadingView';
 import CommentView from "../../commonComponent/commentView";
 import UserService from "../user/service/user.service";
+// import {ActionSheet} from "native-base";
 
 export default class ForumDetailPage extends Component {
 
-    page = 1
-    data = []
+    page = 1;
+    data = [];
     userData = null;
 
     constructor(props) {
@@ -56,18 +57,33 @@ export default class ForumDetailPage extends Component {
         });
     }
 
+
     componentDidMount() {
         this.getComments();
         ForumService.addOnceView(this.props.navigation.state.params.data.id);
+
+        // ActionSheet.show(
+        //     {
+        //         options: BUTTONS,
+        //         cancelButtonIndex: CANCEL_INDEX,
+        //         destructiveButtonIndex: DESTRUCTIVE_INDEX,
+        //         title: "Testing ActionSheet"
+        //     },
+        //     buttonIndex => {
+        //         this.setState({ clicked: BUTTONS[buttonIndex] });
+        //     }
+        // )
     }
 
     submit = ()=>{
         console.log(this.refs.commentView.state.commentContent);
         //  console.log(this.props.navigation.state.params.data);
         // console.log(this.userData);
+        this.setState({isPublishing:true});
         ForumService.addComment(this.refs.commentView.state.commentContent,this.props.navigation.state.params.data.id,this.props.navigation.state.params.data.user_id,this.userData.id)
             .then(json=>{
                 console.log(json);
+                this.setState({isPublishing:false});
                 if(json.code===1){
                     this.data.push(json.result);
                     this.setState({listViewDataSource: this.state.listViewDataSource.cloneWithRows(this.data)})
@@ -78,6 +94,7 @@ export default class ForumDetailPage extends Component {
 
             })
             .catch(error=>{
+                this.setState({isPublishing:false});
                 console.log(error);
                 Alert.alert("提示","网络环境异常");
             });
@@ -93,10 +110,7 @@ export default class ForumDetailPage extends Component {
             .then(async (json) => {
                 if (json.code === 1) {
                     this.page++;
-                    for (let i = 0; i < json.secondResult.length; i++) {
-                        this.data.push(json.secondResult[i]);
-                    }
-                    console.log(json.secondResult[0]);
+                    this.data = this.data.concat(json.secondResult);
                     await this.setState({listViewDataSource: this.state.listViewDataSource.cloneWithRows(this.data)});
                     if (this.page > json.thirdResult.totalPage) {
                         await this.setState({onEndReachedThreshold: -10000})
