@@ -7,9 +7,11 @@ export default class CommentView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            commentContent: "",
             keyboardHeight: 0,
-            commentBoxHeight: 0
+            commentBoxHeight: 0,
+            placeholder:"回复楼主",
+            value: "",
+            receiverID:null
         }
     }
 
@@ -29,9 +31,11 @@ export default class CommentView extends Component {
                     selectionColor={"#484848"}
                     multiline={true}
                     underlineColorAndroid={"rgba(255, 255, 255, 0)"}
-                    onChangeText={(text)=>this.setState({commentContent:text})}
+                    onChangeText={(text)=>this.setState({value:text})}
+                    onBlur={this.onBlur}
                     onContentSizeChange={this.onContentSizeChange}
-                    value={this.state.commentContent}
+                    value={this.state.value}
+                    placeholder={this.state.placeholder}
                 />
                 <TouchableOpacity style={styles.commentButton} onPress={()=>{this.submit()}}>
                     <Text style={styles.commentButtonText}>发送</Text>
@@ -41,8 +45,17 @@ export default class CommentView extends Component {
     }
 
     submit(){
+        //console.log(this.state.receiverID)
         this.refs.textInputRefer.blur();
         this.props.submit();
+    }
+
+    getFocus(){
+        this.refs.textInputRefer.focus();
+    }
+
+    onBlur =()=>{
+        this.setState({placeholder:"回复楼主",receiverID:null})
     }
 
     onContentSizeChange = (event) => {

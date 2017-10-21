@@ -36,6 +36,16 @@ export default class ForumService {
         CommonService.uploadFile(url, 'img1', img1, optionalData, progressCallback, resolveCallback, rejectCallback);
     }
 
+    static deleteForum(id){
+        let url = `${CommonService.host}/admin/forum/forumController.php?action=deleteForumWithJson`;
+        let options = {
+            method:"POST",
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: `id=${id}`
+        }
+        return fetch(url,options).then().then(response => response.json());
+    }
+
     /**
      * Get forums
      * @param categoryId
@@ -60,6 +70,11 @@ export default class ForumService {
 
     }
 
+    static deleteComment(id){
+        let url = `${CommonService.host}/admin/forum/forumController.php?action=deleteCommentWithJson&id=${id}`;
+        return fetch(url).then(response => response.json());
+    }
+
     /**
      * Add once view number
      * @param forumId
@@ -79,6 +94,8 @@ export default class ForumService {
         }
         return fetch(url,options).then().then(response => response.json());
     }
+
+
 
 
 }

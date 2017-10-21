@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Image, Platform, Clipboard} from 'react-native';
 import ImageLoad from 'react-native-image-placeholder';
 import CommonService from '../../../service/common.service';
@@ -6,10 +6,15 @@ import globalStyles from '../../../style/style';
 
 export default class CommentCell extends Component {
 
+    static PropTypes={
+        onPress:PropTypes.func,
+        onPressMoreButton: PropTypes.func,
+        data:PropTypes.object
+    }
 
     render() {
         return (
-                <View style={styles.cellBox}>
+                <TouchableOpacity activeOpacity={0.8} style={styles.cellBox} onPress={this.props.onPress}>
                     <View style={{flexDirection: 'row'}}>
                         <TouchableOpacity style={{marginRight: 10}}>
                             <ImageLoad
@@ -28,7 +33,7 @@ export default class CommentCell extends Component {
                                 {this.elementForAdminIcon()}
                                 <View style={{flexDirection:'row',justifyContent:'flex-end',position:'absolute',right:0,width:120}}>
                                     <Text style={[styles.remarkText, globalStyles.font]}>{this.props.data.time}</Text>
-                                    <TouchableOpacity><Image source={require('../../../../res/icon/more.png')} style={[styles.remarkIcon,{marginRight:0}]}/></TouchableOpacity>
+                                    <TouchableOpacity onPress={this.props.onPressMoreButton}><Image source={require('../../../../res/icon/more.png')} style={[styles.remarkIcon,{marginRight:0}]}/></TouchableOpacity>
                                 </View>
                             </View>
                             <Text style={[globalStyles.font, {color: '#999', fontSize: 12}]}>
@@ -40,7 +45,7 @@ export default class CommentCell extends Component {
                     </View>
                     <Text style={[globalStyles.font, styles.textStyle, {fontSize: 16, marginTop: 5, marginLeft:40, marginBottom: 5, color: '#444'}]}
                           selectable={true} numberOfLines={this.props.numberOfLines}>{this.props.data.content_comment}</Text>
-                </View>
+                </TouchableOpacity>
         )
     }
 
@@ -50,6 +55,7 @@ export default class CommentCell extends Component {
                           source={require("../../../../res/icon/admin.png")}/>
         }
     }
+
 }
 
 
