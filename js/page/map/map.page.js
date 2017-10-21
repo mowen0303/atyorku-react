@@ -25,13 +25,20 @@ export default class MapPage extends Component {
         return (
             <View style={styles.container}>
                 <MapView style={styles.map}
-                         region={{
-                             latitude: 37.78825,
-                             longitude: -122.4324,
-                             latitudeDelta: 0.0922,
-                             longitudeDelta: 0.0421,
+                         initialRegion={{
+                             latitude: 43.773613,
+                             longitude: -79.505424,
+                             latitudeDelta: 0.1,
+                             longitudeDelta: 0.1,
                          }}
-                />
+                >
+                    <MapView.Marker
+                        coordinate={{
+                            latitude: 43.773613,
+                            longitude: -79.505424,
+                        }}
+                    />
+                </MapView>
             </View>
         );
     }
