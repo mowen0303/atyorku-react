@@ -32,7 +32,6 @@ export default class MapPage extends Component {
                              longitudeDelta: 0.0421,
                          }}
                 />
-
             </View>
         );
     }
