@@ -6,7 +6,7 @@ import CommentCell from './component/comment-cell.component'
 import {LoadMore, LoadMiddle} from '../../commonComponent/loadingView';
 import CommentView from "../../commonComponent/commentView";
 import UserService from "../user/service/user.service";
-// import {ActionSheet} from "native-base";
+import {ActionSheet,Button} from "native-base";
 
 export default class ForumDetailPage extends Component {
 
@@ -57,22 +57,21 @@ export default class ForumDetailPage extends Component {
         });
     }
 
-
     componentDidMount() {
         this.getComments();
         ForumService.addOnceView(this.props.navigation.state.params.data.id);
 
-        // ActionSheet.show(
-        //     {
-        //         options: BUTTONS,
-        //         cancelButtonIndex: CANCEL_INDEX,
-        //         destructiveButtonIndex: DESTRUCTIVE_INDEX,
-        //         title: "Testing ActionSheet"
-        //     },
-        //     buttonIndex => {
-        //         this.setState({ clicked: BUTTONS[buttonIndex] });
-        //     }
-        // )
+        ActionSheet.show(
+            {
+                options: BUTTONS,
+                cancelButtonIndex: CANCEL_INDEX,
+                destructiveButtonIndex: DESTRUCTIVE_INDEX,
+                title: "Testing ActionSheet"
+            },
+            buttonIndex => {
+                this.setState({ clicked: BUTTONS[buttonIndex] });
+            }
+        )
     }
 
     submit = ()=>{

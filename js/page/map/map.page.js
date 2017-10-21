@@ -39,20 +39,9 @@ export default class MapPage extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor:'#fff',
-        top:0,
-        left:0,
-        bottom:0,
-        right:0,
-        position:'absolute',
-        justifyContent:'flex-end',
+        flex:1,
     },
     map: {
-        position:'absolute',
-        top:0,
-        left:0,
-        bottom:0,
-        right:0,
-        alignItems:'center'
+        flex:1,
     }
 })
