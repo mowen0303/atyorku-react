@@ -64,10 +64,12 @@ export default class ForumAddPage extends Component {
             Alert.alert('提示','说点什么吧');
             return false;
         }
-        if(this.state.selectedCategory === null){
+        if(this.state.selectedCategoryId === 0){
             Alert.alert('提示','请选择一个分类');
             return false;
         }
+
+
         if(this.state.isLoading === true){return false;}
         await this.setState({isLoading:true});
         ForumService.addForum(this.state.selectedCategoryId, this.state.content, "10", "sell", this.state.image1Source,
@@ -77,6 +79,10 @@ export default class ForumAddPage extends Component {
             (result)=> {
                 this.setState({isLoading:false});
                 if(result.code === 1){
+                    console.log(this.props.navigation);
+
+                    this.props.navigation.state.params.forumListPage.setState({tabViewPage:0});
+                    this.props.navigation.state.params.forumListPage.refs.forumListView0.refreshPage();
                     this.props.navigation.goBack();
                 }else{
                     Alert.alert(result.message);

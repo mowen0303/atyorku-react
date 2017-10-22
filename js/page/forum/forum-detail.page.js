@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ListView, Alert, Clipboard} from 'react-native';
+import {View, StyleSheet, ListView, Alert, Clipboard, FlatList} from 'react-native';
 import ForumCell from './component/forum-cell.component'
 import ForumService from './service/forum.service';
 import CommentCell from './component/comment-cell.component'
@@ -30,9 +30,11 @@ export default class ForumDetailPage extends Component {
         this.state = {
             listViewDataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             isLoading: false,
-            onEndReachedThreshold: 10,
+            onEndReachedThreshold: 0,
             isPublishing: false,
             sheetButtons: this.sheetButtons2,
+            data:[],
+            forumData:this.props.navigation.state.params.data,
         }
     }
 
@@ -46,11 +48,13 @@ export default class ForumDetailPage extends Component {
 
         return (
             <View style={styles.container}>
-                <ListView style={{flex:1}}
-                    dataSource={this.state.listViewDataSource}
-                    renderRow={(data) => <CommentCell data={data} onPress={() => {this.clickComment(data)}} onPressMoreButton={() => {this.clickCommentMoreButton(data)}}/>}
-                    renderHeader={() => <ForumCell data={this.forumData} activeOpacity={1} isImageFullSize={true} isPressAble={false}/>}
-                    renderFooter={() => <LoadMore isLoading={this.state.isLoading}/>}
+                <FlatList style={{flex:1}}
+                          data={this.state.data}
+                          extraData={this.state}
+                          keyExtractor={(item, index) => item.id}
+                          renderItem={(data) => <CommentCell data={data.item} onPress={() => {this.clickComment(data.item)}} onPressMoreButton={() => {this.clickCommentMoreButton(data.item)}}/>}
+                          ListHeaderComponent={() => <ForumCell data={this.forumData} activeOpacity={1} isImageFullSize={true} isPressAble={false}/>}
+                          ListFooterComponent={() => <LoadMore isLoading={this.state.isLoading}/>}
                     onEndReached={() => this.getComments()}
                     onEndReachedThreshold={this.state.onEndReachedThreshold}
                 />
@@ -83,16 +87,17 @@ export default class ForumDetailPage extends Component {
     }
 
     submit = () => {
-        //console.log(this.refs.commentView.state.placeholder);
         this.setState({isPublishing: true});
         let receiverID = this.refs.commentView.state.receiverID === null ? this.forumData.user_id : this.refs.commentView.state.receiverID;
         ForumService.addComment(this.refs.commentView.state.value, this.forumData.id, this.userData.id, receiverID)
-            .then(json => {
+            .then(async json => {
                 console.log(json);
                 this.setState({isPublishing: false});
                 if (json.code === 1) {
-                    this.data.push(json.result);
-                    this.setState({listViewDataSource: this.state.listViewDataSource.cloneWithRows(this.data)})
+                    let data = this.state.data;
+                    data.push(json.result);
+                    console.log(data);
+                    await this.setState({data:data});
                     this.refs.commentView.setState({value: ""});
                 } else {
                     Alert.alert("提示", json.message);
@@ -117,7 +122,6 @@ export default class ForumDetailPage extends Component {
         }
     }
 
-
     async clickCommentMoreButton(commentData) {
         this.selectedCommentData = commentData;
         if (commentData.user_id === this.userData.id || this.userData.is_admin === "1") {
@@ -138,9 +142,15 @@ export default class ForumDetailPage extends Component {
             //delete
             ForumService.deleteComment(this.selectedCommentData.id).then(async json => {
                 if(json.code===1){
-                    let deletedIndex = this.data.indexOf(this.selectedCommentData);
+                    let deletedIndex = this.state.data.indexOf(this.selectedCommentData);
                     this.data.splice(deletedIndex,1);
-                    await this.setState({listViewDataSource: this.state.listViewDataSource.cloneWithRows(this.data)})
+                    let newData = this.state.data;
+                    newData.splice(deletedIndex,1);
+                    console.log(deletedIndex);
+                    await this.setState({data:newData});
+                    //await this.setState({listViewDataSource: this.state.listViewDataSource.cloneWithRows(this.data)})
+                }else{
+                    Alert.alert(json.message);
                 }
             })
         }
@@ -155,8 +165,8 @@ export default class ForumDetailPage extends Component {
             .then(async (json) => {
                 if (json.code === 1) {
                     this.page++;
-                    this.data = this.data.concat(json.secondResult);
-                    await this.setState({listViewDataSource: this.state.listViewDataSource.cloneWithRows(this.data)});
+                    await this.setState({data:this.state.data.concat(json.secondResult)});
+                    //await this.setState({listViewDataSource: this.state.listViewDataSource.cloneWithRows(this.data)});
                     if (this.page > json.thirdResult.totalPage) {
                         await this.setState({onEndReachedThreshold: -10000})
                     }

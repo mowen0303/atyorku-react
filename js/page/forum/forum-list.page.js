@@ -16,6 +16,7 @@ export default class ForumListPage extends Component {
             categoriesData: null,
             loadingMore: false,
             isLoadingCategories:false,
+            tabViewPage:0,
         }
     }
     static navigationOptions  = ({navigation}) => {
@@ -65,13 +66,15 @@ export default class ForumListPage extends Component {
     elementScrollableTableView(){
         if(this.state.categoriesData !== null){
             return (
-            <ScrollableTabView renderTabBar={renderTabBar}
-                              tabBarBackgroundColor={'#fff'}
-                              tabBarActiveTextColor={'#0e7477'}
-                              tabBarInactiveTextColor={'#aaa'}
-                              tabBarTextStyle={{marginTop: 10, fontSize: 15}}
-                              tabBarUnderlineStyle={{backgroundColor: '#0e7477', height: 2, borderRadius: 1}}>
-                {this.state.categoriesData.map(category=><ForumListView key={category.id} {...this.props} categoryId={category.id} tabLabel={category.title}/>)}
+            <ScrollableTabView
+                page={this.state.tabViewPage}
+                renderTabBar={renderTabBar}
+                tabBarBackgroundColor={'#fff'}
+                tabBarActiveTextColor={'#0e7477'}
+                tabBarInactiveTextColor={'#aaa'}
+                tabBarTextStyle={{marginTop: 10, fontSize: 15}}
+                tabBarUnderlineStyle={{backgroundColor: '#0e7477', height: 2, borderRadius: 1}}>
+                {this.state.categoriesData.map(category=><ForumListView ref={"forumListView"+category.id} key={category.id} {...this.props} categoryId={category.id} tabLabel={category.title}/>)}
             </ScrollableTabView>
             )
         }
@@ -82,7 +85,7 @@ export default class ForumListPage extends Component {
         UserService.getUserDataFromLocalStorage()
             .then(result=>{
                 if(result !== null){
-                    this.props.navigation.navigate('ForumAddPage',{categoriesData:this.state.categoriesData});
+                    this.props.navigation.navigate('ForumAddPage',{categoriesData:this.state.categoriesData, forumListPage:this});
                 }else{
                     Alert.alert("提示","请先登录");
                 }

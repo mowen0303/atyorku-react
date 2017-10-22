@@ -12,7 +12,7 @@ export default class ForumCell extends Component {
         numberOfLines: PropTypes.number,
         isPressAble:PropTypes.bool,
         activeOpacity:PropTypes.number,
-        isImageFullSize:PropTypes.bool
+        isImageFullSize:PropTypes.bool,
     }
 
     static defaultProps = {

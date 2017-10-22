@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {View, ListView, RefreshControl} from 'react-native';
+import {View, ListView, RefreshControl, Alert} from 'react-native';
 import ForumService from '../service/forum.service';
 import ForumCell from './forum-cell.component'
 import {LoadMore} from '../../../commonComponent/loadingView';
@@ -62,9 +62,11 @@ export default class ForumListView extends Component {
                     this.data = json.result;
                     await this.setState({
                         dataSource: this.state.dataSource.cloneWithRows(json.result),
-                        isRefreshing: false
                     });
+                }else{
+                    Alert.alert(json.message);
                 }
+                this.setState({isRefreshing: false})
             })
             .catch(error => {
                 alert(error)
