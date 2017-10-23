@@ -12,10 +12,6 @@ export default class CommentCell extends Component {
         data:PropTypes.object
     }
 
-    componentWillMount(){
-        console.log(this.props.data)
-    }
-
     render() {
         return (
                 <TouchableOpacity activeOpacity={0.8} style={styles.cellBox} onPress={this.props.onPress}>
@@ -34,9 +30,9 @@ export default class CommentCell extends Component {
                                 <Text style={[globalStyles.font, {fontSize: 15, color: '#333', maxWidth: 200}]} numberOfLines={1}>
                                     {this.props.data.alias}
                                 </Text>
-                                <View style={{flexDirection:'row',justifyContent:'flex-end',position:'absolute',right:0,width:120}}>
+                                <View style={{flexDirection:'row',justifyContent:'flex-end',position:'absolute',right:0}}>
                                     <Text style={[styles.remarkText, globalStyles.font]}>{this.props.data.time}</Text>
-                                    <TouchableOpacity onPress={this.props.onPressMoreButton}><Image source={require('../../../../res/icon/more.png')} style={[styles.remarkIcon,{marginRight:0}]}/></TouchableOpacity>
+                                    <TouchableOpacity style={styles.moreButton} onPress={this.props.onPressMoreButton}><Image source={require('../../../../res/icon/more.png')} style={[styles.moreButtonImage]}/></TouchableOpacity>
                                 </View>
                             </View>
                             <Text style={[globalStyles.font, {color: '#999', fontSize: 12}]}>
@@ -75,11 +71,13 @@ const styles = StyleSheet.create({
         color:'#888',
         fontSize:12
     },
-    remarkIcon:{
+    moreButton:{
+        paddingLeft:4,
+        paddingBottom:4,
+    },
+    moreButtonImage:{
         width:16,
         height:16,
-        marginLeft:10,
-        marginRight:10,
         marginTop:1,
         tintColor:'#888'
     }

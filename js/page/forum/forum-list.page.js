@@ -74,7 +74,7 @@ export default class ForumListPage extends Component {
                 tabBarInactiveTextColor={'#aaa'}
                 tabBarTextStyle={{marginTop: 10, fontSize: 15}}
                 tabBarUnderlineStyle={{backgroundColor: '#0e7477', height: 2, borderRadius: 1}}>
-                {this.state.categoriesData.map(category=><ForumListView ref={"forumListView"+category.id} key={category.id} {...this.props} categoryId={category.id} tabLabel={category.title}/>)}
+                {this.state.categoriesData.map(category=><ForumListView rootPage={this} ref={"forumListView"+category.id} key={category.id} {...this.props} categoryId={category.id} tabLabel={category.title}/>)}
             </ScrollableTabView>
             )
         }

@@ -55,7 +55,9 @@ export default class CommentView extends Component {
     }
 
     onBlur =()=>{
-        this.setState({placeholder:"回复楼主",receiverID:null})
+        if(this.state.value===""){
+            this.setState({placeholder:"回复楼主",receiverID:null})
+        }
     }
 
     onContentSizeChange = (event) => {

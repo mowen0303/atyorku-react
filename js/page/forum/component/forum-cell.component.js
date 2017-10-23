@@ -12,6 +12,7 @@ export default class ForumCell extends Component {
         numberOfLines: PropTypes.number,
         isShowCompleteInfo:PropTypes.bool,
         activeOpacity:PropTypes.number,
+        onPressMoreButton: PropTypes.func,
     }
 
     static defaultProps = {
@@ -23,7 +24,7 @@ export default class ForumCell extends Component {
     pressForum(){
         // this.props.navigation.navigate('LoginPage')
         if(this.props.isShowCompleteInfo === false){
-            this.props.navigation.navigate('ForumDetailPage', {data: this.props.data});
+            this.props.navigation.navigate('ForumDetailPage', {data: this.props.data, rootPage:this.props.rootPage});
         }
     }
 
@@ -66,6 +67,7 @@ export default class ForumCell extends Component {
                 </View>
                 {this.props.data.userTitle!=="普通用户"?<Image style={[styles.userIcon]} source={require("../../../../res/icon/admin.png")}/>:null}
                 {this.props.data.sort>0&&this.props.isShowCompleteInfo===false?<Image style={styles.fixTopIcon} source={require("../../../../res/icon/fixtop.png")}/>:null}
+                {this.props.isShowCompleteInfo===true?<TouchableOpacity style={styles.moreButton} onPress={this.props.onPressMoreButton}><Image source={require('../../../../res/icon/more.png')} style={[styles.moreButtonImage]}/></TouchableOpacity>:null}
             </TouchableOpacity>
         )
     }
@@ -118,11 +120,21 @@ const styles = StyleSheet.create({
         left:7,
         top:42,
     },
+    moreButton:{
+        position:'absolute',
+        top:0,
+        right:0,
+        padding:10,
+    },
+    moreButtonImage:{
+        width:16,
+        height:16,
+        tintColor:'#888'
+    },
     footerItem:{
         flex:1,
         flexDirection:'row',
         justifyContent:'center'
-
     },
     footerText:{
         color:'#999',

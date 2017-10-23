@@ -12,7 +12,6 @@ import ActionSheet from 'react-native-actionsheet'
 export default class ForumDetailPage extends Component {
 
     page = 1;
-    data = [];
     userData = null;
     forumData = this.props.navigation.state.params.data;
 
@@ -42,36 +41,6 @@ export default class ForumDetailPage extends Component {
         headerTintColor: '#fff'
     }
 
-    render() {
-
-        return (
-            <View style={styles.container}>
-                <FlatList style={{flex:1}}
-                          data={this.state.data}
-                          extraData={this.state}
-                          keyExtractor={(item, index) => item.id}
-                          ListHeaderComponent={() => <ForumCell data={this.forumData} activeOpacity={1} isShowCompleteInfo={true} />}
-                          renderItem={(data) => <CommentCell data={data.item} onPress={() => {this.clickComment(data.item)}} onPressMoreButton={() => {this.clickCommentMoreButton(data.item)}}/>}
-                          ListFooterComponent={() => <LoadMore isLoading={this.state.isLoading}/>}
-                    onEndReached={() => this.getComments()}
-                    onEndReachedThreshold={this.state.onEndReachedThreshold}
-                />
-                <CommentView submit={this.submit} ref='commentView'/>
-                <LoadMiddle isLoading={this.state.isPublishing} text={"发布中..."}/>
-                <ActionSheet
-                    ref={o => this.ActionSheet = o}
-                    title={this.title}
-                    options={this.state.sheetButtons}
-                    cancelButtonIndex={this.CANCEL_INDEX}
-                    destructiveButtonIndex={this.DESTRUCTIVE_INDEX}
-                    onPress={(index) => {
-                        this.handleActionSheetPress(index)
-                    }}
-                />
-            </View>
-        )
-    }
-
     componentWillMount() {
         UserService.getUserDataFromLocalStorage().then(userData => {
             this.userData = userData;
@@ -83,6 +52,61 @@ export default class ForumDetailPage extends Component {
         this.getComments();
         ForumService.addOnceView(this.forumData.id);
     }
+
+
+
+    render() {
+
+        return (
+            <View style={styles.container}>
+                <FlatList style={{flex:1}}
+                          data={this.state.data}
+                          extraData={this.state}
+                          keyExtractor={(item, index) => item.id}
+                          ListHeaderComponent={this.listHeaderComponent}
+                          renderItem={this.renderItem}
+                          ListFooterComponent={this.listFooterComponent}
+                    onEndReached={() => this.getComments()}
+                    onEndReachedThreshold={this.state.onEndReachedThreshold}
+                />
+                <CommentView submit={this.submit} ref='commentView'/>
+                <LoadMiddle isLoading={this.state.isPublishing} text={"发布中..."}/>
+                <ActionSheet
+                    ref={o => this.ForumActionSheet = o}
+                    title={this.title}
+                    options={this.state.sheetButtons}
+                    cancelButtonIndex={this.CANCEL_INDEX}
+                    destructiveButtonIndex={this.DESTRUCTIVE_INDEX}
+                    onPress={(index) => {
+                        this.handleClickForumMoreButton(index)
+                    }}
+                />
+                <ActionSheet
+                    ref={o => this.CommentActionSheet = o}
+                    title={this.title}
+                    options={this.state.sheetButtons}
+                    cancelButtonIndex={this.CANCEL_INDEX}
+                    destructiveButtonIndex={this.DESTRUCTIVE_INDEX}
+                    onPress={(index) => {
+                        this.handleClickCommentMoreButton(index)
+                    }}
+                />
+            </View>
+        )
+    }
+
+    listHeaderComponent = ()=> {
+        return <ForumCell data={this.forumData} onPressMoreButton={()=>{this.clickForumMoreButton()}} activeOpacity={1} isShowCompleteInfo={true} />
+    }
+
+    renderItem = (data) =>{
+        return <CommentCell data={data.item} onPress={() => {this.clickComment(data.item)}} onPressMoreButton={() => {this.clickCommentMoreButton(data.item)}}/>
+    }
+
+    listFooterComponent = () => {
+        return <LoadMore isLoading={this.state.isLoading}/>
+    }
+
 
     submit = () => {
         if(this.userData === null){
@@ -113,6 +137,35 @@ export default class ForumDetailPage extends Component {
             });
     }
 
+    async clickForumMoreButton() {
+        if (this.userData !== null && (this.forumData.user_id === this.userData.id || this.userData.is_admin === "1")) {
+            await this.setState({sheetButtons: this.sheetButtons1});
+        } else {
+            await this.setState({sheetButtons: this.sheetButtons2});
+        }
+        this.ForumActionSheet.show();
+    }
+
+    handleClickForumMoreButton(index) {
+        if (index === 1) {
+            //copy
+            Clipboard.setString(this.forumData.content);
+        } else if (index === 2) {
+            //report
+        } else if (index === 3) {
+            //delete
+            ForumService.deleteForum(this.forumData.id).then(async json => {
+                if(json.code===1){
+                    this.props.navigation.state.params.rootPage.setState({tabViewPage:0});
+                    this.props.navigation.state.params.rootPage.refs.forumListView0.refreshPage();
+                    this.props.navigation.goBack();
+                }else{
+                    Alert.alert(json.message);
+                }
+            })
+        }
+    }
+
     async clickComment(commontData) {
         this.selectedCommentData = commontData;
         if(this.userData === null){
@@ -135,10 +188,10 @@ export default class ForumDetailPage extends Component {
         } else {
             await this.setState({sheetButtons: this.sheetButtons2});
         }
-        this.ActionSheet.show();
+        this.CommentActionSheet.show();
     }
 
-    handleActionSheetPress(index) {
+    handleClickCommentMoreButton(index) {
         if (index === 1) {
             //copy
             Clipboard.setString(this.selectedCommentData.content_comment);
@@ -149,7 +202,6 @@ export default class ForumDetailPage extends Component {
             ForumService.deleteComment(this.selectedCommentData.id).then(async json => {
                 if(json.code===1){
                     let deletedIndex = this.state.data.indexOf(this.selectedCommentData);
-                    this.data.splice(deletedIndex,1);
                     let newData = this.state.data;
                     newData.splice(deletedIndex,1);
                     console.log(deletedIndex);

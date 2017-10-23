@@ -16,12 +16,13 @@ export default class ForumListView extends Component {
             result: '',
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             isRefreshing: false,
-            isLoadingMore: false
+            isLoadingMore: false,
         }
     }
 
     static propTypes = {
         categoryId: PropTypes.string,
+        rootPage:PropTypes.object
     }
 
     render() {
@@ -29,7 +30,7 @@ export default class ForumListView extends Component {
             <View style={{flex: 1}}>
                 <ListView
                     dataSource={this.state.dataSource}
-                    renderRow={(data) => <ForumCell  {...this.props} data={data} numberOfLines={3}/>}
+                    renderRow={(data) => <ForumCell rootPage={this.props.rootPage} {...this.props} data={data} numberOfLines={3}/>}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.isRefreshing}
