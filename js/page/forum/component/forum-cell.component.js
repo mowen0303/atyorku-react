@@ -10,21 +10,19 @@ export default class ForumCell extends Component {
     //numberOfLines
     static propTypes = {
         numberOfLines: PropTypes.number,
-        isPressAble:PropTypes.bool,
+        isShowCompleteInfo:PropTypes.bool,
         activeOpacity:PropTypes.number,
-        isImageFullSize:PropTypes.bool,
     }
 
     static defaultProps = {
         numberOfLines: 1000,
-        isPressAble:true,
+        isShowCompleteInfo:false,
         activeOpacity:0.8,
-        isImageFullSize:false,
     }
 
     pressForum(){
         // this.props.navigation.navigate('LoginPage')
-        if(this.props.isPressAble === true){
+        if(this.props.isShowCompleteInfo === false){
             this.props.navigation.navigate('ForumDetailPage', {data: this.props.data});
         }
     }
@@ -48,7 +46,6 @@ export default class ForumCell extends Component {
                                 <Text style={[globalStyles.font, {fontSize: 15, color: '#333',maxWidth:200}]} numberOfLines={1}>
                                     {this.props.data.alias}
                                 </Text>
-                                {this.elementForAdminIcon()}
                             </View>
                             <Text style={[globalStyles.font, {color: '#999', fontSize: 12}]}>
                                 {CommonService.pipeOfUserInfo(this.props.data.major, '专业')}
@@ -67,22 +64,18 @@ export default class ForumCell extends Component {
                         <View style={styles.footerItem}><Image source={require('../../../../res/icon/tag.png')} style={styles.footerIcon}/><Text style={[styles.footerText,globalStyles.font]}>{this.props.data.classTitle}</Text></View>
                     </View>
                 </View>
+                {this.props.data.userTitle!=="普通用户"?<Image style={[styles.userIcon]} source={require("../../../../res/icon/admin.png")}/>:null}
+                {this.props.data.sort>0&&this.props.isShowCompleteInfo===false?<Image style={styles.fixTopIcon} source={require("../../../../res/icon/fixtop.png")}/>:null}
             </TouchableOpacity>
         )
     }
 
-    elementForAdminIcon() {
-        if (this.props.data.is_admin === '1') {
-            return <Image style={[styles.userIcon, {marginLeft: 8}]}
-                          source={require("../../../../res/icon/admin.png")}/>
-        }
-    }
 
     elementForImg1() {
         if (this.props.data.img1 !== "") {
             let width = Dimensions.get('window').width-32;
             let height = 0;
-            if(this.props.isImageFullSize === true){
+            if(this.props.isShowCompleteInfo === true){
                 height = width/(this.props.data.img1Width/this.props.data.img1Height)
             }else{
                 height = width/(16/7);
@@ -98,6 +91,7 @@ export default class ForumCell extends Component {
         }
     }
 
+
 }
 
 const styles = StyleSheet.create({
@@ -106,17 +100,23 @@ const styles = StyleSheet.create({
         paddingBottom:0,
         marginBottom: 10,
         backgroundColor: '#fff',
-        // shadowColor: 'gray',
-        // shadowOffset: {width: 0, height: 1.5},
-        // shadowOpacity: 0.1,
-        // shadowRadius: 1,
-        // elevation: 2 // android
+    },
+    fixTopIcon:{
+        position:'absolute',
+        width:40,
+        height:40,
+        right:0,
+        top:0,
+        tintColor:"#e8837e"
     },
     userIcon: {
-        height: 15,
-        width: 15,
+        height: 14,
+        width: 14,
         margin: 3,
-        marginLeft: 6
+        marginLeft: 6,
+        position:'absolute',
+        left:7,
+        top:42,
     },
     footerItem:{
         flex:1,

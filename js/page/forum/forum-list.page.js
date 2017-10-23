@@ -26,7 +26,7 @@ export default class ForumListPage extends Component {
             headerStyle:{backgroundColor:'#0e7477'},
             headerTintColor:'#fff',
             headerBackTitle:null,
-            headerRight: <TouchableOpacity onPress={()=>{navigation.state.navigateToAddPage()}}><Image style={styles.addBtn} source={require('../../../res/icon/add.png')}/></TouchableOpacity>
+            headerRight: <TouchableOpacity style={styles.addButton} onPress={()=>{navigation.state.navigateToAddPage()}}><Image style={styles.addButtonImage} source={require('../../../res/icon/add.png')}/></TouchableOpacity>
         }
     }
 
@@ -117,10 +117,12 @@ const styles = StyleSheet.create({
         marginRight: 5,
         tintColor: '#fff'
     },
-    addBtn:{
+    addButton:{
+        padding:10,
+    },
+    addButtonImage:{
         tintColor:"#fff",
         width:18,
         height:18,
-        marginRight:10
     }
 });

@@ -28,13 +28,11 @@ export default class ForumDetailPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            listViewDataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             isLoading: false,
             onEndReachedThreshold: 0,
             isPublishing: false,
             sheetButtons: this.sheetButtons2,
             data:[],
-            forumData:this.props.navigation.state.params.data,
         }
     }
 
@@ -52,8 +50,8 @@ export default class ForumDetailPage extends Component {
                           data={this.state.data}
                           extraData={this.state}
                           keyExtractor={(item, index) => item.id}
+                          ListHeaderComponent={() => <ForumCell data={this.forumData} activeOpacity={1} isShowCompleteInfo={true} />}
                           renderItem={(data) => <CommentCell data={data.item} onPress={() => {this.clickComment(data.item)}} onPressMoreButton={() => {this.clickCommentMoreButton(data.item)}}/>}
-                          ListHeaderComponent={() => <ForumCell data={this.forumData} activeOpacity={1} isImageFullSize={true} isPressAble={false}/>}
                           ListFooterComponent={() => <LoadMore isLoading={this.state.isLoading}/>}
                     onEndReached={() => this.getComments()}
                     onEndReachedThreshold={this.state.onEndReachedThreshold}
@@ -87,6 +85,10 @@ export default class ForumDetailPage extends Component {
     }
 
     submit = () => {
+        if(this.userData === null){
+            Alert.alert("提示","请先登录账号，再进行回复")
+            return false;
+        }
         this.setState({isPublishing: true});
         let receiverID = this.refs.commentView.state.receiverID === null ? this.forumData.user_id : this.refs.commentView.state.receiverID;
         ForumService.addComment(this.refs.commentView.state.value, this.forumData.id, this.userData.id, receiverID)
@@ -113,6 +115,10 @@ export default class ForumDetailPage extends Component {
 
     async clickComment(commontData) {
         this.selectedCommentData = commontData;
+        if(this.userData === null){
+            Alert.alert("提示","请先登录账号，再进行回复")
+            return false;
+        }
         if (this.userData.id !== this.selectedCommentData.user_id) {
             this.refs.commentView.setState({
                 placeholder: `@${this.selectedCommentData.alias}`,
@@ -124,7 +130,7 @@ export default class ForumDetailPage extends Component {
 
     async clickCommentMoreButton(commentData) {
         this.selectedCommentData = commentData;
-        if (commentData.user_id === this.userData.id || this.userData.is_admin === "1") {
+        if (this.userData !== null && (commentData.user_id === this.userData.id || this.userData.is_admin === "1")) {
             await this.setState({sheetButtons: this.sheetButtons1});
         } else {
             await this.setState({sheetButtons: this.sheetButtons2});
@@ -148,7 +154,6 @@ export default class ForumDetailPage extends Component {
                     newData.splice(deletedIndex,1);
                     console.log(deletedIndex);
                     await this.setState({data:newData});
-                    //await this.setState({listViewDataSource: this.state.listViewDataSource.cloneWithRows(this.data)})
                 }else{
                     Alert.alert(json.message);
                 }
@@ -166,7 +171,6 @@ export default class ForumDetailPage extends Component {
                 if (json.code === 1) {
                     this.page++;
                     await this.setState({data:this.state.data.concat(json.secondResult)});
-                    //await this.setState({listViewDataSource: this.state.listViewDataSource.cloneWithRows(this.data)});
                     if (this.page > json.thirdResult.totalPage) {
                         await this.setState({onEndReachedThreshold: -10000})
                     }

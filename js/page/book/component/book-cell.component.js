@@ -10,21 +10,21 @@ export default class ForumCell extends Component {
     //numberOfLines
     static propTypes = {
         numberOfLines: PropTypes.number,
-        isPressAble:PropTypes.bool,
+        isShowCompleteInfo:PropTypes.bool,
         activeOpacity:PropTypes.number,
         isImageFullSize:PropTypes.bool
     }
 
     static defaultProps = {
         numberOfLines: 1000,
-        isPressAble:true,
+        isShowCompleteInfo:true,
         activeOpacity:0.8,
         isImageFullSize:false,
     }
 
     pressForum(){
         // this.props.navigation.navigate('LoginPage')
-        if(this.props.isPressAble === true){
+        if(this.props.isShowCompleteInfo === true){
             this.props.navigation.navigate('ForumDetailPage', {data: this.props.data});
         }
     }
