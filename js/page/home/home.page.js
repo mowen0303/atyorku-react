@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-
-import {View, StyleSheet, Button, Text} from 'react-native';
+import {View, StyleSheet, Button, Text, TouchableOpacity, Image} from 'react-native';
 import LoginPage from '../user/login.page';
 
 
@@ -9,7 +8,8 @@ export default class HomePage extends Component {
 
     static navigationOptions = ({navigation}) => {
         return {
-            headerRight: <Button style={{marginRight:10}} title={"登录"} color="#000" onPress={() => navigation.state.login()}/>
+            title:"首页",
+            //headerRight: <Button style={{marginRight:10}} title={"登录"} color="#000" onPress={() => navigation.state.login()}/>
         }
     }
 
@@ -31,9 +31,24 @@ export default class HomePage extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.appContainer}>
-                    <View style={styles.appBtn}><Text onPress={this.navigateToMapPage}>地图</Text></View>
-                    <View style={styles.appBtn}><Text onPress={this.navigateToEventPage}>活动</Text></View>
-                    <View style={styles.appBtn}><Text onPress={this.navigateToBookPage}>二手书</Text></View>
+                    <View style={styles.appBtn}>
+                        <TouchableOpacity style={[styles.appButton,{backgroundColor:"#ea3c46"}]} onPress={this.navigateToMapPage}>
+                            <Image style={styles.appButtonImage} source={require("../../../res/icon/map.png")}/>
+                        </TouchableOpacity>
+                        <Text>地图</Text>
+                    </View>
+                    <View style={styles.appBtn}>
+                        <TouchableOpacity style={[styles.appButton,{backgroundColor:"#239685"}]} onPress={this.navigateToEventPage}>
+                            <Image style={styles.appButtonImage} source={require("../../../res/icon/event.png")}/>
+                        </TouchableOpacity>
+                        <Text>活动</Text>
+                    </View>
+                    <View style={styles.appBtn}>
+                        <TouchableOpacity style={[styles.appButton,{backgroundColor:"#eb8e4b"}]} onPress={this.navigateToBookPage}>
+                            <Image style={styles.appButtonImage} source={require("../../../res/icon/usedbook.png")}/>
+                        </TouchableOpacity>
+                        <Text>二手书</Text>
+                    </View>
                 </View>
             </View>
         );
@@ -66,5 +81,16 @@ const styles = StyleSheet.create({
         height:100,
         alignItems:'center',
         marginTop:100
+    },
+    appButton:{
+        padding:18,
+        borderRadius:40,
+        overflow:'hidden',
+        marginBottom:10
+    },
+    appButtonImage:{
+        width:24,
+        height:24,
+        tintColor:"#fff",
     }
 })

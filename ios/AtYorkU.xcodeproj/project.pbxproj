@@ -1321,7 +1321,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.atyorku.v2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.atyorku.v.2;
 				PRODUCT_NAME = AtYorkU;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1346,7 +1346,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.atyorku.v2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.atyorku.v.2;
 				PRODUCT_NAME = AtYorkU;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
