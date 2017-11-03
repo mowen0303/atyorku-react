@@ -18,6 +18,9 @@
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
       android:theme="@style/AppTheme">
+      <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyACJ7gi4zDDD9dW_ZYDV8TDwnvbuPAhwKc"/>
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -29,9 +32,6 @@
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-      <meta-data
-                android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyA-SJvwBLQjqDh7h5HRxsLumOGhkLaosw8"/>
     </application>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 </manifest>
