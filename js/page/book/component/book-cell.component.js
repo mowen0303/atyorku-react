@@ -2,69 +2,76 @@ import React, {Component, PropTypes} from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity, Platform, Dimensions} from 'react-native';
 import CommonService from '../../../service/common.service';
 import ImageLoad from 'react-native-image-placeholder';
-import ForumDetailPage from "../forum-detail.page";
+import BookDetailPage from "../book-detail.page";
 import globalStyles from '../../../style/style'
 
-export default class ForumCell extends Component {
+export default class BookCell extends Component {
 
     //numberOfLines
     static propTypes = {
         numberOfLines: PropTypes.number,
-        isShowCompleteInfo:PropTypes.bool,
+        isPressAble:PropTypes.bool,
         activeOpacity:PropTypes.number,
         isImageFullSize:PropTypes.bool
     }
 
     static defaultProps = {
         numberOfLines: 1000,
-        isShowCompleteInfo:true,
+        isPressAble:true,
         activeOpacity:0.8,
         isImageFullSize:false,
     }
 
-    pressForum(){
+    static cellHeight = 80
+
+    pressBook(){
         // this.props.navigation.navigate('LoginPage')
-        if(this.props.isShowCompleteInfo === true){
-            this.props.navigation.navigate('ForumDetailPage', {data: this.props.data});
+        if(this.props.isPressAble === true){
+            this.props.navigation.navigate('BookDetailPage', {data: this.props.data});
         }
+        // <View style={styles.footerItem}><Image source={require('../../../../res/icon/clock.png')} style={styles.footerIcon}/><Text style={[styles.footerText,globalStyles.font]}>{this.props.data.publish_time}</Text></View>
     }
 
     render() {
         return (
-            <TouchableOpacity onPress={() => this.pressForum()} activeOpacity={this.props.activeOpacity}>
+            <TouchableOpacity onPress={() => this.pressBook()} activeOpacity={this.props.activeOpacity}>
                 <View style={styles.cellBox}>
-                    <View style={{flexDirection: 'row'}}>
-                        <TouchableOpacity style={{marginRight: 10}}>
-                            <ImageLoad
-                                style={{height: 40, width: 40, borderRadius:20, overflow:'hidden'}}
-                                source={{uri: CommonService.host + this.props.data.img}}
-                                placeholderSource={require('../../../../res/images/transparence.png')}
-                                isShowActivity={false}
-                                borderRadius = {20}
-                            />
-                        </TouchableOpacity>
-                        <View>
-                            <View style={{flexDirection:'row'}}>
-                                <Text style={[globalStyles.font, {fontSize: 15, color: '#333',maxWidth:200}]} numberOfLines={1}>
-                                    {this.props.data.alias}
-                                </Text>
-                                {this.elementForAdminIcon()}
-                            </View>
-                            <Text style={[globalStyles.font, {color: '#999', fontSize: 12}]}>
-                                {CommonService.pipeOfUserInfo(this.props.data.major, '专业')}
-                                - {CommonService.pipeOfUserInfo(this.props.data.enroll_year, '年级')}
-                                - {CommonService.pipeOfUserInfo(this.props.data.degree, '学历')}
-                            </Text>
-                        </View>
-                    </View>
-                    <Text style={[globalStyles.font, {fontSize: 17, marginTop: 15, marginBottom: 10, color: '#444'}]}
-                          selectable={true} numberOfLines={this.props.numberOfLines}>{this.props.data.content}</Text>
                     {this.elementForImg1()}
-                    <View style={{flexDirection:'row',height:38,borderTopWidth:1, borderTopColor:'#f8f8f8', paddingTop:8, marginTop:10}}>
-                        <View style={styles.footerItem}><Image source={require('../../../../res/icon/comments.png')} style={styles.footerIcon}/><Text style={[styles.footerText,globalStyles.font]}>{this.props.data.comment_num}</Text></View>
-                        <View style={styles.footerItem}><Image source={require('../../../../res/icon/browse.png')} style={styles.footerIcon}/><Text style={[styles.footerText,globalStyles.font]}>{this.props.data.count_view}</Text></View>
-                        <View style={styles.footerItem}><Image source={require('../../../../res/icon/clock.png')} style={styles.footerIcon}/><Text style={[styles.footerText,globalStyles.font]}>{this.props.data.time}</Text></View>
-                        <View style={styles.footerItem}><Image source={require('../../../../res/icon/tag.png')} style={styles.footerIcon}/><Text style={[styles.footerText,globalStyles.font]}>{this.props.data.classTitle}</Text></View>
+                    <View style={{flex: 1, flexDirection: 'column'}}>
+                        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                            <Text style={[globalStyles.font, {fontSize: 15, color: '#333', maxWidth:200, marginLeft:8, marginBottom:5}]} numberOfLines={1}>
+                                {this.props.data.name}
+                            </Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center', marginLeft:8, marginBottom: 5}}>
+                                <Text style={{fontSize: 13, color: '#333'}}>卖家: </Text>
+                                <TouchableOpacity style={{marginRight: 10}}>
+                                    <ImageLoad
+                                        style={{height: 20, width: 20, borderRadius:10, overflow:'hidden'}}
+                                        source={{uri: CommonService.host + this.props.data.img}}
+                                        placeholderSource={require('../../../../res/images/transparence.png')}
+                                        isShowActivity={false}
+                                        borderRadius = {10}
+                                    />
+                                </TouchableOpacity>
+                                <View>
+                        </View>
+
+
+                                <View style={{flexDirection:'row'}}>
+                                    <Text style={[globalStyles.font, {fontSize: 13, color: '#333',maxWidth:200}]} numberOfLines={1}>
+                                        {this.props.data.alias}
+                                    </Text>
+                                    {this.elementForAdminIcon()}
+                                </View>
+                            </View>
+                        </View>
+                        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={[globalStyles.font, styles.priceText]} numberOfLines={1}>
+                                ${this.props.data.price}
+                            </Text>
+                            <View style={styles.footerItem}><Image source={require('../../../../res/icon/tag.png')} style={styles.footerIcon}/><Text style={[styles.footerText,globalStyles.font]}>{this.props.data.book_category_name}</Text></View>
+                            <View style={styles.footerItem}><Image source={require('../../../../res/icon/course.png')} style={styles.footerIcon}/><Text style={[styles.footerText,globalStyles.font]}>{this.props.data.course_code_parent_title + ' ' + this.props.data.course_code_child_title}</Text></View>
+                        </View>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -80,19 +87,19 @@ export default class ForumCell extends Component {
 
     elementForImg1() {
         if (this.props.data.img1 !== "") {
-            let width = Dimensions.get('window').width-32;
-            let height = 0;
-            if(this.props.isImageFullSize === true){
-                height = width/(this.props.data.img1Width/this.props.data.img1Height)
-            }else{
-                height = width/(16/7);
-            }
+            let width = Math.min(80,Dimensions.get('window').width*0.3);
+            // let height = 0;
+            // if(this.props.isImageFullSize === true){
+            //     height = width/(this.props.data.img_width/this.props.data.img_height)
+            // }else{
+            //     height = width/(16/7);
+            // }
             return (
-                <View style={{flex:1}}>
-                    <ImageLoad style={{flex:1, height:height,width:width, marginBottom:15}}
+                <View>
+                    <ImageLoad style={{height:'100%',width:width}}
                                placeholderSource={require('../../../../res/images/transparence.png')}
                                loadingStyle={{size: 'small', color: '#ccc'}}
-                               source={{uri: CommonService.host + this.props.data.img1}}/>
+                               source={{uri: CommonService.host + this.props.data.thumbnail_url}}/>
                 </View>
             )
         }
@@ -100,12 +107,17 @@ export default class ForumCell extends Component {
 
 }
 
+
 const styles = StyleSheet.create({
     cellBox: {
-        padding: 16,
-        paddingBottom:0,
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 8,
+        paddingBottom:8,
         marginBottom: 10,
         backgroundColor: '#fff',
+        height: 100,
         // shadowColor: 'gray',
         // shadowOffset: {width: 0, height: 1.5},
         // shadowOpacity: 0.1,
@@ -118,16 +130,23 @@ const styles = StyleSheet.create({
         margin: 3,
         marginLeft: 6
     },
+    priceText:{
+        color:'#368136',
+        fontSize:15,
+        fontWeight:'bold',
+        marginLeft:8,
+    },
     footerItem:{
         flex:1,
         flexDirection:'row',
-        justifyContent:'center'
+        justifyContent:'flex-end'
 
     },
     footerText:{
         color:'#999',
         fontSize:13,
-        textAlign:'center'
+        textAlign:'center',
+        marginLeft:8
     },
     footerIcon:{
         height:15,

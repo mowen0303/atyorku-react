@@ -1,46 +1,41 @@
 import React, {Component, PropTypes} from 'react';
-import {View, ListView, RefreshControl} from 'react-native';
-import ForumService from '../service/forum.service';
-import ForumCell from './forum-cell.component'
+import {View, FlatList, RefreshControl} from 'react-native';
+import BookService from '../service/book.service';
+import BookCell from './book-cell.component'
 import {LoadMore} from '../../../commonComponent/loadingView';
 
 
-export default class ForumListView extends Component {
+export default class BookListView extends Component {
 
     page = 1;
-    data = [];
 
     constructor(props) {
         super(props);
         this.state = {
             result: '',
-            dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+            data: [],
             isRefreshing: false,
             isLoadingMore: false
         }
     }
 
-    static propTypes = {
-        categoryId: PropTypes.string,
-    }
-
     render() {
         return (
             <View style={{flex: 1}}>
-                <ListView
-                    dataSource={this.state.dataSource}
-                    renderRow={(data) => <ForumCell  {...this.props} data={data} numberOfLines={3}/>}
+                <FlatList
+                    data={this.state.data}
+                    extraData={this.state}
+                    keyExtractor={(item, index) => item.id}
+                    renderItem={this.renderItem}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.isRefreshing}
-                            onRefresh={() => {
-                                this.refreshPage()
-                            }}
+                            onRefresh={() => {this.refreshPage()}}
                         />
                     }
                     onEndReached={() => this.loadNextPage()}
-                    onEndReachedThreshold={30}
-                    renderFooter={() => <LoadMore isLoading={this.state.isLoading}/>}
+                    onEndReachedThreshold={-30000}
+                    renderFooter={() => <LoadMore isLoading={this.state.isLoadingMore}/>}
                 />
             </View>
         )
@@ -50,18 +45,20 @@ export default class ForumListView extends Component {
         this.refreshPage();
     }
 
+    renderItem = (data) =>{
+        return <BookCell {...this.props} data={data.item} />
+    }
 
     async refreshPage() {
         this.page = 1;
         await this.setState({isRefreshing: true});
 
-        ForumService.getForums(this.props.categoryId, this.page)
+        BookService.getBooks(this.page)
             .then(async (json) => {
                 if(json.code===1){
                     this.page++;
-                    this.data = json.result;
                     await this.setState({
-                        dataSource: this.state.dataSource.cloneWithRows(json.result),
+                        data: json.result,
                         isRefreshing: false
                     });
                 }
@@ -78,15 +75,12 @@ export default class ForumListView extends Component {
 
         await this.setState({isLoadingMore: true})
 
-        ForumService.getForums(this.props.categoryId, this.page)
+        BookService.getBooks(this.page)
             .then(async (json) => {
                 if (json.code === 1) {
                     this.page++;
-                    for (let i = 0; i < json.result.length; i++) {
-                        this.data.push(json.result[i]);
-                    }
                     await this.setState({
-                        dataSource: this.state.dataSource.cloneWithRows(this.data),
+                        data: this.state.data.concat(json.result),
                         isLoadingMore: false
                     });
                 }
@@ -94,6 +88,5 @@ export default class ForumListView extends Component {
             .catch(error => {
                 alert(error)
             })
-
     }
 }
