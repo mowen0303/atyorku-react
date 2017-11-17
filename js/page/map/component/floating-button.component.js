@@ -23,13 +23,9 @@ export default class FloatingButton extends Component {
 
     render() {
         return (
-            <TouchableOpacity style={styles.buttonMask}
-                                activeOpacity={0.5}
-            >
+            <TouchableOpacity onPress={this.props.onPress} style={styles.buttonMask} activeOpacity={0.5}>
                 <View style={this._returnCustomColorStyle(this.props.color)}>
-                    <Image style={styles.icon}
-                           source={this.props.iconSrc}
-                    />
+                    <Image style={styles.icon} source={this.props.iconSrc}/>
                 </View>
             </TouchableOpacity>
         )

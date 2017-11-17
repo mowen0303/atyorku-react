@@ -9,12 +9,12 @@ import LoginPage from './user/login.page';
 import MePage from "./user/me.page";
 import SettingPage from './user/setting.page';
 import MapPage from './map/map.page';
+import MapDetailPage from './map/map-detail.page';
 import EventPage from './event/event.page';
 import ProfileModifyPage from './user/profileModify.page';
 import BookPage from './book/book.page';
 import BookAddPage from './book/book-add.page';
 import BookDetailPage from './book/book-detail.page';
-
 
 
 
@@ -94,6 +94,7 @@ const TabsNav = StackNavigator({
     BookDetailPage:{screen:BookDetailPage},
     EventPage:{screen:EventPage},
     ProfileModifyPage:{screen:ProfileModifyPage},
+    MapDetailPage:{screen:MapDetailPage},
 }, {
     onNavigationStateChange: () => {
         alert(1)
