@@ -26,7 +26,8 @@ export default class ForumListPage extends Component {
             headerStyle:{backgroundColor:'#0e7477'},
             headerTintColor:'#fff',
             headerBackTitle:null,
-            headerRight: <TouchableOpacity style={styles.addButton} onPress={()=>{navigation.state.navigateToAddPage()}}><Image style={styles.addButtonImage} source={require('../../../res/icon/add.png')}/></TouchableOpacity>
+            headerRight: <TouchableOpacity style={styles.addButton} onPress={()=>{navigation.state.navigateToAddPage()}}><Image style={styles.navigationButton} source={require('../../../res/icon/add.png')}/></TouchableOpacity>,
+            headerLeft: <TouchableOpacity style={styles.addButton} onPress={()=>{navigation.state.navigateToAddPage()}}><Image style={styles.navigationButton} source={require('../../../res/icon/police.png')}/></TouchableOpacity>
         }
     }
 
@@ -43,6 +44,14 @@ export default class ForumListPage extends Component {
                 <LoadMiddle isLoading={this.state.isLoadingCategories}/>
             </View>
         )
+    }
+
+    componentWillReceiveProps(){
+        console.log(1);
+    }
+
+    test(){
+        alert(1);
     }
 
     async getCategories(){
@@ -120,9 +129,9 @@ const styles = StyleSheet.create({
     addButton:{
         padding:10,
     },
-    addButtonImage:{
+    navigationButton:{
         tintColor:"#fff",
-        width:18,
-        height:18,
+        width:20,
+        height:20,
     }
 });

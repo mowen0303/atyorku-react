@@ -152,6 +152,13 @@ export default class ForumDetailPage extends Component {
             Clipboard.setString(this.forumData.content);
         } else if (index === 2) {
             //report
+            ForumService.reportForum(this.forumData.id)
+                .then(json=>{
+                    Alert.alert("提示",json.message);
+                })
+                .catch(error=>{
+                    Alert.alert("提示","网络环境异常");
+                })
         } else if (index === 3) {
             //delete
             ForumService.deleteForum(this.forumData.id).then(async json => {
@@ -197,6 +204,13 @@ export default class ForumDetailPage extends Component {
             Clipboard.setString(this.selectedCommentData.content_comment);
         } else if (index === 2) {
             //report
+            ForumService.reportComment(this.selectedCommentData.id)
+                .then(json=>{
+                    Alert.alert("提示",json.message);
+                })
+                .catch(error=>{
+                    Alert.alert("提示","网络环境异常");
+                })
         } else if (index === 3) {
             //delete
             ForumService.deleteComment(this.selectedCommentData.id).then(async json => {
@@ -226,6 +240,7 @@ export default class ForumDetailPage extends Component {
                     if (this.page > json.thirdResult.totalPage) {
                         await this.setState({onEndReachedThreshold: -10000})
                     }
+                    console.log(this.state.data);
                 } else {
                     await this.setState({onEndReachedThreshold: -10000})
                 }

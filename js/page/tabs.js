@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {AppRegistry, Image, StyleSheet, StatusBar, Platform} from 'react-native';
 import {StackNavigator, TabNavigator, TabBarBottom} from "react-navigation";
-import ForumPage from './forum/forum-list.page'
+import ForumListPage from './forum/forum-list.page'
 import ForumDetailPage from './forum/forum-detail.page'
 import ForumAddPage from './forum/forum-add.page';
 import HomePage from "./home/home.page";
@@ -9,12 +9,13 @@ import LoginPage from './user/login.page';
 import MePage from "./user/me.page";
 import SettingPage from './user/setting.page';
 import MapPage from './map/map.page';
-import MapDetailPage from './map/map-detail.page';
 import EventPage from './event/event.page';
 import ProfileModifyPage from './user/profileModify.page';
 import BookPage from './book/book.page';
 import BookAddPage from './book/book-add.page';
 import BookDetailPage from './book/book-detail.page';
+import MapDetailPage from './map/map-detail.page';
+
 
 
 
@@ -32,7 +33,7 @@ const tabs = TabNavigator({
         }
     },
     Course: {
-        screen: ForumPage,
+        screen: ForumListPage,
         navigationOptions: {
             tabBarLabel: '课程',
             tabBarIcon: ({tintColor}) => (
@@ -44,7 +45,7 @@ const tabs = TabNavigator({
         },
     },
     Forum: {
-        screen: ForumPage,
+        screen: ForumListPage,
         navigationOptions: {
             tabBarLabel: '同学圈',
             tabBarIcon: ({tintColor}) => (
@@ -112,14 +113,13 @@ const styles = StyleSheet.create({
 class App extends Component {
     render() {
         return (
-            <TabsNav onNavigationStateChange={(prev, current) => {
+            <TabsNav onNavigationStateChange={(prev, current,action) => {
                 let index = current.routes[0].index;
-                if ((index === 0 || index === 3) && current.index === 0) {
+                if ((index === 0) && current.index === 0) {
                     StatusBar.setBarStyle('dark-content', false);
                     if(Platform.OS === 'android'){
                         StatusBar.setBackgroundColor('#fff');
                     }
-
                 }else if (index === 1 && current.index === 0) {
                     StatusBar.setBarStyle('light-content', false);
                     if(Platform.OS === 'android'){
@@ -130,11 +130,29 @@ class App extends Component {
                     if(Platform.OS === 'android'){
                         StatusBar.setBackgroundColor('#0e7477');
                     }
+                    this._getCurrentRouteName(current);
+                } else if (index === 3 && current.index === 0) {
+                    StatusBar.setBarStyle('dark-content', false);
+                    if(Platform.OS === 'android'){
+                        StatusBar.setBackgroundColor('#fff');
+                    }
                 }
             }}/>
         )
     }
+
+    _getCurrentRouteName(navState) {
+
+        if (navState.hasOwnProperty('index')) {
+            this._getCurrentRouteName(navState.routes[navState.index])
+        } else {
+            console.log("Current Route Name:", navState.routeName)
+            //this.setState({navState: setCurrentRouteName(navState.routeName)})
+        }
+    }
 }
+
+
 
 
 // AppRegistry.registerComponent('AtYorkU', () => SimpleApp);
