@@ -17,9 +17,9 @@ export default class SearchBar extends Component {
 
 const styles = StyleSheet.create({
     searchBar: {
-        elevation: 10,
+        elevation: 1,
         textAlign:'center',
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
         width: '93%',
         height: 45,
         margin: 15,

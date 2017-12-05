@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
         height: 60,
         borderRadius: 30,
         margin: 20,
-        shadowOffset: { width: 10, height: 10 },
-        shadowColor: 'black',
-        shadowOpacity: 1,
+        // shadowOffset: { width: 10, height: 10 },
+        // shadowColor: 'black',
+        // shadowOpacity: 1,
         elevation: 3,
     },
     icon: {

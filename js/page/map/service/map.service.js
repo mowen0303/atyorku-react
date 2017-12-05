@@ -5,8 +5,10 @@ export default class MapService {
 
     static getLocationList() {
         let url = `${CommonService.host}/admin/map/locationController.php?action=getAllLocations`;
+        //let url = `http://10.0.2.2/admin/map/locationController.php?action=getAllLocations`;
         console.log(fetch(url));
-        //return fetch(url).then(response => response.json());
+        return fetch(url).then(response => response.json());
+
     }
 
     static saveLocationsToLocalStorage(data) {
