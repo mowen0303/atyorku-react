@@ -4,7 +4,7 @@ import ForumCell from './component/forum-cell.component'
 import ForumService from './service/forum.service';
 import CommentCell from './component/comment-cell.component'
 import {LoadMore, LoadMiddle} from '../../commonComponent/loading.component';
-import CommentView from "./component/forum-comment-reply-view.component";
+import ForumCommentReplyView from "./component/forum-comment-reply-view.component";
 import UserService from "../user/service/user.service";
 import ActionSheet from 'react-native-actionsheet'
 
@@ -69,7 +69,7 @@ export default class ForumDetailPage extends Component {
                     onEndReached={() => this.getComments()}
                     onEndReachedThreshold={this.state.onEndReachedThreshold}
                 />
-                <CommentView submit={this.submit} ref='commentView'/>
+                <ForumCommentReplyView submit={this.submit} ref='commentView'/>
                 <LoadMiddle isLoading={this.state.isPublishing} text={"发布中..."}/>
                 <ActionSheet
                     ref={o => this.ForumActionSheet = o}

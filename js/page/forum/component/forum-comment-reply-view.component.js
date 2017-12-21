@@ -64,8 +64,6 @@ export default class ForumCommentReplyView extends Component {
         this.setState({commentBoxHeight: Math.min(80, event.nativeEvent.contentSize.height + 24)})
     }
 
-
-
     componentWillMount() {
         this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this));
         this.keyboardWillHideListener = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide.bind(this));

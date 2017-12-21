@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {View, ListView, RefreshControl, Alert} from 'react-native';
+import {View, ListView, FlatList, RefreshControl, Alert} from 'react-native';
 import ForumService from '../service/forum.service';
 import ForumCell from './forum-cell.component'
 import {LoadMore} from '../../../commonComponent/loading.component';
@@ -14,7 +14,7 @@ export default class ForumListView extends Component {
         super(props);
         this.state = {
             result: '',
-            dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+            dataSource: [],
             isRefreshing: false,
             isLoadingMore: false,
         }
@@ -28,9 +28,11 @@ export default class ForumListView extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
-                <ListView
-                    dataSource={this.state.dataSource}
-                    renderRow={(data) => <ForumCell rootPage={this.props.rootPage} {...this.props} data={data} numberOfLines={3}/>}
+                <FlatList
+                    data={this.state.dataSource}
+                    extraData={this.state}
+                    keyExtractor={(item,index)=>item.id}
+                    renderItem={(data) => <ForumCell rootPage={this.props.rootPage} {...this.props} data={data.item} numberOfLines={3}/>}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.isRefreshing}
@@ -41,7 +43,7 @@ export default class ForumListView extends Component {
                     }
                     onEndReached={() => this.loadNextPage()}
                     onEndReachedThreshold={30}
-                    renderFooter={() => <LoadMore isLoading={this.state.isLoadingMore}/>}
+                    ListFooterComponent={() => <LoadMore isLoading={this.state.isLoadingMore}/>}
                 />
             </View>
         )
@@ -70,7 +72,7 @@ export default class ForumListView extends Component {
                     this.page++;
                     this.data = json.result;
                     await this.setState({
-                        dataSource: this.state.dataSource.cloneWithRows(json.result),
+                        dataSource: json.result,
                     });
                 }else{
                     Alert.alert(json.message);
@@ -97,7 +99,7 @@ export default class ForumListView extends Component {
                         this.data.push(json.result[i]);
                     }
                     await this.setState({
-                        dataSource: this.state.dataSource.cloneWithRows(this.data),
+                        dataSource: this.data,
                         isLoadingMore: false
                     });
                 }
