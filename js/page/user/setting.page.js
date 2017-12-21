@@ -1,12 +1,11 @@
 import React, {Component} from 'react'
-import {View, ScrollView, StyleSheet, TouchableOpacity, Image, Alert, CameraRoll} from 'react-native';
+import {View, ScrollView, StyleSheet, TouchableOpacity, Text, Image, Alert, CameraRoll} from 'react-native';
 import globalStyles from '../../style/style';
 import UserService from './service/user.service';
-import {Button, Text} from 'native-base';
 import UserInterface from './interface/user.Interface';
 import CommonService from '../../service/common.service';
 import ImagePicker from 'react-native-image-picker';
-import {LoadMiddle} from "../../commonComponent/loadingView";
+import {LoadMiddle} from "../../commonComponent/loading.component";
 
 
 export default class SettingPage extends Component {
@@ -102,7 +101,7 @@ export default class SettingPage extends Component {
                             <Image style={globalStyles.listLabelRightIcon} source={require('../../../res/icon/rightarrow.png')}/>
                         </View>
                     </TouchableOpacity>
-                    <Button onPress={this.logout} style={styles.logoutButton} block><Text>退出</Text></Button>
+                    <TouchableOpacity activeOpacity={0.8} onPress={this.logout} style={styles.logoutButton} block><Text style={{color:'#fff',}}>退出</Text></TouchableOpacity>
                 </ScrollView>
                 <LoadMiddle isLoading={this.state.isLoading} text={this.state.isLoadingText}/>
             </View>
@@ -188,7 +187,11 @@ const styles = StyleSheet.create({
     logoutButton:{
         backgroundColor:'#484848',
         marginTop:40,
-        marginBottom:40
+        marginBottom:40,
+        height:50,
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center'
     },
     avatar:{
         width:60,

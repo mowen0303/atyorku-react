@@ -3,8 +3,8 @@ import {View, StyleSheet, ListView, Alert, Clipboard, FlatList} from 'react-nati
 import ForumCell from './component/forum-cell.component'
 import ForumService from './service/forum.service';
 import CommentCell from './component/comment-cell.component'
-import {LoadMore, LoadMiddle} from '../../commonComponent/loadingView';
-import CommentView from "../../commonComponent/commentView";
+import {LoadMore, LoadMiddle} from '../../commonComponent/loading.component';
+import CommentView from "./component/forum-comment-reply-view.component";
 import UserService from "../user/service/user.service";
 import ActionSheet from 'react-native-actionsheet'
 
@@ -115,7 +115,7 @@ export default class ForumDetailPage extends Component {
         }
         this.setState({isPublishing: true});
         let receiverID = this.refs.commentView.state.receiverID === null ? this.forumData.user_id : this.refs.commentView.state.receiverID;
-        ForumService.addComment(this.refs.commentView.state.value, this.forumData.id, this.userData.id, receiverID)
+        ForumService.addComment(this.refs.commentView.state.value, this.forumData.id, receiverID)
             .then(async json => {
                 console.log(json);
                 this.setState({isPublishing: false});

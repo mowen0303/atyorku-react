@@ -13,6 +13,8 @@ export default class ForumService {
      */
     static getCategories() {
         let url = `${CommonService.host}/admin/forum/forumController.php?action=getForumClassListWithJson`;
+        console.log(url);
+        console.log(fetch(url));
         return fetch(url).then(response => response.json());
     }
 
@@ -112,12 +114,12 @@ export default class ForumService {
      * @param receiveUserId : number
      * @returns {Promise.<TResult>}
      */
-    static addComment(content, forumId, ownerUserId, receiveUserId) {
+    static addComment(content, forumId, receiveUserId) {
         let url = `${CommonService.host}/admin/forum/forumController.php?action=addCommentWithJson`;
         let options = {
             method: "POST",
             headers: {"Content-Type": "application/x-www-form-urlencoded"},
-            body: `content_comment=${content}&forum_id=${forumId}&ownerUserId=${ownerUserId}&receiveUserId=${receiveUserId}`
+            body: `content_comment=${content}&forum_id=${forumId}&receiveUserId=${receiveUserId}`
         }
         return fetch(url, options).then().then(response => response.json());
     }

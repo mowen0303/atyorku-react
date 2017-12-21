@@ -2,7 +2,7 @@ import React, {Component,PropTypes} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import LoginPage from '../login.page';
 import globalStyles from '../../../style/style';
-import GenderIcon from '../../../commonComponent/genderIcon';
+import GenderIcon from '../../../commonComponent/gender-icon.component';
 import UserService from '../service/user.service';
 import ImageLoad from 'react-native-image-placeholder';
 import CommonService from '../../../service/common.service';

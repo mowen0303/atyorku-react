@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {View, ListView, RefreshControl, Alert} from 'react-native';
 import ForumService from '../service/forum.service';
 import ForumCell from './forum-cell.component'
-import {LoadMore} from '../../../commonComponent/loadingView';
+import {LoadMore} from '../../../commonComponent/loading.component';
 
 
 export default class ForumListView extends Component {
@@ -49,6 +49,14 @@ export default class ForumListView extends Component {
 
     componentDidMount() {
         this.refreshPage();
+    }
+
+    listHeaderComponent(){
+        return (
+          <view>
+              <text>good</text>
+          </view>
+        );
     }
 
 

@@ -1,6 +1,8 @@
 export default class CommonService {
 
-    static host = 'http://www.atyorku.ca';
+    //static host = 'http://www.atyorku.ca';
+    static host = 'http://10.0.2.2';  // android
+
 
     /**
      * 翻译专业-入学时间-年级

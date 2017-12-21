@@ -1,9 +1,19 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, StatusBar, ScrollView, Image, TextInput, Alert, TouchableOpacity, KeyboardAvoidingView} from 'react-native';
+import {
+    View,
+    StyleSheet,
+    StatusBar,
+    ScrollView,
+    Image,
+    Text,
+    TextInput,
+    Alert,
+    TouchableOpacity,
+    KeyboardAvoidingView
+} from 'react-native';
 import globalStyles from '../../style/style';
-import {Button, Text} from 'native-base';
 import UserService from "./service/user.service";
-import {LoadMiddle} from "../../commonComponent/loadingView";
+import {LoadMiddle} from "../../commonComponent/loading.component";
 
 
 export default class LoginPage extends Component {
@@ -14,7 +24,7 @@ export default class LoginPage extends Component {
             username: "",
             password: "",
             password2: "",
-            showLoginPage:true,
+            showLoginPage: true,
             isLoading: false,
         }
     }
@@ -28,13 +38,15 @@ export default class LoginPage extends Component {
     }
 
     render() {
-
-        if(this.state.showLoginPage===true){
+        if (this.state.showLoginPage === true) {
             return (
                 <View style={{flex: 1}}>
                     <ScrollView style={styles.container}>
-                        <TouchableOpacity onPress={this.goBack}><Image style={styles.back}
-                                                                       source={require('../../../res/icon/back2.png')}/></TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this.goBack}><Image
+                            style={styles.back}
+                            source={require('../../../res/icon/back2.png')}/>
+                        </TouchableOpacity>
                         <Text style={[styles.title, globalStyles.font]}>登录</Text>
                         <KeyboardAvoidingView behavior={"padding"}>
                             <View style={globalStyles.inputBox}>
@@ -59,24 +71,35 @@ export default class LoginPage extends Component {
                                     underlineColorAndroid={"rgba(255, 255, 255, 0)"}
                                     onChangeText={(text) => this.setState({password: text})}/>
                             </View>
-                            <Button disabled={this.state.isLoading} style={styles.button} rounded info block
-                                    onPress={this.login}><Text>登 录</Text></Button>
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                disabled={this.state.isLoading}
+                                style={styles.button}
+                                onPress={this.login}>
+                                <Text style={styles.buttonText}>登 录</Text>
+                            </TouchableOpacity>
                         </KeyboardAvoidingView>
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-                            <Button onPress={this.navigateToRegisterPage} style={[styles.button, {width: 100}]} rounded info block><Text>注册</Text></Button>
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                onPress={this.navigateToRegisterPage}
+                                style={[styles.button, {width: 150}]}>
+                                <Text style={styles.buttonText}>新用户注册</Text>
+                            </TouchableOpacity>
                         </View>
                     </ScrollView>
                     <LoadMiddle isLoading={this.state.isLoading}/>
                 </View>
             );
-
-        }else{
+        } else {
             return (
                 <View style={{flex: 1}}>
                     <ScrollView style={styles.container}>
-                        <TouchableOpacity onPress={this.goBack}><Image style={styles.back}
-                                                                       source={require('../../../res/icon/back2.png')}/></TouchableOpacity>
-                        <Text style={[styles.title, globalStyles.font]}>注册</Text>
+                        <TouchableOpacity onPress={this.goBack}>
+                            <Image style={styles.back}
+                                   source={require('../../../res/icon/back2.png')}/>
+                        </TouchableOpacity>
+                        <Text style={[styles.title, globalStyles.font]}>注册一个新用户</Text>
                         <KeyboardAvoidingView behavior={"padding"}>
                             <View style={globalStyles.inputBox}>
                                 <Image style={styles.icon} source={require('../../../res/icon/user.png')}/>
@@ -111,11 +134,15 @@ export default class LoginPage extends Component {
                                     underlineColorAndroid={"rgba(255, 255, 255, 0)"}
                                     onChangeText={(text) => this.setState({password2: text})}/>
                             </View>
-                            <Button disabled={this.state.isLoading} style={styles.button} rounded info block
-                                    onPress={this.register}><Text>注册</Text></Button>
+                            <TouchableOpacity activeOpacity={0.8} disabled={this.state.isLoading} style={styles.button}
+                                              rounded info block
+                                              onPress={this.register}><Text
+                                style={styles.buttonText}>注册</Text></TouchableOpacity>
                         </KeyboardAvoidingView>
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-                            <Button onPress={this.navigateToLoginPage} style={[styles.button, {width: 100}]} rounded info block><Text>登录</Text></Button>
+                            <TouchableOpacity activeOpacity={0.8} onPress={this.navigateToLoginPage}
+                                              style={[styles.button, {width: 150}]} rounded info block><Text
+                                style={styles.buttonText}>用户登录</Text></TouchableOpacity>
                         </View>
                     </ScrollView>
                     <LoadMiddle isLoading={this.state.isLoading}/>
@@ -156,39 +183,39 @@ export default class LoginPage extends Component {
     }
 
     navigateToRegisterPage = () => {
-        this.setState({showLoginPage:false})
+        this.setState({showLoginPage: false})
     }
 
     navigateToLoginPage = () => {
-        this.setState({showLoginPage:true})
+        this.setState({showLoginPage: true})
     }
 
     register = () => {
-        if(this.state.username === "" || this.state.password === "" || this.state.password2 === ""){
+        if (this.state.username === "" || this.state.password === "" || this.state.password2 === "") {
             Alert.alert("请输入用户名和密码");
             return false;
         }
-        if(this.state.password !== this.state.password2){
+        if (this.state.password !== this.state.password2) {
             Alert.alert("两次密码不一样");
             return false;
         }
-        this.setState({isLoading:true});
+        this.setState({isLoading: true});
         let resultPromise = UserService.register(this.state.username, this.state.password);
-        resultPromise.then(json=>{
-            if(json.code===1){
+        resultPromise.then(json => {
+            if (json.code === 1) {
                 UserService.setUserDataToLocalStorage(json.result);
-                this.props.navigation.state.params.parentPage.setState({userData:json.result});
+                this.props.navigation.state.params.parentPage.setState({userData: json.result});
                 this.props.navigation.goBack();
-            }else{
+            } else {
                 Alert.alert(json.message);
             }
-            this.setState({isLoading:false});
+            this.setState({isLoading: false});
         })
-        .catch(error=>{
-            console.log(error);
-            this.setState({isLoading:false});
-            Alert.alert("网路环境异常");
-        })
+            .catch(error => {
+                console.log(error);
+                this.setState({isLoading: false});
+                Alert.alert("网路环境异常");
+            })
     }
 
 }
@@ -218,6 +245,14 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 50,
-        backgroundColor: '#484848'
+        height: 40,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#484848',
+        borderRadius: 4
+    },
+    buttonText: {
+        color: '#fff',
     }
 })

@@ -3,7 +3,7 @@ import {View, StyleSheet, ScrollView, TextInput,Alert, Picker,TouchableOpacity, 
 import ForumCell from './component/forum-cell.component'
 import ForumService from './service/forum.service';
 import CommentCell from './component/comment-cell.component'
-import LoadMoreBar, {LoadMiddle} from '../../commonComponent/loadingView';
+import LoadMoreBar, {LoadMiddle} from '../../commonComponent/loading.component';
 import globalStyles from '../../style/style';
 import ImagePicker from 'react-native-image-picker';
 

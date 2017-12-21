@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react'
 import {View, ScrollView, StyleSheet,KeyboardAvoidingView, Alert, Platform, LayoutAnimation, TouchableOpacity,Text, Image, TextInput, Picker, DatePickerAndroid, DatePickerIOS} from 'react-native';
 import globalStyles from '../../style/style';
 import UserService from './service/user.service';
-import {LoadMiddle} from "../../commonComponent/loadingView";
+import {LoadMiddle} from "../../commonComponent/loading.component";
 import CommonService from "../../service/common.service";
 
 

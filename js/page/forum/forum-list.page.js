@@ -4,7 +4,7 @@ import ForumService from './service/forum.service';
 import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import ForumListView from './component/forum-list-view.component';
 import UserService from "../user/service/user.service";
-import {LoadMiddle} from '../../commonComponent/loadingView';
+import {LoadMiddle} from '../../commonComponent/loading.component';
 
 const renderTabBar = props => (<DefaultTabBar {...props} style={{borderBottomWidth: 1, borderBottomColor: '#f4f4f4', height: 40, borderTopWidth:0}}/>);
 
@@ -26,8 +26,7 @@ export default class ForumListPage extends Component {
             headerStyle:{backgroundColor:'#0e7477'},
             headerTintColor:'#fff',
             headerBackTitle:null,
-            headerRight: <TouchableOpacity style={styles.addButton} onPress={()=>{navigation.state.navigateToAddPage()}}><Image style={styles.navigationButton} source={require('../../../res/icon/add.png')}/></TouchableOpacity>,
-            headerLeft: <TouchableOpacity style={styles.addButton} onPress={()=>{navigation.state.navigateToAddPage()}}><Image style={styles.navigationButton} source={require('../../../res/icon/police.png')}/></TouchableOpacity>
+            headerRight: <TouchableOpacity style={styles.addButton} onPress={()=>{navigation.state.navigateToAddPage()}}><Image style={styles.navigationButton} source={require('../../../res/icon/add.png')}/></TouchableOpacity>
         }
     }
 
@@ -50,9 +49,6 @@ export default class ForumListPage extends Component {
         console.log(1);
     }
 
-    test(){
-        alert(1);
-    }
 
     async getCategories(){
         await this.setState({isLoadingCategories:true});
