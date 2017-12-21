@@ -7,18 +7,18 @@
 		"test": "jest"
 	},
 	"dependencies": {
-		"native-base": "^2.3.3",
+		"native-base": "^2.3.5",
 		"react": "16.0.0-alpha.12",
-		"react-native": "^0.48.4",
+		"react-native": "^0.51.0",
 		"react-native-actionsheet": "^2.3.0",
-		"react-native-image-crop-picker": "^0.18.1",
+		"react-native-image-crop-picker": "^0.18.2",
 		"react-native-image-picker": "^0.26.7",
 		"react-native-image-placeholder": "^1.0.14",
 		"react-native-maps": "^0.17.1",
 		"react-native-scrollable-tab-view": "^0.6.7",
 		"react-native-swiper": "^1.5.13",
 		"react-native-tab-navigator": "^0.3.4",
-		"react-navigation": "^1.0.0-beta.19",
+		"react-navigation": "^1.0.0-beta.22",
 		"tcomb-form-native": "^0.6.11"
 	},
 	"devDependencies": {
