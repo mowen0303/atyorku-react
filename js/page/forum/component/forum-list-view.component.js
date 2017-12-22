@@ -3,6 +3,8 @@ import {View, Text, FlatList, RefreshControl, Alert} from 'react-native';
 import ForumService from '../service/forum.service';
 import ForumCell from './forum-cell.component'
 import {LoadMore} from '../../../commonComponent/loading.component';
+import ImageLoad from 'react-native-image-placeholder';
+import CommonService from "../../../service/common.service";
 
 
 export default class ForumListView extends Component {
@@ -23,8 +25,8 @@ export default class ForumListView extends Component {
     }
 
     static propTypes = {
-        categoryId: PropTypes.string,
-        rootPage:PropTypes.object
+        categoryData:PropTypes.object,
+        rootPage:PropTypes.object,
     }
 
     render() {
@@ -35,7 +37,7 @@ export default class ForumListView extends Component {
                     extraData={this.state}
                     keyExtractor={(item,index)=>item.id}
                     ListHeaderComponent={this.listHeaderComponent}
-                    renderItem={(data) => <ForumCell rootPage={this.props.rootPage} {...this.props} data={data.item} numberOfLines={3}/>}
+                    renderItem={({item}) => <ForumCell rootPage={this.props.rootPage} {...this.props} data={item} numberOfLines={3}/>}
                     ListFooterComponent={() => <LoadMore isLoading={this.state.isLoadingMore}/>}
                     refreshControl={
                         <RefreshControl
@@ -58,18 +60,27 @@ export default class ForumListView extends Component {
 
     listHeaderComponent = ()=>{
         return (
-          <View>
-              <Text>good</Text>
+          <View style={{height:50,backgroundColor:"#fff",marginBottom:10,flexDirection:"row"}}>
+              <ImageLoad
+                  style={{height: 40, width: 40, borderRadius:20, overflow:'hidden'}}
+                  source={{uri: CommonService.host + this.props.categoryData.icon}}
+                  placeholderSource={require('../../../../res/images/transparence.png')}
+                  isShowActivity={false}
+                  borderRadius = {20}
+              />
+              <View style={{flex:1}}>
+                  <Text/>
+              </View>
           </View>
         );
-    }
+    };
 
 
     async refreshPage() {
         this.page = 1;
         await this.setState({isRefreshing: true});
 
-        ForumService.getForums(this.props.categoryId, this.page)
+        ForumService.getForums(this.props.categoryData.id, this.page)
             .then(async (json) => {
                 if(json.code===1){
                     this.page++;
@@ -93,9 +104,9 @@ export default class ForumListView extends Component {
         if (this.state.isRefreshing || this.state.isLoadingMore) {
             return false;
         }
-        await this.setState({isLoadingMore: true})
+        await this.setState({isLoadingMore: true});
 
-        ForumService.getForums(this.props.categoryId, this.page)
+        ForumService.getForums(this.props.categoryData.id, this.page)
             .then(async (json) => {
                 if (json.code === 1) {
                     this.page++;

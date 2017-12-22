@@ -235,7 +235,7 @@ export default class ForumDetailPage extends Component {
 
     async getComments() {
         console.log("触发");
-        //如果
+        //如果正在加载，或者当前页等于false
         if(this.state.isLoading || !this.currentPage) return false;
         await this.setState({isLoading: true});
         ForumService.getComments(this.forumData.id, this.currentPage)

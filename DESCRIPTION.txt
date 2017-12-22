@@ -6,10 +6,10 @@
 (Jerry) "react-native-image-placeholder": "^1.0.14",
 (Jerry) "react-navigation": "^1.0.0-beta.19",
 (Jerry) "react-native-scrollable-tab-view": "^0.6.7",
+(Jerry) "react-native-swiper": "^1.5.13",
 
 (Tom) "react-native-maps": "^0.17.1",
 
-(Jerry) "react-native-swiper": "^1.5.13",
 (Jason) "tcomb-form-native": "^0.6.11"
 (Jason) "react-native-image-crop-picker": "^0.18.1",
 
@@ -23,6 +23,11 @@ npm uninstall xxxxxx --save
 ########################
 #### 水平垂直居中 ####
 ########################
+<TouchableOpacity>
+    <Text></Text>
+</TouchableOpacity>
+
+
 flexDirection:'row',
 justifyContent:'center',
 alignItems:"center",
