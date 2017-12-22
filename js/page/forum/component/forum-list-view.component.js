@@ -58,18 +58,20 @@ export default class ForumListView extends Component {
         this.refreshPage();
     }
 
+    //list header
     listHeaderComponent = ()=>{
         return (
-          <View style={{height:50,backgroundColor:"#fff",marginBottom:10,flexDirection:"row"}}>
+          <View style={{backgroundColor:"#fff",marginBottom:10,flexDirection:"row",padding:10}}>
               <ImageLoad
-                  style={{height: 40, width: 40, borderRadius:20, overflow:'hidden'}}
+                  style={{height: 44, width: 44, borderRadius:22, overflow:'hidden',marginRight:14}}
                   source={{uri: CommonService.host + this.props.categoryData.icon}}
                   placeholderSource={require('../../../../res/images/transparence.png')}
                   isShowActivity={false}
                   borderRadius = {20}
               />
               <View style={{flex:1}}>
-                  <Text/>
+                  <Text style={{color:"#484848",fontSize:15,paddingBottom:4,marginTop:3}}>{this.props.categoryData.title}</Text>
+                  <Text style={{color:"#686868"}}>帖子：{this.props.categoryData.count_all} | 主题：{this.props.categoryData.count_all}</Text>
               </View>
           </View>
         );
