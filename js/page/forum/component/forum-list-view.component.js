@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {View, ListView, FlatList, RefreshControl, Alert} from 'react-native';
+import {View, Text, FlatList, RefreshControl, Alert} from 'react-native';
 import ForumService from '../service/forum.service';
 import ForumCell from './forum-cell.component'
 import {LoadMore} from '../../../commonComponent/loading.component';
@@ -9,14 +9,16 @@ export default class ForumListView extends Component {
 
     page = 1;
     data = [];
+    lastLoadTime = 0;
+
 
     constructor(props) {
         super(props);
         this.state = {
-            result: '',
             dataSource: [],
             isRefreshing: false,
             isLoadingMore: false,
+            onEndReachedThreshold:0.1,
         }
     }
 
@@ -32,7 +34,9 @@ export default class ForumListView extends Component {
                     data={this.state.dataSource}
                     extraData={this.state}
                     keyExtractor={(item,index)=>item.id}
+                    ListHeaderComponent={this.listHeaderComponent}
                     renderItem={(data) => <ForumCell rootPage={this.props.rootPage} {...this.props} data={data.item} numberOfLines={3}/>}
+                    ListFooterComponent={() => <LoadMore isLoading={this.state.isLoadingMore}/>}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.isRefreshing}
@@ -41,9 +45,8 @@ export default class ForumListView extends Component {
                             }}
                         />
                     }
+                    onEndReachedThreshold={this.state.onEndReachedThreshold}
                     onEndReached={() => this.loadNextPage()}
-                    onEndReachedThreshold={30}
-                    ListFooterComponent={() => <LoadMore isLoading={this.state.isLoadingMore}/>}
                 />
             </View>
         )
@@ -53,11 +56,11 @@ export default class ForumListView extends Component {
         this.refreshPage();
     }
 
-    listHeaderComponent(){
+    listHeaderComponent = ()=>{
         return (
-          <view>
-              <text>good</text>
-          </view>
+          <View>
+              <Text>good</Text>
+          </View>
         );
     }
 
@@ -74,6 +77,7 @@ export default class ForumListView extends Component {
                     await this.setState({
                         dataSource: json.result,
                     });
+                    console.log(this.state.dataSource);
                 }else{
                     Alert.alert(json.message);
                 }
@@ -85,24 +89,23 @@ export default class ForumListView extends Component {
     }
 
     async loadNextPage() {
-        if (this.state.isRefreshing || this.state.isLoading) {
+
+        if (this.state.isRefreshing || this.state.isLoadingMore) {
             return false;
         }
-
         await this.setState({isLoadingMore: true})
 
         ForumService.getForums(this.props.categoryId, this.page)
             .then(async (json) => {
                 if (json.code === 1) {
                     this.page++;
-                    for (let i = 0; i < json.result.length; i++) {
-                        this.data.push(json.result[i]);
-                    }
-                    await this.setState({
-                        dataSource: this.data,
-                        isLoadingMore: false
-                    });
+                    await this.setState({dataSource:this.state.dataSource.concat(json.result)})
+                } else {
+                    await this.setState({onEndReachedThreshold: -10000})
                 }
+                await this.setState({isLoadingMore:false})
+                console.log(this.page);
+                console.log(this.state.dataSource);
             })
             .catch(error => {
                 alert(error)

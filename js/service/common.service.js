@@ -1,7 +1,7 @@
 export default class CommonService {
 
-    //static host = 'http://www.atyorku.ca';
-    static host = 'http://10.0.2.2';  // android
+    static host = 'http://www.atyorku.ca';
+    //static host = 'http://10.0.2.2';  // android
 
 
     /**
