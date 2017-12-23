@@ -18,9 +18,9 @@ export default class ForumListView extends Component {
         super(props);
         this.state = {
             dataSource: [],
+            categoryData: {},
             isRefreshing: false,
             isLoadingMore: false,
-            onEndReachedThreshold:0.1,
         }
     }
 
@@ -47,7 +47,7 @@ export default class ForumListView extends Component {
                             }}
                         />
                     }
-                    onEndReachedThreshold={this.state.onEndReachedThreshold}
+                    onEndReachedThreshold={0.1}
                     onEndReached={() => this.loadNextPage()}
                 />
             </View>
@@ -61,17 +61,25 @@ export default class ForumListView extends Component {
     //list header
     listHeaderComponent = ()=>{
         return (
-          <View style={{backgroundColor:"#fff",marginBottom:10,flexDirection:"row",padding:10}}>
+          <View style={{backgroundColor:"#fff",marginBottom:10,flexDirection:"row",padding:14}}>
               <ImageLoad
                   style={{height: 44, width: 44, borderRadius:22, overflow:'hidden',marginRight:14}}
-                  source={{uri: CommonService.host + this.props.categoryData.icon}}
+                  source={{uri: CommonService.host + this.state.categoryData.icon}}
                   placeholderSource={require('../../../../res/images/transparence.png')}
                   isShowActivity={false}
                   borderRadius = {20}
               />
               <View style={{flex:1}}>
-                  <Text style={{color:"#484848",fontSize:15,paddingBottom:4,marginTop:3}}>{this.props.categoryData.title}</Text>
-                  <Text style={{color:"#686868"}}>帖子：{this.props.categoryData.count_all} | 主题：{this.props.categoryData.count_all}</Text>
+                  <Text style={{color:"#484848",fontSize:14,flex:1}}>
+                      <Text style={{color:"#787878"}}>主题：</Text>{this.state.categoryData.count_all}
+                      <Text style={{color:"#787878"}}>    帖子数：</Text>{this.state.categoryData.count_forum_and_comment}
+                  </Text>
+                  <Text style={{color:"#787878",fontSize:13}}>
+                      {this.state.categoryData.description}
+                  </Text>
+                  <Text style={{position:"absolute",right:0,top:2}}>
+                      今日：<Text style={{color:"#f00"}}>{this.state.categoryData.count_today}</Text>
+                  </Text>
               </View>
           </View>
         );
@@ -82,7 +90,18 @@ export default class ForumListView extends Component {
         this.page = 1;
         await this.setState({isRefreshing: true});
 
-        ForumService.getForums(this.props.categoryData.id, this.page)
+        ForumService.getCategories()
+            .then(async (json)=>{
+                if(json.code === 1){
+                    let categoryDataOfCurrentPage = json.result.filter(item=>item.id === this.props.categoryData.id);
+                    this.setState({categoryData:categoryDataOfCurrentPage[0]});
+                    console.log(categoryDataOfCurrentPage)
+
+                }
+
+            })
+
+        ForumService.getForums(this.state.categoryData.id, this.page)
             .then(async (json) => {
                 if(json.code===1){
                     this.page++;
@@ -90,7 +109,6 @@ export default class ForumListView extends Component {
                     await this.setState({
                         dataSource: json.result,
                     });
-                    console.log(this.state.dataSource);
                 }else{
                     Alert.alert(json.message);
                 }
@@ -102,19 +120,15 @@ export default class ForumListView extends Component {
     }
 
     async loadNextPage() {
-
-        if (this.state.isRefreshing || this.state.isLoadingMore) {
-            return false;
-        }
+        if (this.state.isRefreshing || this.state.isLoadingMore || !this.page) return false;
         await this.setState({isLoadingMore: true});
-
-        ForumService.getForums(this.props.categoryData.id, this.page)
+        ForumService.getForums(this.state.categoryData.id, this.page)
             .then(async (json) => {
                 if (json.code === 1) {
                     this.page++;
                     await this.setState({dataSource:this.state.dataSource.concat(json.result)})
                 } else {
-                    await this.setState({onEndReachedThreshold: -10000})
+                    this.page=false;
                 }
                 await this.setState({isLoadingMore:false})
                 console.log(this.page);
@@ -123,6 +137,5 @@ export default class ForumListView extends Component {
             .catch(error => {
                 alert(error)
             })
-
     }
 }

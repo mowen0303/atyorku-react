@@ -13,8 +13,6 @@ export default class ForumService {
      */
     static getCategories() {
         let url = `${CommonService.host}/admin/forum/forumController.php?action=getForumClassListWithJson`;
-        console.log(url);
-        console.log(fetch(url));
         return fetch(url).then(response => response.json());
     }
 
@@ -49,7 +47,7 @@ export default class ForumService {
      */
     static getForums(categoryId, page) {
         let url = `${CommonService.host}/admin/forum/forumController.php?action=getForumListWithJson&pageSize=5&forum_class_id=${categoryId}&page=${page}`;
-        console.log(url);
+        //console.log(url);
         return fetch(url).then(response => response.json());
     }
 
