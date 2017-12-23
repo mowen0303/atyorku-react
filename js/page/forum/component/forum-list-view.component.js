@@ -18,7 +18,7 @@ export default class ForumListView extends Component {
         super(props);
         this.state = {
             dataSource: [],
-            categoryData: {},
+            categoryData: this.props.categoryData,
             isRefreshing: false,
             isLoadingMore: false,
         }
@@ -60,11 +60,12 @@ export default class ForumListView extends Component {
 
     //list header
     listHeaderComponent = ()=>{
+        console.log(CommonService.host+this.state.categoryData.icon)
         return (
           <View style={{backgroundColor:"#fff",marginBottom:10,flexDirection:"row",padding:14}}>
               <ImageLoad
                   style={{height: 44, width: 44, borderRadius:22, overflow:'hidden',marginRight:14}}
-                  source={{uri: CommonService.host + this.state.categoryData.icon}}
+                  source={{uri: CommonService.host+this.state.categoryData.icon}}
                   placeholderSource={require('../../../../res/images/transparence.png')}
                   isShowActivity={false}
                   borderRadius = {20}

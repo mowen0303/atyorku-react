@@ -28,9 +28,6 @@ export default class SettingPage extends Component {
         headerBackTitle:null,
     }
 
-    componentDidMount(){
-        console.log(fetch("http://www.atyorku.ca"));
-    }
 
     componentWillUnmount(){
         this.props.navigation.state.params.parentPage.getUserData();

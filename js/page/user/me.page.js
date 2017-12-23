@@ -84,7 +84,8 @@ export default class MePage extends Component {
     }
 
     navigateToLoginPage = ()=>{
-        this.props.navigation.navigate('LoginPage',{parentPage:this})
+        this.props.navigation.navigate('LoginPage',{parentPage:this, userData: this.state.userData});
+        //this.props.navigation.navigate('LoginPage',{parentPage:this})
     }
 
     navigateToSettingPage = ()=>{

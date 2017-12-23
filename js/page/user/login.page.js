@@ -33,9 +33,6 @@ export default class LoginPage extends Component {
         header: null
     }
 
-    componentDidMount() {
-        console.log(this.props.navigation.state.params);
-    }
 
     render() {
         if (this.state.showLoginPage === true) {
