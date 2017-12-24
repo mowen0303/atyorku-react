@@ -13,8 +13,7 @@ export default class ForumDetailPage extends Component {
 
     currentPage = 1;
     userData = null;
-    forumData = this.props.navigation.state.params.data;
-    lastLoadTime = 0;
+    forumData = this.props.navigation.state.params.forumData;
 
     //action sheet option
     CANCEL_INDEX = 0;
@@ -33,6 +32,7 @@ export default class ForumDetailPage extends Component {
             sheetButtons: this.sheetButtons2,
             data: [],
         }
+        console.log(this.props.navigation.state.params.forumData);
     }
 
     static navigationOptions = {
@@ -45,7 +45,6 @@ export default class ForumDetailPage extends Component {
         UserService.getUserDataFromLocalStorage().then(userData => {
             this.userData = userData;
         });
-        console.log(this.forumData);
     }
 
     componentDidMount() {
@@ -96,7 +95,7 @@ export default class ForumDetailPage extends Component {
     }
 
     listHeaderComponent = () => {
-        return <ForumCell data={this.forumData} onPressMoreButton={() => {
+        return <ForumCell forumData={this.forumData} onPressMoreButton={() => {
             this.clickForumMoreButton()
         }} activeOpacity={1} isShowCompleteInfo={true}/>
     }
@@ -123,12 +122,10 @@ export default class ForumDetailPage extends Component {
         let receiverID = this.refs.commentView.state.receiverID === null ? this.forumData.user_id : this.refs.commentView.state.receiverID;
         ForumService.addComment(this.refs.commentView.state.value, this.forumData.id, receiverID)
             .then(async json => {
-                console.log(json);
                 this.setState({isPublishing: false});
                 if (json.code === 1) {
                     let data = this.state.data;
                     data.push(json.result);
-                    console.log(data);
                     await this.setState({data: data});
                     this.refs.commentView.setState({value: ""});
                 } else {
@@ -138,7 +135,6 @@ export default class ForumDetailPage extends Component {
             })
             .catch(error => {
                 this.setState({isPublishing: false});
-                console.log(error);
                 Alert.alert("提示", "网络环境异常");
             });
     }
@@ -166,11 +162,10 @@ export default class ForumDetailPage extends Component {
                     Alert.alert("提示", "网络环境异常");
                 })
         } else if (index === 3) {
-            //delete
+            //delete a forum
             ForumService.deleteForum(this.forumData.id).then(async json => {
                 if (json.code === 1) {
-                    this.props.navigation.state.params.rootPage.setState({tabViewPage: 0});
-                    this.props.navigation.state.params.rootPage.refs.forumListView0.refreshPage();
+                    this.props.navigation.state.params.parentPage.deleteForum(this.forumData.id);
                     this.props.navigation.goBack();
                 } else {
                     Alert.alert(json.message);
@@ -224,7 +219,6 @@ export default class ForumDetailPage extends Component {
                     let deletedIndex = this.state.data.indexOf(this.selectedCommentData);
                     let newData = this.state.data;
                     newData.splice(deletedIndex, 1);
-                    console.log(deletedIndex);
                     await this.setState({data: newData});
                 } else {
                     Alert.alert(json.message);
@@ -234,7 +228,6 @@ export default class ForumDetailPage extends Component {
     }
 
     async getComments() {
-        console.log("触发");
         //如果正在加载，或者当前页等于false
         if(this.state.isLoading || !this.currentPage) return false;
         await this.setState({isLoading: true});

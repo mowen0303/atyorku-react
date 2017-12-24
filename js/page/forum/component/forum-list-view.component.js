@@ -10,14 +10,11 @@ import CommonService from "../../../service/common.service";
 export default class ForumListView extends Component {
 
     page = 1;
-    data = [];
-    lastLoadTime = 0;
-
 
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: [],
+            forumListDataSource: [],
             categoryData: this.props.categoryData,
             isRefreshing: false,
             isLoadingMore: false,
@@ -25,19 +22,20 @@ export default class ForumListView extends Component {
     }
 
     static propTypes = {
-        categoryData:PropTypes.object,
-        rootPage:PropTypes.object,
+        categoryData: PropTypes.object
     }
 
     render() {
         return (
             <View style={{flex: 1}}>
                 <FlatList
-                    data={this.state.dataSource}
-                    extraData={this.state}
-                    keyExtractor={(item,index)=>item.id}
+                    data={this.state.forumListDataSource}
+                    //extraData={this.state}
+                    keyExtractor={(item, index) => item.id}
                     ListHeaderComponent={this.listHeaderComponent}
-                    renderItem={({item}) => <ForumCell rootPage={this.props.rootPage} {...this.props} data={item} numberOfLines={3}/>}
+                    renderItem={({item}) => <ForumCell {...this.props}
+                                                       onPressForum={() => {this.navigateToForumDetailPage(item)}}
+                                                       forumData={item} numberOfLines={3}/>}
                     ListFooterComponent={() => <LoadMore isLoading={this.state.isLoadingMore}/>}
                     refreshControl={
                         <RefreshControl
@@ -58,59 +56,79 @@ export default class ForumListView extends Component {
         this.refreshPage();
     }
 
+    navigateToForumDetailPage = (forumData) => {
+        this.props.navigation.navigate('ForumDetailPage', {forumData: forumData, parentPage: this});
+    }
+
+    navigateToForumAddPage = ()=>{
+        UserService.getUserDataFromLocalStorage()
+            .then(result => {
+                if (result !== null) {
+                    this.props.navigation.navigate('ForumAddPage', {
+                        categoriesData: this.props.categoryData,
+                        forumListPage: this
+                    });
+                } else {
+                    Alert.alert("提示", "请先登录");
+                }
+            })
+            .catch(error => {
+                Alert.alert("提示", error);
+            })
+    }
+
     //list header
-    listHeaderComponent = ()=>{
-        console.log(CommonService.host+this.state.categoryData.icon)
+    listHeaderComponent = () => {
         return (
-          <View style={{backgroundColor:"#fff",marginBottom:10,flexDirection:"row",padding:14}}>
-              <ImageLoad
-                  style={{height: 44, width: 44, borderRadius:22, overflow:'hidden',marginRight:14}}
-                  source={{uri: CommonService.host+this.state.categoryData.icon}}
-                  placeholderSource={require('../../../../res/images/transparence.png')}
-                  isShowActivity={false}
-                  borderRadius = {20}
-              />
-              <View style={{flex:1}}>
-                  <Text style={{color:"#484848",fontSize:14,flex:1}}>
-                      <Text style={{color:"#787878"}}>主题：</Text>{this.state.categoryData.count_all}
-                      <Text style={{color:"#787878"}}>    帖子数：</Text>{this.state.categoryData.count_forum_and_comment}
-                  </Text>
-                  <Text style={{color:"#787878",fontSize:13}}>
-                      {this.state.categoryData.description}
-                  </Text>
-                  <Text style={{position:"absolute",right:0,top:2}}>
-                      今日：<Text style={{color:"#f00"}}>{this.state.categoryData.count_today}</Text>
-                  </Text>
-              </View>
-          </View>
+            <View style={{backgroundColor: "#fff", marginBottom: 10, flexDirection: "row", padding: 14}}>
+                <ImageLoad
+                    style={{height: 44, width: 44, borderRadius: 22, overflow: 'hidden', marginRight: 14}}
+                    source={{uri: CommonService.host + this.state.categoryData.icon}}
+                    placeholderSource={require('../../../../res/images/transparence.png')}
+                    isShowActivity={false}
+                    borderRadius={20}
+                />
+                <View style={{flex: 1}}>
+                    <Text style={{color: "#484848", fontSize: 14, flex: 1}}>
+                        <Text style={{color: "#787878"}}>主题：</Text>{this.state.categoryData.count_all}
+                        <Text style={{color: "#787878"}}> 帖子数：</Text>{this.state.categoryData.count_forum_and_comment}
+                    </Text>
+                    <Text style={{color: "#787878", fontSize: 13}}>
+                        {this.state.categoryData.description}
+                    </Text>
+                    <Text style={{position: "absolute", right: 0, top: 2}}>
+                        今日：<Text style={{color: "#f00"}}>{this.state.categoryData.count_today}</Text>
+                    </Text>
+                </View>
+            </View>
         );
     };
 
+    deleteForum(forumId){
+        let forumList = this.state.forumListDataSource.filter(forumData=>forumData.id != forumId);
+        this.setState({forumListDataSource:forumList});
+    }
 
-    async refreshPage() {
+
+    refreshPage() {
         this.page = 1;
-        await this.setState({isRefreshing: true});
-
+        this.setState({isRefreshing: true});
         ForumService.getCategories()
-            .then(async (json)=>{
-                if(json.code === 1){
-                    let categoryDataOfCurrentPage = json.result.filter(item=>item.id === this.props.categoryData.id);
-                    this.setState({categoryData:categoryDataOfCurrentPage[0]});
-                    console.log(categoryDataOfCurrentPage)
-
+            .then((json) => {
+                if (json.code === 1) {
+                    let categoryDataOfCurrentPage = json.result.find(item => item.id === this.props.categoryData.id);
+                    this.setState({categoryData: categoryDataOfCurrentPage});
                 }
 
             })
-
         ForumService.getForums(this.state.categoryData.id, this.page)
-            .then(async (json) => {
-                if(json.code===1){
+            .then((json) => {
+                if (json.code === 1) {
                     this.page++;
-                    this.data = json.result;
-                    await this.setState({
-                        dataSource: json.result,
+                    this.setState({
+                        forumListDataSource: json.result,
                     });
-                }else{
+                } else {
                     Alert.alert(json.message);
                 }
                 this.setState({isRefreshing: false})
@@ -124,16 +142,14 @@ export default class ForumListView extends Component {
         if (this.state.isRefreshing || this.state.isLoadingMore || !this.page) return false;
         await this.setState({isLoadingMore: true});
         ForumService.getForums(this.state.categoryData.id, this.page)
-            .then(async (json) => {
+            .then((json) => {
                 if (json.code === 1) {
                     this.page++;
-                    await this.setState({dataSource:this.state.dataSource.concat(json.result)})
+                    this.setState({forumListDataSource: this.state.forumListDataSource.concat(json.result)})
                 } else {
-                    this.page=false;
+                    this.page = false;
                 }
-                await this.setState({isLoadingMore:false})
-                console.log(this.page);
-                console.log(this.state.dataSource);
+                this.setState({isLoadingMore: false})
             })
             .catch(error => {
                 alert(error)

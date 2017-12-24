@@ -15,6 +15,8 @@ const renderTabBar = props => (<DefaultTabBar {...props} style={{
 
 export default class ForumListPage extends Component {
 
+    currentForumListView = null;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -53,6 +55,11 @@ export default class ForumListPage extends Component {
         )
     }
 
+    reload(){
+        console(333333);
+        //this.currentForumListView.refreshPage();
+    }
+
     componentWillReceiveProps() {
         console.log(1);
     }
@@ -77,9 +84,11 @@ export default class ForumListPage extends Component {
 
     elementScrollableTableView() {
         if (this.state.categoriesData !== null) {
+
             return (
                 <ScrollableTabView
                     page={this.state.tabViewPage}
+                    ref="scrollableTabView"
                     renderTabBar={renderTabBar}
                     tabBarBackgroundColor={'#fff'}
                     tabBarActiveTextColor={'#0e7477'}
@@ -87,10 +96,13 @@ export default class ForumListPage extends Component {
                     tabBarTextStyle={{marginTop: 10, fontSize: 15}}
                     tabBarUnderlineStyle={{backgroundColor: '#0e7477', height: 2, borderRadius: 1}}
                 >
+
+
                     {this.state.categoriesData.map(category => <ForumListView rootPage={this}
+                                                                              ref={(view)=>{this.currentForumListView = view}}
                                                                               categoryData = {category}
-                                                                              ref={"forumListView" + category.id}
-                                                                              key={category.id} {...this.props}
+                                                                              key={category.id}
+                                                                              {...this.props}
                                                                               categoryId={category.id}
                                                                               tabLabel={category.title}/>)}
                 </ScrollableTabView>
@@ -99,7 +111,9 @@ export default class ForumListPage extends Component {
     }
 
 
+
     navigateToAddPage = () => {
+
         UserService.getUserDataFromLocalStorage()
             .then(result => {
                 if (result !== null) {

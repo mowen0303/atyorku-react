@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, ScrollView, TextInput,Alert, Picker,TouchableOpacity, LayoutAnimation,Text, Image, Platform} from 'react-native';
-import ForumCell from './component/forum-cell.component'
+
 import ForumService from './service/forum.service';
-import CommentCell from './component/comment-cell.component'
-import LoadMoreBar, {LoadMiddle} from '../../commonComponent/loading.component';
+import {LoadMiddle} from '../../commonComponent/loading.component';
 import globalStyles from '../../style/style';
 import ImagePicker from 'react-native-image-picker';
 
@@ -79,11 +78,16 @@ export default class ForumAddPage extends Component {
             (result)=> {
                 this.setState({isLoading:false});
                 if(result.code === 1){
-                    console.log(this.props.navigation);
+                    let activeForumList = this.props.navigation.state.params.forumListPage.currentForumListView;
 
-                    this.props.navigation.state.params.forumListPage.setState({tabViewPage:0});
-                    this.props.navigation.state.params.forumListPage.refs.forumListView0.refreshPage();
+                    if(activeForumList.state.categoryData.id === this.state.selectedCategoryId
+                        || activeForumList.state.categoryData.id === '0'){
+                        activeForumList.refreshPage()
+                    }
+
                     this.props.navigation.goBack();
+
+
                 }else{
                     Alert.alert(result.message);
                 }
