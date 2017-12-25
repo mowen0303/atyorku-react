@@ -18,7 +18,7 @@ export default class searchCourse extends Component {
         super(props);
         this.state = {
             dataSource: [],
-            text: ''
+            text: '',
         };
     }
 
@@ -42,6 +42,7 @@ export default class searchCourse extends Component {
         })
 
         await this.setState({
+            text:text,
             dataSource: courseResultList
         })
 
@@ -56,8 +57,9 @@ export default class searchCourse extends Component {
                 <View>
                     <TextInput
                         style={styles.InputContainer}
-                        placeholder="Type the course name (Eg: ADMS)"
+                        placeholder= "Type the course name (Eg: ADMS)"
                         onChangeText={(text) => this.searchCourseId(text)}
+                        value={this.state.text}
                     />
                 </View>
                 <View style={styles.ListContainer} >
@@ -87,7 +89,10 @@ export default class searchCourse extends Component {
     }
 
     courseCodeClickHandler = (val)=>{
-        alert(val); //此handler用于控制TouchableOpacity中的onPress事件
+        this.searchCourseId(val);//选择课程后,再调用一次searchCourseId更新dataSource的内容,用于FlatList显示
+        this.setState({
+            text:val //将课程title赋值到TextInput上显示
+        });
     }
 
 }
