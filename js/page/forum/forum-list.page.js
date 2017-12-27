@@ -6,6 +6,7 @@ import ForumListView from './component/forum-list-view.component';
 import UserService from "../user/service/user.service";
 import {LoadMiddle} from '../../commonComponent/loading.component';
 
+
 const renderTabBar = props => (<DefaultTabBar {...props} style={{
     borderBottomWidth: 1,
     borderBottomColor: '#f4f4f4',
@@ -16,6 +17,7 @@ const renderTabBar = props => (<DefaultTabBar {...props} style={{
 export default class ForumListPage extends Component {
 
     currentForumListView = null;
+    forumListArr = [];
 
     constructor(props) {
         super(props);
@@ -55,14 +57,7 @@ export default class ForumListPage extends Component {
         )
     }
 
-    reload(){
-        console(333333);
-        //this.currentForumListView.refreshPage();
-    }
 
-    componentWillReceiveProps() {
-        console.log(1);
-    }
 
     async getCategories() {
         await this.setState({isLoadingCategories: true});
@@ -89,6 +84,7 @@ export default class ForumListPage extends Component {
                 <ScrollableTabView
                     page={this.state.tabViewPage}
                     ref="scrollableTabView"
+                    onChangeTab={(tab)=>{this.registerForumListView(tab)}}
                     renderTabBar={renderTabBar}
                     tabBarBackgroundColor={'#fff'}
                     tabBarActiveTextColor={'#0e7477'}
@@ -99,7 +95,7 @@ export default class ForumListPage extends Component {
 
 
                     {this.state.categoriesData.map(category => <ForumListView rootPage={this}
-                                                                              ref={(view)=>{this.currentForumListView = view}}
+                                                                              ref={(view)=>{this.currentForumListView = view; this.registerForumListView()}}
                                                                               categoryData = {category}
                                                                               key={category.id}
                                                                               {...this.props}
@@ -110,7 +106,32 @@ export default class ForumListPage extends Component {
         }
     }
 
+    registerForumListView = (tab)=>{
+        if(this.forumListArr.length===0){
+            this.forumListArr.push({index:0,page:this.currentForumListView})
+        }else{
+            if(!tab) return false;
+            let result = this.forumListArr.find(item=>item.index === tab.i);
+            if(result){
+                this.currentForumListView = result.page
+            }else{
+                this.forumListArr.push({index:tab.i,page:this.currentForumListView});
+            }
+        }
+        console.log(this.currentForumListView);
+    }
 
+    updateForumListData(categoryId,forumData){
+        this.forumListArr.map(tab=>{
+            console.log(tab.page.state.categoryData.id);
+           if(tab.page.state.categoryData.id === categoryId || tab.page.state.categoryData.id === '0'){
+               let forumListDataSource = tab.page.state.forumListDataSource;
+               forumListDataSource.unshift(forumData);
+               //console.log(forumListDataSource);
+               tab.page.setState({forumListDataSource:forumListDataSource});
+           }
+        })
+    }
 
     navigateToAddPage = () => {
 
@@ -153,7 +174,8 @@ const styles = StyleSheet.create({
         tintColor: '#fff'
     },
     addButton: {
-        padding: 10,
+        paddingHorizontal: 18,
+        paddingVertical:11,
     },
     navigationButton: {
         tintColor: "#fff",

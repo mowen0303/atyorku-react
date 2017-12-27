@@ -88,16 +88,16 @@ export default class ForumListView extends Component {
                     isShowActivity={false}
                     borderRadius={20}
                 />
-                <View style={{flex: 1}}>
-                    <Text style={{color: "#484848", fontSize: 14, flex: 1}}>
+                <View style={{flex: 1,height:39,paddingTop:2}}>
+                    <Text style={{color: "#484848", flex: 1}}>
                         <Text style={{color: "#787878"}}>主题：</Text>{this.state.categoryData.count_all}
-                        <Text style={{color: "#787878"}}> 帖子数：</Text>{this.state.categoryData.count_forum_and_comment}
+                        <Text style={{color: "#787878"}}>   帖子数：</Text>{this.state.categoryData.count_forum_and_comment}
                     </Text>
-                    <Text style={{color: "#787878", fontSize: 13}}>
+                    <Text style={{color: "#787878"}}>
                         {this.state.categoryData.description}
                     </Text>
-                    <Text style={{position: "absolute", right: 0, top: 2}}>
-                        今日：<Text style={{color: "#f00"}}>{this.state.categoryData.count_today}</Text>
+                    <Text style={{position: "absolute", color:"#787878", right: 0, top: 2}}>
+                        今日：<Text style={{color: "#D13F31",fontWeight:"bold"}}>{this.state.categoryData.count_today}</Text>
                     </Text>
                 </View>
             </View>

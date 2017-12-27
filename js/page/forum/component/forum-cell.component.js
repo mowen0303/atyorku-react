@@ -2,7 +2,8 @@ import React, {Component, PropTypes} from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 import CommonService from '../../../service/common.service';
 import ImageLoad from 'react-native-image-placeholder';
-import globalStyles from '../../../style/style'
+import globalStyles from '../../../style/style';
+import GenderIcon from "../../../commonComponent/gender-icon.component";
 
 export default class ForumCell extends Component {
 
@@ -41,6 +42,8 @@ export default class ForumCell extends Component {
                                 <Text style={[globalStyles.font, {fontSize: 15, color: '#333',maxWidth:200}]} numberOfLines={1}>
                                     {this.props.forumData.alias}
                                 </Text>
+                                <GenderIcon gender={this.props.forumData.gender}/>
+                                {this.props.forumData.userTitle!=="普通用户"?<Image style={[styles.userIcon]} source={require("../../../../res/icon/admin.png")}/>:null}
                             </View>
                             <Text style={[globalStyles.font, {color: '#999', fontSize: 12}]}>
                                 {CommonService.pipeOfUserInfo(this.props.forumData.major, '专业')}
@@ -56,12 +59,15 @@ export default class ForumCell extends Component {
                         <View style={styles.footerItem}><Image source={require('../../../../res/icon/comments.png')} style={styles.footerIcon}/><Text style={[styles.footerText,globalStyles.font]}>{this.props.forumData.comment_num}</Text></View>
                         <View style={styles.footerItem}><Image source={require('../../../../res/icon/browse.png')} style={styles.footerIcon}/><Text style={[styles.footerText,globalStyles.font]}>{this.props.forumData.count_view}</Text></View>
                         <View style={styles.footerItem}><Image source={require('../../../../res/icon/clock.png')} style={styles.footerIcon}/><Text style={[styles.footerText,globalStyles.font]}>{this.props.forumData.time}</Text></View>
-                        <View style={styles.footerItem}><Image source={require('../../../../res/icon/tag.png')} style={styles.footerIcon}/><Text style={[styles.footerText,globalStyles.font]}>{this.props.forumData.classTitle}</Text></View>
                     </View>
                 </View>
-                {this.props.forumData.userTitle!=="普通用户"?<Image style={[styles.userIcon]} source={require("../../../../res/icon/admin.png")}/>:null}
-                {this.props.forumData.sort>0&&this.props.isShowCompleteInfo===false?<Image style={styles.fixTopIcon} source={require("../../../../res/icon/fixtop.png")}/>:null}
-                {this.props.isShowCompleteInfo===true?<TouchableOpacity style={styles.moreButton} onPress={this.props.onPressMoreButton}><Image source={require('../../../../res/icon/more.png')} style={[styles.moreButtonImage]}/></TouchableOpacity>:null}
+                <View style={styles.labelContainer}>
+                    {this.props.forumData.sort>0&&this.props.isShowCompleteInfo===false? <View style={[styles.categoryLabel,{backgroundColor:"#D13F31"}]}><Text style={[globalStyles.font,styles.categoryLabelText]}>置顶</Text></View>:null}
+                    <View style={styles.categoryLabel}>
+                        <Text style={[globalStyles.font,styles.categoryLabelText]}>{this.props.forumData.classTitle}</Text>
+                    </View>
+                    {this.props.isShowCompleteInfo===true?<TouchableOpacity style={styles.moreButton} onPress={this.props.onPressMoreButton}><Image source={require('../../../../res/icon/more.png')} style={[styles.moreButtonImage]}/></TouchableOpacity>:null}
+                </View>
             </TouchableOpacity>
         )
     }
@@ -110,14 +116,8 @@ const styles = StyleSheet.create({
         width: 14,
         margin: 3,
         marginLeft: 6,
-        position:'absolute',
-        left:7,
-        top:42,
     },
     moreButton:{
-        position:'absolute',
-        top:0,
-        right:0,
         padding:10,
     },
     moreButtonImage:{
@@ -141,5 +141,29 @@ const styles = StyleSheet.create({
         tintColor:'#888',
         marginTop:3,
         marginRight:7
+    },
+    labelContainer:{
+        position:"absolute",
+        right:0,
+        top:0,
+        flexDirection:"row",
+        alignItems:"center",
+        justifyContent:"center",
+        height:40
+    },
+    categoryLabel:{
+        backgroundColor:"#55afb1",
+        borderRadius:9,
+        paddingHorizontal:10,
+        overflow:"hidden",
+        height:20,
+        flexDirection:"row",
+        alignItems:"center",
+        justifyContent:"center",
+        marginRight:10
+    },
+    categoryLabelText:{
+        color:"#fff",
+        fontSize:12
     }
 });

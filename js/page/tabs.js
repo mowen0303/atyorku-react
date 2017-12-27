@@ -15,7 +15,7 @@ import BookPage from './book/book.page';
 import BookAddPage from './book/book-add.page';
 import BookDetailPage from './book/book-detail.page';
 import MapDetailPage from './map/map-detail.page';
-
+import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 
 
 
@@ -86,7 +86,6 @@ const tabs = TabNavigator({
 const TabsNav = StackNavigator({
     Tabs: {screen: tabs},
     ForumDetailPage: {screen: ForumDetailPage},
-    ForumAddPage:{screen:ForumAddPage},
     LoginPage: {screen: LoginPage},
     SettingPage: {screen: SettingPage},
     MapPage:{screen:MapPage},
@@ -96,11 +95,12 @@ const TabsNav = StackNavigator({
     EventPage:{screen:EventPage},
     ProfileModifyPage:{screen:ProfileModifyPage},
     MapDetailPage:{screen:MapDetailPage},
-}, {
-    onNavigationStateChange: () => {
-        alert(1)
-    }
-})
+    ForumAddPage:{screen:ForumAddPage},
+
+});
+
+
+
 
 const styles = StyleSheet.create({
     icon: {

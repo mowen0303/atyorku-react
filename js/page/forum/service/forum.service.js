@@ -46,7 +46,7 @@ export default class ForumService {
      * @returns {Promise.<TResult>|*}
      */
     static getForums(categoryId, page) {
-        let url = `${CommonService.host}/admin/forum/forumController.php?action=getForumListWithJson&pageSize=5&forum_class_id=${categoryId}&page=${page}`;
+        let url = `${CommonService.host}/admin/forum/forumController.php?action=getForumListWithJson&pageSize=20&forum_class_id=${categoryId}&page=${page}`;
         //console.log(url);
         return fetch(url).then(response => response.json());
     }
@@ -99,7 +99,7 @@ export default class ForumService {
      * @returns {Promise.<TResult>|*}
      */
     static getComments(forumId, page) {
-        let url = `${CommonService.host}/admin/forum/forumController.php?action=getForumCommentListWithJson&forum_id=${forumId}&pageSize=10&page=${page}`;
+        let url = `${CommonService.host}/admin/forum/forumController.php?action=getForumCommentListWithJson&forum_id=${forumId}&pageSize=20&page=${page}`;
         console.log(url);
         return fetch(url).then(response => response.json());
 
