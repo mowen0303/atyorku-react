@@ -45,7 +45,6 @@ export default class ForumListPage extends Component {
     async componentDidMount() {
         this.props.navigation.state.navigateToAddPage = this.navigateToAddPage;
         this.getCategories();
-
     }
 
     render() {
@@ -94,8 +93,7 @@ export default class ForumListPage extends Component {
                 >
 
 
-                    {this.state.categoriesData.map(category => <ForumListView rootPage={this}
-                                                                              ref={(view)=>{this.currentForumListView = view; this.registerForumListView()}}
+                    {this.state.categoriesData.map(category => <ForumListView ref={(view)=>{this.currentForumListView = view; this.registerForumListView()}}
                                                                               categoryData = {category}
                                                                               key={category.id}
                                                                               {...this.props}
@@ -118,7 +116,7 @@ export default class ForumListPage extends Component {
                 this.forumListArr.push({index:tab.i,page:this.currentForumListView});
             }
         }
-        console.log(this.currentForumListView);
+        //console.log(this.currentForumListView);
     }
 
     updateForumListData(categoryId,forumData){
@@ -127,7 +125,6 @@ export default class ForumListPage extends Component {
            if(tab.page.state.categoryData.id === categoryId || tab.page.state.categoryData.id === '0'){
                let forumListDataSource = tab.page.state.forumListDataSource;
                forumListDataSource.unshift(forumData);
-               //console.log(forumListDataSource);
                tab.page.setState({forumListDataSource:forumListDataSource});
            }
         })
