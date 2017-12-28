@@ -31,7 +31,7 @@ export default class MapDetailPage extends Component {
     render() {
         return(
             <ScrollView>
-                {/*<Image source={require(locations.location.pic)}  />*/}
+                <Image source={require(locations.location.pic)}  />
                 <Text>{locations.location.name}</Text>
                 <Text>{locations.location.info}</Text>
                 <Button/>

@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import {
-    View, StyleSheet, Dimensions, StatusBar, Platform, Alert, TouchableOpacity, Text, Keyboard,
-    TextInput, ToastAndroid, ScrollView
+    View, StyleSheet, Dimensions, StatusBar, Platform, Alert, TouchableOpacity, Keyboard,
+    TextInput, ToastAndroid, Image, TouchableWithoutFeedback, Modal
 } from 'react-native';
 import MapView from "react-native-maps";
 
 import MapService from './service/map.service';
 import FloatingButton from "./component/floating-button.component";
 import SearchResultList from "./component/search-result-list.component";
+import MapDetailPin from "./component/map-detail-pin.component";
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -70,15 +71,17 @@ export default class MapPage extends Component {
             chosen: null,
             showResult: false,
             searchBarOnFocus: false,
+            showLocationCard: false,
             keyword: "",
         }
+        this._keyboardDidHide = this._keyboardDidHide.bind(this);
     }
 
     static navigationOptions = {
-        // header: null,
-        headerStyle: {backgroundColor: "#fff"},
-        title: '学校地图',
-        headerTintColor: "#484848"
+        header: null,
+        // headerStyle: {backgroundColor: "#fff"},
+        // title: '学校地图',
+        // headerTintColor: "#484848"
     };
 
     watchID = null;
@@ -90,6 +93,7 @@ export default class MapPage extends Component {
                 await this.setState({isLoadingLocationList: false});
                 if (json.code === 1) {
                     await this.setState({locationData: json.result});
+                    // debug
                     if (Platform.OS == 'android') {
                         ToastAndroid.show("Location data loaded", ToastAndroid.SHORT)
                     } else {
@@ -149,10 +153,14 @@ export default class MapPage extends Component {
     }
 
     componentWillMount() {
-
+        // this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+        // this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     }
 
     componentDidMount() {
+        // this.keyboardDidShowListener.bind(this);
+        // this.keyboardDidHideListener.bind(this);
+
         StatusBar.setBarStyle('dark-content', false);
         if (Platform.OS === 'android') {
             StatusBar.setBackgroundColor('rgba(0,0,0,0)');
@@ -166,7 +174,17 @@ export default class MapPage extends Component {
     componentWillUnmount() {
         navigator.geolocation.clearWatch(this.watchID);
         this.props.navigation.state.showDetail = this.showDetail;
+        // this.keyboardDidShowListener.remove();
+        // this.keyboardDidHideListener.remove();
+    }
 
+    _keyboardDidShow() {
+        // do nothing
+    }
+
+    _keyboardDidHide() {
+        // Alert.alert("提示", "Keyboard dismissed");
+        this.setState({showResult: false});
     }
 
     navigateToDetailPage = () => {
@@ -182,6 +200,11 @@ export default class MapPage extends Component {
     }
 
     render() {
+        /* goBack helper
+         * https://github.com/react-community/react-navigation/issues/2295
+         */
+        const {goBack} = this.props.navigation;
+
         return (
             <View style={styles.container}>
                 <MapView style={styles.map}
@@ -198,28 +221,37 @@ export default class MapPage extends Component {
                                 }}
                                 title={marker.item.name}
                                 key={marker.item.id}
+                                onPress={() => this.setState({showLocationCard: true})}
                             />) : null
                     }
                 </MapView>
+                <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={styles.searchArea}>
+                    <View>
+                        <View style={styles.navigateSearchArea}>
+                            <TouchableOpacity ref={"naviButton"} style={styles.naviButton} onPress={() => goBack()}>
+                                <Image ref={"naviIcon"} style={styles.naviIcon} source={require('../../../res/icon/apps.png')} />
+                            </TouchableOpacity>
+                            <TextInput placeholder="去哪儿？"
+                                       style={styles.input}
+                                       underlineColorAndroid="rgba(0,0,0,0)"
+                                       onChangeText={(text) => this.setState({keyword: text})}
+                                       onFocus={() => this.setState({showResult: true})}
+                                       onBlur={() => this.setState({showResult: false})}
+                                       ref={"searchBar"}
+                            />
+                        </View>
 
-                <View style={styles.searchArea}>
-                    <TextInput placeholder="去哪里？"
-                               style={styles.searchBar}
-                               underlineColorAndroid="rgba(0,0,0,0)"
-                               onChangeText={(text) => this.setState({keyword: text})}
-                               onFocus={() => this.setState({showResult: true})}
-                               //onBlur={() => this.setState({showResult: false})}
-                    />
-                    {
-                        this.state.showResult ?
-                            <View style={styles.list}>
-                                <SearchResultList parentPage={this} data={this.state.locationData
-                                    .filter(item => JSON.stringify(item.init).toLowerCase().indexOf(this.state.keyword.toLowerCase()) > -1 ||
-                                        JSON.stringify(item.full_name).toLowerCase().indexOf(this.state.keyword.toLowerCase()) > -1)}/>
-                            </View>
-                            : null
-                    }
-                </View>
+                        {
+                            (this.state.showResult && this.state.keyword) ?
+                                <View style={styles.list}>
+                                    <SearchResultList parentPage={this} data={this.state.locationData
+                                        .filter(item => JSON.stringify(item.init).toLowerCase().indexOf(this.state.keyword.toLowerCase()) > -1 ||
+                                            JSON.stringify(item.full_name).toLowerCase().indexOf(this.state.keyword.toLowerCase()) > -1)}/>
+                                </View>
+                                : null
+                        }
+                    </View>
+                </TouchableWithoutFeedback>
                 {
                     this.state.showResult ? null :
                         <FloatingButton style={styles.floatingButton}
@@ -228,6 +260,18 @@ export default class MapPage extends Component {
                                         iconSrc={require('../../../res/icon/gps.png')}
                         />
                 }
+                <Modal transparent
+                       visible={this.state.showLocationCard}
+                       animationType={"fade"}
+                       onRequestClose={()=>{}}
+
+                >
+                    <TouchableOpacity onPress={()=>{this.setState({showLocationCard: false})}}
+                                      style={styles.cardBackground}
+                    >
+                        <MapDetailPin data={this.state.chosen}/>
+                    </TouchableOpacity>
+                </Modal>
             </View>
         )
     }
@@ -253,21 +297,41 @@ const styles = StyleSheet.create({
     },
     searchArea: {
         flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: "flex-start",
-        // justifyContent: 'center',
     },
-    searchBar: {
+    navigateSearchArea: {
+        // flex: 1,
         elevation: 1,
-        textAlign: 'center',
         backgroundColor: '#fff',
         height: 45,
         margin: 15,
         marginBottom: 0,
         width: '93%',
         top: 0,
-        borderRadius: 0,
+        borderRadius: 2,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: "flex-start",
     },
+    input: {
+        marginLeft: 20,
+        textAlign: 'left',
+        flex: 1,
+    },
+    naviButton: {
+        width: 25,
+        height: 25,
+        margin: 10,
+    },
+    naviIcon: {
+        width: 25,
+        height: 25,
+    },
+    cardBackground: {
+        flex: 1,
+    }
 });

@@ -21,6 +21,7 @@ export default class SearchResultList extends Component {
             <TouchableOpacity onPress={()=>{
                 this.props.parentPage.setState({showResult:false});
                 this.props.parentPage.onReceiveDataFromList(data);
+                this.props.parentPage.refs.searchBar.blur();
             }}>
                 <View style={styles.item}>
                     <Image style={styles.logo}/>
@@ -28,7 +29,6 @@ export default class SearchResultList extends Component {
                         <Text style={styles.fullName}>{data.item.init}</Text>
                         <Text style={styles.init}>{data.item.full_name}</Text>
                     </View>
-                    {/* TODO - in the future add icon to mark different function of different buildings*/}
                 </View>
             </TouchableOpacity>
         )
@@ -45,6 +45,7 @@ export default class SearchResultList extends Component {
                       // ListFooterComponent={this.listFooterComponent}
                       // onEndReached={() => this.getComments()}
                       onEndReachedThreshold={this.state.onEndReachedThreshold}
+                      keyboardShouldPersistTaps={'handled'}
             />
         )
     }
