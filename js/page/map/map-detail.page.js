@@ -14,7 +14,6 @@ export default class MapDetailPage extends Component {
             latitude: 43.773966,
             longitude: -79.505355,
             info: "The Department of Electrical Engineering and Computer Science, Lassonde School of Engineering, is one of the leading academic research departments in Canada.",
-            pic: '../res/lassonde.jpg',
         }
     }
 

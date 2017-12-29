@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
     View, StyleSheet, Dimensions, StatusBar, Platform, Alert, TouchableOpacity, Keyboard,
-    TextInput, ToastAndroid, Image, TouchableWithoutFeedback, Modal
+    TextInput, ToastAndroid, Image, TouchableWithoutFeedback, Modal, Linking
 } from 'react-native';
 import MapView from "react-native-maps";
 
@@ -74,7 +74,7 @@ export default class MapPage extends Component {
             showLocationCard: false,
             keyword: "",
         }
-        this._keyboardDidHide = this._keyboardDidHide.bind(this);
+        // this._keyboardDidHide = this._keyboardDidHide.bind(this);
     }
 
     static navigationOptions = {
@@ -184,7 +184,7 @@ export default class MapPage extends Component {
 
     _keyboardDidHide() {
         // Alert.alert("提示", "Keyboard dismissed");
-        this.setState({showResult: false});
+        this.setState({showResult: false});  // the solution is to "bind(this)", but how and where???
     }
 
     navigateToDetailPage = () => {
@@ -221,16 +221,47 @@ export default class MapPage extends Component {
                                 }}
                                 title={marker.item.name}
                                 key={marker.item.id}
-                                onPress={() => this.setState({showLocationCard: true})}
+                                onPress={() => {
+                                    // this.setState({showLocationCard: true});
+                                    if (Platform.OS == 'android') {
+                                        // Alert.alert("","https://www.google.com/maps/dir/?api=1&"+marker.item.latitude+","+marker.item.longitude);
+                                        // Linking.openURL("geo:"+marker.item.latitude+","+marker.item.longitude);
+                                        Linking.openURL("https://www.google.com/maps/search/?api=1&"+marker.item.latitude+","+marker.item.longitude);
+                                    } else {
+                                        Linking.openURL("http://maps.apple.com/?daddr="+marker.item.latitude+","+marker.item.longitude);
+                                    }
+                                }}
                             />) : null
+                    }
+                    {
+                        this.state.chosen != null ? this.state.chosen.map(
+                            polygon => <MapView.Polygon
+                                            key={polygon.item.id}
+                                            coordinates={[{latitude: 43.773944, longitude: -79.506611}, {latitude: 43.773777, longitude: -79.506524}, {latitude: 43.773797, longitude: -79.506437}, {latitude: 43.773621, longitude: -79.506359}, {latitude: 43.773586, longitude: -79.506458}, {latitude: 43.773419, longitude: -79.506380}, {latitude: 43.773578, longitude: -79.505653}, {latitude: 43.773753, longitude: -79.505738}, {latitude: 43.773773, longitude: -79.505653}, {latitude: 43.773953, longitude: -79.505728}, {latitude: 43.773934, longitude: -79.505812}, {latitude: 43.774112, longitude: -79.505885}, {latitude: 43.773944, longitude: -79.506611}]}
+                                            strokeColor={"rgba(255,255,255,0.8)"}
+                                            strokeWidth={2}
+                                            fillColor={"rgba(255,0,0,0.5)"}
+                                        />
+                        ) : null
                     }
                 </MapView>
                 <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={styles.searchArea}>
                     <View>
                         <View style={styles.navigateSearchArea}>
-                            <TouchableOpacity ref={"naviButton"} style={styles.naviButton} onPress={() => goBack()}>
-                                <Image ref={"naviIcon"} style={styles.naviIcon} source={require('../../../res/icon/apps.png')} />
-                            </TouchableOpacity>
+                            {
+                                this.state.showResult?
+                                    <TouchableOpacity ref={"naviButton"} style={styles.naviButton} onPress={() => {
+                                        this.setState({showResult: false});
+                                        Keyboard.dismiss();
+                                    }}>
+                                        <Image ref={"naviIcon"} style={styles.naviIcon} source={require('../../../res/icon/back3.png')} />
+                                    </TouchableOpacity>
+                                    :
+                                    <TouchableOpacity ref={"naviButton"} style={styles.naviButton} onPress={() => goBack()}>
+                                        <Image ref={"naviIcon"} style={styles.naviIcon} source={require('../../../res/icon/apps.png')} />
+                                    </TouchableOpacity>
+                            }
+
                             <TextInput placeholder="去哪儿？"
                                        style={styles.input}
                                        underlineColorAndroid="rgba(0,0,0,0)"
@@ -269,8 +300,8 @@ export default class MapPage extends Component {
                     <TouchableOpacity onPress={()=>{this.setState({showLocationCard: false})}}
                                       style={styles.cardBackground}
                     >
-                        <MapDetailPin data={this.state.chosen}/>
                     </TouchableOpacity>
+                    <MapDetailPin data={this.state.chosen}/>
                 </Modal>
             </View>
         )

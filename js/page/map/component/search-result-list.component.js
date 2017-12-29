@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Dimensions, ToastAndroid} from 'react-native';
+import {View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Dimensions, Alert} from 'react-native';
 
 const {width} = Dimensions.get('window');
 
@@ -22,12 +22,13 @@ export default class SearchResultList extends Component {
                 this.props.parentPage.setState({showResult:false});
                 this.props.parentPage.onReceiveDataFromList(data);
                 this.props.parentPage.refs.searchBar.blur();
+                // Alert.alert("", JSON.stringify(data));
             }}>
                 <View style={styles.item}>
                     <Image style={styles.logo}/>
                     <View style={styles.text}>
-                        <Text style={styles.fullName}>{data.item.init}</Text>
-                        <Text style={styles.init}>{data.item.full_name}</Text>
+                        <Text style={styles.init}>{data.item.init}</Text>
+                        <Text style={styles.fullName}>{data.item.full_name}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -66,14 +67,6 @@ const styles = StyleSheet.create({
         backgroundColor:'#fff',
         borderTopWidth:0,
         width: width * 0.93,
-
-        // flex:1,
-        // display:'flex',
-        // width: '93%',
-        // flexDirection: 'row',
-        // justifyContent: 'space-between',
-        // alignItems: "center",
-        // backgroundColor:'#fff',
     },
     logo: {
         width: 20,
@@ -82,10 +75,10 @@ const styles = StyleSheet.create({
 
     },
     fullName: {
-        fontSize: 16,
-        color: '#000',
+        fontSize: 14,
     },
     init: {
-        fontSize: 14,
+        fontSize: 16,
+        color: '#000',
     }
 });

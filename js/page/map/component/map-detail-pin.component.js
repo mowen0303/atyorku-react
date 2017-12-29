@@ -21,7 +21,7 @@ export default class MapBottomSheet extends Component {
                 <Text style={styles.buildingName}>{this.props.data? "null" : this.props.data.item.full_name}</Text>
                 <Text style={styles.buildingInit}>{this.props.data? "null" : this.props.data.item.init}</Text>
                 <TouchableOpacity style={styles.iconContainer}
-                                    onPress={()=>{}}
+                                    onPress={()=>{/* TODO */}}
                 >
                     <Image style={styles.icon} />
                 </TouchableOpacity>
