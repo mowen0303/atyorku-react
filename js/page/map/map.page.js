@@ -8,7 +8,7 @@ import MapView from "react-native-maps";
 import MapService from './service/map.service';
 import FloatingButton from "./component/floating-button.component";
 import SearchResultList from "./component/search-result-list.component";
-import MapDetailPin from "./component/map-detail-pin.component";
+import MapBottomSheet from "./component/map-bottom-sheet.component";
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -73,6 +73,7 @@ export default class MapPage extends Component {
             searchBarOnFocus: false,
             showLocationCard: false,
             keyword: "",
+            searchPlaceholder: "去哪儿？",
         }
         // this._keyboardDidHide = this._keyboardDidHide.bind(this);
     }
@@ -195,8 +196,9 @@ export default class MapPage extends Component {
     onReceiveDataFromList = (data) => {
         let chosen = [];
         chosen.push(data);
+        // console.warn("test:"+JSON.stringify(chosen));
         this.setState({chosen});
-        ToastAndroid.show(data.item.full_name, ToastAndroid.SHORT);
+        // ToastAndroid.show(data.item.full_name, ToastAndroid.SHORT);
     }
 
     render() {
@@ -221,23 +223,14 @@ export default class MapPage extends Component {
                                 }}
                                 title={marker.item.name}
                                 key={marker.item.id}
-                                onPress={() => {
-                                    // this.setState({showLocationCard: true});
-                                    if (Platform.OS == 'android') {
-                                        // Alert.alert("","https://www.google.com/maps/dir/?api=1&"+marker.item.latitude+","+marker.item.longitude);
-                                        // Linking.openURL("geo:"+marker.item.latitude+","+marker.item.longitude);
-                                        Linking.openURL("https://www.google.com/maps/search/?api=1&"+marker.item.latitude+","+marker.item.longitude);
-                                    } else {
-                                        Linking.openURL("http://maps.apple.com/?daddr="+marker.item.latitude+","+marker.item.longitude);
-                                    }
-                                }}
+                                onPress={() => {this.setState({showLocationCard: true});}}
                             />) : null
                     }
                     {
                         this.state.chosen != null ? this.state.chosen.map(
                             polygon => <MapView.Polygon
                                             key={polygon.item.id}
-                                            coordinates={[{latitude: 43.773944, longitude: -79.506611}, {latitude: 43.773777, longitude: -79.506524}, {latitude: 43.773797, longitude: -79.506437}, {latitude: 43.773621, longitude: -79.506359}, {latitude: 43.773586, longitude: -79.506458}, {latitude: 43.773419, longitude: -79.506380}, {latitude: 43.773578, longitude: -79.505653}, {latitude: 43.773753, longitude: -79.505738}, {latitude: 43.773773, longitude: -79.505653}, {latitude: 43.773953, longitude: -79.505728}, {latitude: 43.773934, longitude: -79.505812}, {latitude: 43.774112, longitude: -79.505885}, {latitude: 43.773944, longitude: -79.506611}]}
+                                            coordinates={JSON.parse('[{"latitude": 43.773944, "longitude": -79.506611}, {"latitude": 43.773777, "longitude": -79.506524}, {"latitude": 43.773797, "longitude": -79.506437}, {"latitude": 43.773621, "longitude": -79.506359}, {"latitude": 43.773586, "longitude": -79.506458}, {"latitude": 43.773419, "longitude": -79.506380}, {"latitude": 43.773578, "longitude": -79.505653}, {"latitude": 43.773753, "longitude": -79.505738}, {"latitude": 43.773773, "longitude": -79.505653}, {"latitude": 43.773953, "longitude": -79.505728}, {"latitude": 43.773934, "longitude": -79.505812}, {"latitude": 43.774112, "longitude": -79.505885}, {"latitude": 43.773944, "longitude": -79.506611}]')}
                                             strokeColor={"rgba(255,255,255,0.8)"}
                                             strokeWidth={2}
                                             fillColor={"rgba(255,0,0,0.5)"}
@@ -261,8 +254,7 @@ export default class MapPage extends Component {
                                         <Image ref={"naviIcon"} style={styles.naviIcon} source={require('../../../res/icon/apps.png')} />
                                     </TouchableOpacity>
                             }
-
-                            <TextInput placeholder="去哪儿？"
+                            <TextInput placeholder={this.state.searchPlaceholder}
                                        style={styles.input}
                                        underlineColorAndroid="rgba(0,0,0,0)"
                                        onChangeText={(text) => this.setState({keyword: text})}
@@ -271,7 +263,6 @@ export default class MapPage extends Component {
                                        ref={"searchBar"}
                             />
                         </View>
-
                         {
                             (this.state.showResult && this.state.keyword) ?
                                 <View style={styles.list}>
@@ -291,17 +282,18 @@ export default class MapPage extends Component {
                                         iconSrc={require('../../../res/icon/gps.png')}
                         />
                 }
-                <Modal transparent
-                       visible={this.state.showLocationCard}
+                <Modal visible={this.state.showLocationCard}
+                       transparent
                        animationType={"fade"}
                        onRequestClose={()=>{}}
-
+                       style={styles.modal}
                 >
                     <TouchableOpacity onPress={()=>{this.setState({showLocationCard: false})}}
                                       style={styles.cardBackground}
+                                      visible={this.state.showLocationCard}
                     >
                     </TouchableOpacity>
-                    <MapDetailPin data={this.state.chosen}/>
+                    <MapBottomSheet data={this.state.chosen? this.state.chosen[0] : null}/>
                 </Modal>
             </View>
         )
@@ -323,19 +315,19 @@ const styles = StyleSheet.create({
         right: 0,
     },
     list: {
+        // position: 'absolute',
         top: 0,
-        flex: 1,
+        flex: 1
     },
     searchArea: {
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: '#f00',
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: "flex-start",
     },
     navigateSearchArea: {
-        // flex: 1,
         elevation: 1,
         backgroundColor: '#fff',
         height: 45,
@@ -364,5 +356,8 @@ const styles = StyleSheet.create({
     },
     cardBackground: {
         flex: 1,
+    },
+    modal: {
+        backgroundColor: "#fff",
     }
 });

@@ -22,7 +22,6 @@ export default class SearchResultList extends Component {
                 this.props.parentPage.setState({showResult:false});
                 this.props.parentPage.onReceiveDataFromList(data);
                 this.props.parentPage.refs.searchBar.blur();
-                // Alert.alert("", JSON.stringify(data));
             }}>
                 <View style={styles.item}>
                     <Image style={styles.logo}/>
@@ -35,6 +34,12 @@ export default class SearchResultList extends Component {
         )
     }
 
+    listPadding = () => {
+        return(
+            <View style={styles.header} />
+        )
+    }
+
     render() {
         return(
             <FlatList style={styles.list}
@@ -42,9 +47,9 @@ export default class SearchResultList extends Component {
                       extraData={super.state}
                       keyExtractor={item => item.id}
                       renderItem={this.renderItem}
-                      // ListHeaderComponent={this.listHeaderComponent}
-                      // ListFooterComponent={this.listFooterComponent}
-                      // onEndReached={() => this.getComments()}
+                      // ListHeaderComponent={this.listPadding}
+                      ListFooterComponent={this.listPadding}
+                      // onEndReached={() => {}}
                       onEndReachedThreshold={this.state.onEndReachedThreshold}
                       keyboardShouldPersistTaps={'handled'}
             />
@@ -53,9 +58,13 @@ export default class SearchResultList extends Component {
 }
 
 const styles = StyleSheet.create({
+    header: {
+        flex: 1,
+        height: 55,
+        // backgroundColor: '#000',
+    },
     list: {
         flex: 1,
-        width: '100%',
         marginHorizontal: 15,
         borderBottomColor: 'rgba(0,0,0,0)',
         marginTop: 0,
