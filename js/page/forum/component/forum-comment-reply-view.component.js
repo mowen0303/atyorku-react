@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {View, StyleSheet, TextInput, TouchableOpacity, Text, Keyboard, LayoutAnimation} from 'react-native';
 
 
-export default class CommentView extends Component {
+export default class ForumCommentReplyView extends Component {
 
     constructor(props) {
         super(props);
@@ -63,8 +63,6 @@ export default class CommentView extends Component {
     onContentSizeChange = (event) => {
         this.setState({commentBoxHeight: Math.min(80, event.nativeEvent.contentSize.height + 24)})
     }
-
-
 
     componentWillMount() {
         this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow.bind(this));

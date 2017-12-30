@@ -35,9 +35,9 @@ export default class GenderIcon extends Component {
 const styles = StyleSheet.create({
 
     userIcon: {
-        height: 15,
-        width: 15,
-        margin: 3,
+        height: 14,
+        width: 14,
+        marginTop: 4,
         marginLeft: 6
     }
 });

@@ -1,8 +1,9 @@
 import React, {Component, PropTypes} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Image, Platform, Clipboard} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import ImageLoad from 'react-native-image-placeholder';
 import CommonService from '../../../service/common.service';
 import globalStyles from '../../../style/style';
+import GenderIcon from "../../../commonComponent/gender-icon.component";
 
 export default class CommentCell extends Component {
 
@@ -18,7 +19,7 @@ export default class CommentCell extends Component {
                     <View style={{flexDirection: 'row'}}>
                         <TouchableOpacity style={{marginRight: 10}}>
                             <ImageLoad
-                                style={{height: 30, width: 30, borderRadius: 15, overflow: 'hidden', marginTop:7}}
+                                style={{height: 34, width: 34, borderRadius: 17, overflow: 'hidden', marginTop:3}}
                                 source={{uri: CommonService.host + this.props.data.img}}
                                 placeholderSource={require('../../../../res/images/transparence.png')}
                                 isShowActivity={false}
@@ -30,6 +31,8 @@ export default class CommentCell extends Component {
                                 <Text style={[globalStyles.font, {fontSize: 15, color: '#333', maxWidth: 200}]} numberOfLines={1}>
                                     {this.props.data.alias}
                                 </Text>
+                                <GenderIcon gender={this.props.data.gender} style={{width:8,height:8}}/>
+                                {this.props.data.userTitle!=="普通用户"?<Image style={[styles.userIcon]} source={require("../../../../res/icon/admin.png")}/>:null}
                                 <View style={{flexDirection:'row',justifyContent:'flex-end',position:'absolute',right:0}}>
                                     <Text style={[styles.remarkText, globalStyles.font]}>{this.props.data.time}</Text>
                                     <TouchableOpacity style={styles.moreButton} onPress={this.props.onPressMoreButton}><Image source={require('../../../../res/icon/more.png')} style={[styles.moreButtonImage]}/></TouchableOpacity>
@@ -44,7 +47,6 @@ export default class CommentCell extends Component {
                     </View>
                     <Text style={[globalStyles.font, styles.textStyle, {fontSize: 16, marginTop: 5, marginLeft:40, marginBottom: 5, color: '#444'}]}
                           selectable={true} numberOfLines={this.props.numberOfLines}>{this.props.data.content_comment}</Text>
-                    {this.props.data.userTitle!=="普通用户"?<Image style={[styles.userIcon]} source={require("../../../../res/icon/admin.png")}/>:null}
                 </TouchableOpacity>
         )
     }
@@ -59,13 +61,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     userIcon: {
-        height: 12,
-        width: 12,
-        margin: 3,
-        marginLeft: 6,
-        position:'absolute',
-        left:2,
-        top:35,
+        height: 14,
+        width: 14,
+        margin: 4,
+        marginLeft: 3,
     },
     remarkText:{
         color:'#888',

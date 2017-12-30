@@ -47,6 +47,7 @@ export default class ForumService {
      */
     static getForums(categoryId, page) {
         let url = `${CommonService.host}/admin/forum/forumController.php?action=getForumListWithJson&pageSize=20&forum_class_id=${categoryId}&page=${page}`;
+        //console.log(url);
         return fetch(url).then(response => response.json());
     }
 
@@ -98,8 +99,8 @@ export default class ForumService {
      * @returns {Promise.<TResult>|*}
      */
     static getComments(forumId, page) {
-        let url = `${CommonService.host}/admin/forum/forumController.php?action=getForumCommentListWithJson&forum_id=${forumId}&pageSize=10&page=${page}`;
-        //alert(url);
+        let url = `${CommonService.host}/admin/forum/forumController.php?action=getForumCommentListWithJson&forum_id=${forumId}&pageSize=20&page=${page}`;
+        console.log(url);
         return fetch(url).then(response => response.json());
 
     }
@@ -112,12 +113,12 @@ export default class ForumService {
      * @param receiveUserId : number
      * @returns {Promise.<TResult>}
      */
-    static addComment(content, forumId, ownerUserId, receiveUserId) {
+    static addComment(content, forumId, receiveUserId) {
         let url = `${CommonService.host}/admin/forum/forumController.php?action=addCommentWithJson`;
         let options = {
             method: "POST",
             headers: {"Content-Type": "application/x-www-form-urlencoded"},
-            body: `content_comment=${content}&forum_id=${forumId}&ownerUserId=${ownerUserId}&receiveUserId=${receiveUserId}`
+            body: `content_comment=${content}&forum_id=${forumId}&receiveUserId=${receiveUserId}`
         }
         return fetch(url, options).then().then(response => response.json());
     }

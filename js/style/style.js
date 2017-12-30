@@ -25,9 +25,9 @@ export default globalStyles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         alignItems:'center',
-        minHeight:66,
+        minHeight:50,
         borderBottomWidth:1,
-        borderColor:'#ebebeb',
+        borderColor:'#f4f4f4',
     },
     listLabelRight: {
         flexDirection:'row',
@@ -51,7 +51,13 @@ export default globalStyles = StyleSheet.create({
         fontSize:17,
         color:"#484848",
     },
+
     headerLiteralButton:{
-        marginRight:10
-    }
+        paddingHorizontal:16,
+        paddingVertical:12,
+    },
+    headerLiteralButtonText:{
+        fontSize:16,
+        color:"#fff"
+    },
 });

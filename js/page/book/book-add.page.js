@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Alert, ActionSheetIOS, StyleSheet, View, Text, ScrollView, TouchableHighlight, TouchableOpacity, Image} from 'react-native';
-import {LoadMiddle} from '../../commonComponent/loadingView';
+import {LoadMiddle} from '../../commonComponent/loading.component';
 import ImagePicker from 'react-native-image-crop-picker';
 import BookService from './service/book.service';
 import UserService from "../user/service/user.service";

@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {View, Text, StyleSheet, ActivityIndicator, Dimensions} from 'react-native';
+import {View, Text, ActivityIndicator, Dimensions} from 'react-native';
 
 export class LoadMore extends Component {
 

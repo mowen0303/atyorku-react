@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {View, FlatList, RefreshControl} from 'react-native';
 import BookService from '../service/book.service';
 import BookCell from './book-cell.component'
-import {LoadMore} from '../../../commonComponent/loadingView';
+import {LoadMore} from '../../../commonComponent/loading.component';
 
 
 export default class BookListView extends Component {

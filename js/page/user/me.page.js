@@ -64,7 +64,7 @@ export default class MePage extends Component {
                 <View style={{flex:1}}>
                     <View style={styles.profileBox}>
                         <View style={{flex: 1, marginRight: 10}}>
-                            <TouchableOpacity style={styles.loginButton} onPress={this.navigateToLoginPage}>
+                            <TouchableOpacity activeOpacity={0.8} style={styles.loginButton} onPress={this.navigateToLoginPage}>
                                 <Text style={[styles.loginText]}>登录 / 注册</Text>
                             </TouchableOpacity>
                             <Text numberOfLines={2} style={[styles.description, globalStyles.fontLight]}/>
@@ -84,7 +84,8 @@ export default class MePage extends Component {
     }
 
     navigateToLoginPage = ()=>{
-        this.props.navigation.navigate('LoginPage',{parentPage:this})
+        this.props.navigation.navigate('LoginPage',{parentPage:this, userData: this.state.userData});
+        //this.props.navigation.navigate('LoginPage',{parentPage:this})
     }
 
     navigateToSettingPage = ()=>{
